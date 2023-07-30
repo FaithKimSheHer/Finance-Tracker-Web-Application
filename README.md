@@ -1,9 +1,6 @@
 # Finance-Tracker-Web-Application
 Finance Tracker Web Application
 
-Finance Tracker Web Application
-
-
 Team Members
 ●	Gautam Anantha Swamy
 ●	Josh Cubero
