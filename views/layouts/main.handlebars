@@ -2,7 +2,7 @@
 <html lang="en"> 
     <head>
         <meta charset="utf-8">
-        <title>User Reistration</title> 
+        <title>Home</title> 
         <meta http-equiv="x-ua-compatible" content="ie=edge"> 
 
         <link rel="stylesheet" href="/public/css/registration.css">
@@ -12,6 +12,7 @@
         <header> 
             <p class="home-link"><a href="/">Expense Tracker Homepage</a></p> 
         </header>
+            {{> transaction_summary}} <!-- syntax for rendering partial -->
             <main>
                 <p> 
                     {{{body}}}
