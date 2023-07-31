@@ -208,9 +208,25 @@ const getByUserEmail = async(newEmail)=>{
    
   const userCollection = await users();
   const userExist = await userCollection.findOne({email: newEmail}); 
-  
+  console.log(userExist);
   if (userExist)  return null;
   else            return newEmail; 
+}; 
+
+const checkUser = async(emailAddress, password)=>{
+  // RETURN: NULL if email exists in database, else: newEmail 
+  // Error Handlings
+  if(!emailAddress)                      throw 'You must provide an userEmail to search for';
+  if(typeof emailAddress !== 'string')   throw 'userEmail must be a string';
+  else                                   emailAddress = emailAddress.trim();
+  if(emailAddress.length === 0)          throw 'userEmail cannot be an empty string or just spaces';  
+  if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)   throw 'Email address address error'; 
+   
+  const userCollection = await users();
+  const user = await userCollection.findOne({email: emailAddress, hashedPassword: password}); 
+  console.log(user);
+  if (user)  return null;
+  else       return user; 
 }; 
 
 const getByUserId = async(userId)=>{
@@ -336,4 +352,4 @@ const update = async(
   return updatedInfo.value;
 }; 
 
-export {create, addUser, get, getByUserId, getByUserEmail, remove, update};
+export {create, addUser, get, getByUserId, getByUserEmail, checkUser, remove, update};
