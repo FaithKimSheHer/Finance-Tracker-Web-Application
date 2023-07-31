@@ -29,7 +29,7 @@ const create = async(
 
   if(userName === undefined)            throw 'You must provide your user name';
   if(typeof userName !== 'string')      throw 'User name must be a string';  
-  else                                  userName = userName.trim();
+  else                                  userName = userName.trim().toLowerCase();
   if(userName.length === 0)             throw 'User name cannot be an empty string or just spaces'; 
   console.log("userName: ", userName);
  
@@ -69,7 +69,7 @@ const create = async(
     lastName:                   lastName,
     email:                      email.toLowerCase(),
     price:                      price,
-    userName:                   userName,
+    userName:                   userName.toLowerCase(),
     hashedPassword:             hashedPassword,
     city:                       city,
     state:                      state,
@@ -95,7 +95,7 @@ const addUser = async(registrationForm) => {
   let firstName = registrationForm.newUserFistName;
   let lastName = registrationForm.newUserLastName;
   let email = registrationForm.newUserEmail.toLowerCase();
-  let userName = registrationForm.newUserName;
+  let userName = registrationForm.newUserName.toLowerCase();
   let hashedPassword = registrationForm.newUserPassword;
   let city = registrationForm.newUserCity;
   let state = registrationForm.newUserState;
@@ -121,7 +121,7 @@ const addUser = async(registrationForm) => {
 
       if(userName === undefined)            throw 'You must provide your user name';
       if(typeof userName !== 'string')      throw 'User name must be a string';  
-      else                                  userName = userName.trim();
+      else                                  userName = userName.trim().toLowerCase();
       if(userName.length === 0)             throw 'User name cannot be an empty string or just spaces'; 
       //console.log("userName: ", userName);
     
@@ -160,7 +160,7 @@ const addUser = async(registrationForm) => {
         firstName:                  firstName,
         lastName:                   lastName,
         email:                      email.toLowerCase(), 
-        userName:                   userName,
+        userName:                   userName.toLowerCase(),
         hashedPassword:             hashedPassword,
         city:                       city,
         state:                      state,
@@ -188,7 +188,7 @@ const getByUserName = async(userName)=>{
   // Error Handlings
   if(!userName)                      throw 'You must provide an userName to search for';
   if(typeof userName !== 'string')   throw 'userName must be a string';
-  else                               userName = userName.trim();
+  else                               userName = userName.trim().toLowerCase();
   if(userName.length === 0)          throw 'userName cannot be an empty string or just spaces'; 
   
   const userCollection = await users();
@@ -297,7 +297,7 @@ const update = async(
 
   if(userName === undefined)            throw 'You must provide your user name';
   if(typeof userName !== 'string')      throw 'User name must be a string';  
-  else                                  userName = userName.trim();
+  else                                  userName = userName.trim().toLowerCase();
   if(userName.length === 0)             throw 'User name cannot be an empty string or just spaces'; 
   console.log("userName: ", userName);
  
@@ -334,9 +334,8 @@ const update = async(
   let updatedUser = {
     firstName:                  firstName,
     lastName:                   lastName,
-    email:                      email,
-    price:                      price,
-    userName:                   userName,
+    email:                      email.toLowerCase(), 
+    userName:                   userName.toLowerCase(),
     hashedPassword:             hashedPassword,
     city:                       city,
     state:                      state,
