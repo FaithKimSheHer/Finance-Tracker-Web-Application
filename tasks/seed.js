@@ -18,7 +18,7 @@ async function main() {
       lastName:         " Kim",
       email:            "fkim@stevens.edu",
       userName:         "fkim",
-      hashedPassword:   "(631) 8967161",
+      hashedPassword:   "helloFinalProject",
       city:             "Fort Lee",
       state:            "NJ",
       age:              52
