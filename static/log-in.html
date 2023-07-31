@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Registered User log-in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/public/css/registration.css">
+</head>
+
+<body>
+    <main>
+        <article> 
+            <h1>Registered User log-in</h1> 
+            <header>
+                <p>Header: Final Project: Expense Tracker</p>
+            </header>
+            <p class="description"> This website will allow a registered user to log-in for <a href="/hashboard.html">expense tracker web application</a>.  
+               Please, enter email address and password! </p>     
+                 
+            <form action="/users/log-in" id="log-inForm" method="POST" class="registeredUser">  
+                <label>Email:
+                    <input type="email" id="registeredEmail" name="registeredEmail" placeholder="fkim@steves.edu"><br> 
+                </label>
+                 <label>Password:
+                    <input type="password" id="registeredPassword" name="registeredPassword" placeholder="********"><br> 
+                </label>   
+
+               <button onclick="btnClick()" id="log-inBtn" name="log-inBtn">click me to log-in</button>
+           </form> 
+           <div id="result" class="result"></div>
+           <div id="error" class="error" hidden></div>
+        </article> 
+    </main>
+</body>
+
+</html>
