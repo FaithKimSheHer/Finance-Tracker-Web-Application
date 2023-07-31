@@ -67,7 +67,7 @@ const create = async(
   let newUser = {
     firstName:                  firstName,
     lastName:                   lastName,
-    email:                      email,
+    email:                      email.toLowerCase(),
     price:                      price,
     userName:                   userName,
     hashedPassword:             hashedPassword,
@@ -85,15 +85,16 @@ const create = async(
   //const userId = await get(newId); 
   return insertInfo.value;
 };
+
 const addUser = async(registrationForm) => { 
-  // Add a user 
+  // Add a user by input registrationForm from static/html 
   // => RETURN: user object
    
   //console.log("registrationForm in addUser():");
   //console.log(registrationForm);
   let firstName = registrationForm.newUserFistName;
   let lastName = registrationForm.newUserLastName;
-  let email = registrationForm.newUserEmail;
+  let email = registrationForm.newUserEmail.toLowerCase();
   let userName = registrationForm.newUserName;
   let hashedPassword = registrationForm.newUserPassword;
   let city = registrationForm.newUserCity;
@@ -158,7 +159,7 @@ const addUser = async(registrationForm) => {
       let newUser = {
         firstName:                  firstName,
         lastName:                   lastName,
-        email:                      email, 
+        email:                      email.toLowerCase(), 
         userName:                   userName,
         hashedPassword:             hashedPassword,
         city:                       city,
@@ -181,7 +182,7 @@ const addUser = async(registrationForm) => {
   return insertInfo.value;
 };
 
-const get = async(userName)=>{
+const getByUserName = async(userName)=>{
   // RETURN: object of product by input userGo from the database
 
   // Error Handlings
@@ -198,11 +199,13 @@ const get = async(userName)=>{
 }; 
 
 const getByUserEmail = async(newEmail)=>{
-  // RETURN: NULL if email exists in database, else: newEmail 
-  // Error Handlings
+  // RETURN: user object by input newEmail
+  newEmail = newEmail.toLowerCase();
+
+  // Error Handlings 
   if(!newEmail)                      throw 'You must provide an userEmail to search for';
   if(typeof newEmail !== 'string')   throw 'userEmail must be a string';
-  else                               newEmail = newEmail.trim();
+  else                               newEmail = newEmail.trim().toLowerCase();
   if(newEmail.length === 0)          throw 'userEmail cannot be an empty string or just spaces';  
   if(newEmail.substring(0, newEmail.indexOf('@')).length === 0)   throw 'Email address address error'; 
    
@@ -214,11 +217,12 @@ const getByUserEmail = async(newEmail)=>{
 }; 
 
 const checkUser = async(emailAddress, password)=>{
-  // RETURN: NULL if email exists in database, else: newEmail 
+  // RETURN: user object by input emailAddress, password
+
   // Error Handlings
   if(!emailAddress)                      throw 'You must provide an userEmail to search for';
   if(typeof emailAddress !== 'string')   throw 'userEmail must be a string';
-  else                                   emailAddress = emailAddress.trim();
+  else                                   emailAddress = emailAddress.trim().toLowerCase();
   if(emailAddress.length === 0)          throw 'userEmail cannot be an empty string or just spaces';  
   if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)   throw 'Email address address error'; 
    
@@ -230,7 +234,7 @@ const checkUser = async(emailAddress, password)=>{
 }; 
 
 const getByUserId = async(userId)=>{
-  // RETURN: object of user by id in the database
+  // RETURN: object of user by input userId
 
   // Error Handlings
   if(!userId)                      throw 'You must provide an userId to search for';
@@ -299,7 +303,7 @@ const update = async(
  
   if(email === undefined)               throw 'You must provide your email address';
   if(typeof email !== 'string')         throw 'Email address must be a string';  
-  else                                  email = email.trim();
+  else                                  email = email.trim().toLowerCase();
   if(email.length === 0)                throw 'Email address cannot be an empty string or just spaces';   
   if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error'; 
 
@@ -352,4 +356,4 @@ const update = async(
   return updatedInfo.value;
 }; 
 
-export {create, addUser, get, getByUserId, getByUserEmail, checkUser, remove, update};
+export {create, addUser, getByUserName, getByUserId, getByUserEmail, checkUser, remove, update};
