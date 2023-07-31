@@ -5,7 +5,7 @@ import { usersFuncs } from '../data/index.js';
 
 router.route('/').get(async (req, res) => {
     res.sendFile(path.resolve('static/registration.html'));   
-  });
+});
 router.route('/register').post(async (req, res) => {  
     const registrationForm = req.body;  
     
@@ -18,8 +18,8 @@ router.route('/register').post(async (req, res) => {
     if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
     if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
         
-    const newEmail = await usersFuncs.getByUserEmail(email);  
-    if(newEmail === null)     return res.status(200).render('registerError', {error: email}); 
+    const newUser = await usersFuncs.getByUserEmail(email);  
+    if(newUser === null)     return res.status(200).render('registerError', {error: email}); 
     try {   
         // Error handling 
         if(registrationForm.newUserFistName === undefined)           throw 'You must provide your first name';
@@ -68,6 +68,33 @@ router.route('/register').post(async (req, res) => {
     console.log("router user email:", userEmail);
     res.status(200).render('register', {email: userEmail}); 
 }); //END: router.route('/').post(async (req, res)
+
+router.route('/log-in').get(async (req, res) => {
+    res.sendFile(path.resolve('static/log-in.html'));   
+});
+
+router.route('/log-in').post(async (req, res) => {  
+    const logInForm = req.body;  
+    
+    let email = logInForm.registeredEmail;  
+    let password = logInForm.registeredPassword;
+    // To find if email is valid => if it exists in mongodb
+    if(email === undefined)                                   throw 'You must provide your email address'; 
+    if(typeof email !== 'string')                             throw 'Email address must be a string';  
+    else                                                      email = email.trim();
+    if(email.length === 0)                                    throw 'Email address cannot be an empty string or just spaces';   
+    if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
+    if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
+    console.log("RegisteredUser:",email);    
+
+    const registeredUser = await usersFuncs.checkUser(email, password);   
+    
+    if(registeredUser === undefined)  return res.status(200).render('logInError', {error: email});   
+
+    console.log("Registered User Found Success!");  
+    
+    res.status(200).render('logInSuccess', {email: email}); 
+}); //END: router.route('/logIn').post(async (req, res)
 
 router.route('/:userName').get(async (req, res) => {  
     
