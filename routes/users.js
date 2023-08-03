@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();  
 import path from 'path';
 import { usersFuncs } from '../data/index.js';
+import {users} from '../config/mongoCollections.js'; 
 
 router.route('/').get(async (req, res) => {
     res.sendFile(path.resolve('static/registration.html'));   
@@ -9,57 +10,87 @@ router.route('/').get(async (req, res) => {
 router.route('/register').post(async (req, res) => {  
     const registrationForm = req.body;  
     
-    let email = registrationForm.newUserEmail;  
-    // To find if email is valid => if it exists in mongodb
-    if(email === undefined)                                   throw 'You must provide your email address'; 
-    if(typeof email !== 'string')                             throw 'Email address must be a string';  
-    else                                                      email = email.trim();
-    if(email.length === 0)                                    throw 'Email address cannot be an empty string or just spaces';   
-    if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
-    if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
+    let emailAddress = registrationForm.newUserEmail.trim().toLowerCase();
+    if(emailAddress.length===0)              throw "email address field error";
+    if(emailAddress.includes(" "))           throw "email address field error";
+    if(!emailAddress.includes("@"))           throw "email address field error";
+    if(!emailAddress.includes("."))           throw "email address field error";
+    if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
+    if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
+    if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
         
     const newUser = await usersFuncs.getByUserEmail(email);  
     if(newUser === null)     return res.status(200).render('registerError', {error: email}); 
     try {   
         // Error handling 
-        if(registrationForm.newUserFistName === undefined)           throw 'You must provide your first name';
-        if(typeof registrationForm.newUserFistName !== 'string')     throw 'First name must be a string'; 
-        else                                                         registrationForm.newUserFistName = registrationForm.newUserFistName.trim();
-        if(registrationForm.newUserFistName.length === 0)            throw 'First name cannot be an empty string or just spaces'; 
-        //console.log("firstName: ", registrationForm.newUserFistName);
+        let firstName = registrationForm.newUserFistName;
+        let lastName = registrationForm.newUserLastName;
+        let emailAddress = registrationForm.newUserEmail;
+        let userName = registrationForm.newUserName;
+        let password = registrationForm.newUserPassword;
+        let confirmPasswordInput = registrationForm.confirmPasswordInput;
+        let city = registrationForm.newUserCity;
+        let state = registrationForm.newUserState;
 
-        if(registrationForm.newUserLastName === undefined)            throw 'You must provide your last name';
-        if(typeof registrationForm.newUserLastName !== 'string')      throw 'Last name must be a string';  
-        else                                                          registrationForm.newUserLastName = registrationForm.newUserLastName.trim(); 
-        if(registrationForm.newUserLastName.length === 0)             throw 'Last name cannot be an empty string or just spaces'; 
-        //console.log("lastName: ", registrationForm.newUserLastName);
+        if(!firstName) throw "fistName field error"; 
+        if(!lastName) throw "lastName field error";
+        if(!emailAddress) throw "emailAddress field error";
+        if(!userName) throw "userName field error";
+        if(!newUserPassword) throw "newUserPassword field error";
+        if(!confirmPasswordInput) throw "confirmPasswordInput field error";
+        if(!city) throw "newUserCity field error";  
+        if(!state) throw "newUserState field error";  
 
-              
-        if(registrationForm.newUserName === undefined)            throw 'You must provide user name';
-        if(typeof registrationForm.newUserName !== 'string')      throw 'User name must be a string';  
-        else                                                      registrationForm.newUserName = registrationForm.newUserName.trim();
-        if(registrationForm.newUserName.length === 0)             throw 'User name cannot be an empty string or just spaces'; 
-        //console.log("userName: ", registrationForm.newUserName);
+        firstName = firstName.trim();
+        if(firstName.includes(" "))           throw "firstName field error";
+        if(firstName.length < 2)              throw "firstName field error";
+        if(firstName.length > 25)             throw "firstName field error";
+        if (/\d/.test(firstName))             throw "firstName field error";
 
-        if(registrationForm.newUserPassword === undefined)        throw 'You must provide your Password'; 
-        //console.log("hashedPassword: ", registrationForm.newUserPassword);
+        lastName = lastName.trim();
+        if(lastName.includes(" "))           throw "lastName field error";
+        if(lastName.length < 2)              throw "lastName field error";
+        if(lastName.length > 25)             throw "lastName field error";
+        if (/\d/.test(lastName))             throw "lastName field error"; 
 
-        if(registrationForm.newUserAge === undefined)                 throw 'You must provide your age';
-        registrationForm.newUserAge = parseInt(registrationForm.newUserAge);
-        if(typeof registrationForm.newUserAge !== 'number')           throw 'Age must be a number'; 
-        if(registrationForm.newUserAge <=18 )                         throw 'Age must be a greater or equal to 18';  
-        //console.log("age: ", registrationForm.newUserAge); 
+        emailAddress = emailAddress.trim().toLowerCase();
+        if(emailAddress.length===0)              throw "email address field error";
+        if(emailAddress.includes(" "))           throw "email address field error";
+        if(!emailAddress.includes("@"))           throw "email address field error";
+        if(!emailAddress.includes("."))           throw "email address field error";
+        if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
+        if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
+        if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";   
+        const userCollection = await users(); 
+        const userGo = await userCollection.findOne({emailAddress: emailAddress});  
+        if (userGo)     throw "There is already a user with that email address"; 
         
-        if(registrationForm.newUserCity === undefined)             throw 'You must provide your city';
-        if(typeof registrationForm.newUserCity !== 'string')       throw 'city must be a string';  
-        else                                                       registrationForm.newUserCity = registrationForm.newUserCity.trim();
-        if(registrationForm.newUserCity.length === 0)              throw 'city cannot be an empty string or just spaces';  
-        //console.log("city: ", registrationForm.newUserCity);  
-        
-        if(registrationForm.newUserState === undefined)             throw 'You must provide your city';
-        //console.log("State: ", registrationForm.newUserState);  
+        userName = userName.trim();
+        if(userName.includes(" "))           throw "lastName field error";
+        if(userName.length < 2)              throw "lastName field error";
+        if(userName.length > 25)             throw "lastName field error"; 
 
-        //console.log("Authetication Success!\n", registrationForm); 
+        password = password.trim().toLowerCase();
+        if(password.includes(" "))           throw "password field error"; 
+        if(password.length < 8)              throw "password field error"; 
+        if (!/[A-Z]/.test(password))         throw "password field error";
+        if (!/\d/.test(password))            throw "password field error"; 
+        if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error";
+
+        if(confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
+
+        city = newUserCity.trim();    
+        if(city.length === 0)            throw "city field error";  
+        if(city.length < 2)              throw "city field error";
+        if(city.length > 25)             throw "city field error";
+        if(/\d/.test(city))              throw "city field error";
+        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(city))  throw "city field error";
+            
+        state = state.trim();    
+        if(state.length === 0)            throw "state field error";  
+        if(state.length !== 2)            throw "state field error"; 
+        if(/\d/.test(state))              throw "state field error";
+        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";
     } catch (e) {
         return res.status(200).render('registerError', {error: "Registration error"});
     }        
@@ -69,11 +100,11 @@ router.route('/register').post(async (req, res) => {
     res.status(200).render('register', {email: userEmail}); 
 }); //END: router.route('/').post(async (req, res)
 
-router.route('/log-in').get(async (req, res) => {
-    res.sendFile(path.resolve('static/log-in.html'));   
+router.route('/login').get(async (req, res) => {
+    res.sendFile(path.resolve('static/login.html'));   
 });
 
-router.route('/log-in').post(async (req, res) => {  
+router.route('/login').post(async (req, res) => {  
     const logInForm = req.body;  
     
     let email = logInForm.registeredEmail;  
@@ -81,7 +112,7 @@ router.route('/log-in').post(async (req, res) => {
     // To find if email is valid => if it exists in mongodb
     if(email === undefined)                                   throw 'You must provide your email address'; 
     if(typeof email !== 'string')                             throw 'Email address must be a string';  
-    else                                                      email = email.trim();
+    else                                                      email = email.trim().toLowerCase();
     if(email.length === 0)                                    throw 'Email address cannot be an empty string or just spaces';   
     if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
     if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
@@ -95,6 +126,13 @@ router.route('/log-in').post(async (req, res) => {
     
     res.status(200).render('logInSuccess', {email: email}); 
 }); //END: router.route('/logIn').post(async (req, res)
+
+router.route('/logout').get(async (req, res) => {
+    //code here for GET 
+    res.cookie('AuthCookie', null); 
+    req.session.destroy();
+    res.status(200).render('logout', {logout: "AuthCooki deleted successfully!"});
+});
 
 router.route('/:userName').get(async (req, res) => {  
     
