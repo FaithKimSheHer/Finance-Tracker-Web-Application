@@ -52,6 +52,7 @@ router.route('/register').post(async (req, res) => {
         if(lastName.length < 2)              throw "lastName field error";
         if(lastName.length > 25)             throw "lastName field error";
         if (/\d/.test(lastName))             throw "lastName field error"; 
+        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
 
         emailAddress = emailAddress.trim().toLowerCase();
         if(emailAddress.length===0)              throw "email address field error";
