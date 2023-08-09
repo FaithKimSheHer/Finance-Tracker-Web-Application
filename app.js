@@ -28,7 +28,7 @@ app.use('/public', staticDir);
 app.use(express.json());
  
 app.use(session({
-    name: 'AwesomeWebApp',
+    name: 'AuthCookie',
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
