@@ -140,6 +140,7 @@ const addUser = async(registrationForm) => {
         if(firstName.length < 2)              throw "firstName input error";
         if(firstName.length > 25)             throw "firstName input error";
         if (/\d/.test(firstName))             throw "firstName input error";
+        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName input error";  
         //console.log("firstName: ", firstName);
 
         if(lastName === undefined)            throw 'You must provide your last name';
@@ -149,6 +150,7 @@ const addUser = async(registrationForm) => {
         if(lastName.length < 2)              throw "lastName input error";
         if(lastName.length > 25)             throw "lastName input error";
         if (/\d/.test(lastName))             throw "lastName input error"; 
+        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName input error";  
         //console.log("lastName: ", lastName);
  
         if(email === undefined)           throw 'You must provide your email address';
