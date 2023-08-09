@@ -26,13 +26,15 @@ if(newUserForm){
             if(firstName.includes(" "))           throw "firstName field error";
             if(firstName.length < 2)              throw "firstName field error";
             if(firstName.length > 25)             throw "firstName field error";
-            if (/\d/.test(firstName))             throw "firstName field error";  
+            if (/\d/.test(firstName))             throw "firstName field error";   
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
 
             let lastName = newUserLastName.trim();
             if(lastName.includes(" "))           throw "lastName field error";
             if(lastName.length < 2)              throw "lastName field error";
             if(lastName.length > 25)             throw "lastName field error";
             if (/\d/.test(lastName))             throw "lastName field error"; 
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
 
             let emailAddress = newUserEmail.trim().toLowerCase();
             if(emailAddress.length===0)              throw "email address field error";
