@@ -42,7 +42,7 @@ router.route('/register').post(async (req, res) => {
             if(firstName.length > 25)             throw "firstName field error";
             if (/\d/.test(firstName))             throw "firstName field error";   
             if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
-            console.log("firstName", firstName);
+            //console.log("firstName", firstName);
 
         let lastName = registrationForm.newUserLastName.trim();
             if(lastName.includes(" "))           throw "lastName field error";
@@ -50,7 +50,7 @@ router.route('/register').post(async (req, res) => {
             if(lastName.length > 25)             throw "lastName field error";
             if (/\d/.test(lastName))             throw "lastName field error"; 
             if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
-            console.log("lastName", lastName);
+            //console.log("lastName", lastName);
 
         let emailAddress = registrationForm.newUserEmail.trim().toLowerCase();
             if(emailAddress.length===0)              throw "email address field error";
@@ -60,13 +60,13 @@ router.route('/register').post(async (req, res) => {
             if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
             if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
             if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-            console.log("emailAddress", emailAddress);
+            //console.log("emailAddress", emailAddress);
             
         let userName = registrationForm.newUserName.trim();
             if(userName.includes(" "))           throw "lastName field error";
             if(userName.length < 2)              throw "lastName field error";
             if(userName.length > 25)             throw "lastName field error"; 
-            console.log("userName", userName);
+            //console.log("userName", userName);
 
         let password = registrationForm.newUserPassword.trim();
             if(password.includes(" "))           throw "password field error"; 
@@ -78,7 +78,7 @@ router.route('/register').post(async (req, res) => {
             //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
 
             if(registrationForm.confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
-            console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+            //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
 
         let city = registrationForm.newUserCity.trim();    
             if(city.length === 0)            throw "city field error";  
@@ -86,14 +86,14 @@ router.route('/register').post(async (req, res) => {
             if(city.length > 25)             throw "city field error";
             if(/\d/.test(city))              throw "city field error";
             if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(city))  throw "city field error";
-            console.log("city", city);
+            //console.log("city", city);
             
         let state = registrationForm.newUserState.trim();    
             if(state.length === 0)            throw "state field error";  
             if(state.length !== 2)            throw "state field error"; 
             if(/\d/.test(state))              throw "state field error";
             if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error"; 
-            console.log("lastName", lastName);
+            //console.log("lastName", lastName);
         console.log('state', state);
         } catch (e) {
             return res.status(200).render('registerError', {error: "Registration error"});
