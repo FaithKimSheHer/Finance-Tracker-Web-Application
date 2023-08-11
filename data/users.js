@@ -31,7 +31,7 @@ const create = async(
     if(firstName.length < 2)              throw "firstName input error";
     if(firstName.length > 25)             throw "firstName input error";
     if (/\d/.test(firstName))             throw "firstName input error"; 
-    if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName input error"; 
+    if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName input error";  
     //console.log("firstName: ", firstName);
 
     if(typeof lastName !== 'string')     throw "lastName input error";
@@ -160,8 +160,8 @@ const addUser = async(registrationForm) => {
         if(email.includes(" "))           throw "email address input error";
         if(!email.includes("@"))          throw "email address input error";
         if(!email.includes("."))          throw "email address input error";
-        if(email.substring(0, email.indexOf('@')).length === 0)                           throw "email address input error";  
-        if(email.substring(emailAddress.indexOf('@')), email.indexOf('.').length === 0)   throw "email address input error";
+        if(email.substring(0, email.indexOf('@')).length === 0)                    throw "email address input error";  
+        if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw "email address input error";
         if(email.substring(email.indexOf('.'), -1).length === 0) throw "email address input error";   
         //check if emailAddress exists in db
         const userCollection = await users(); 
@@ -258,12 +258,13 @@ const getByUserEmail = async(newEmail)=>{
     else                               newEmail = newEmail.trim().toLowerCase();
     if(newEmail.length === 0)          throw 'userEmail cannot be an empty string or just spaces';  
     if(newEmail.substring(0, newEmail.indexOf('@')).length === 0)   throw 'Email address address error'; 
-    
+    //console.log("getByUserEmail()", newEmail);
     const userCollection = await users();
     const userExist = await userCollection.findOne({email: newEmail}); 
-    console.log(userExist);
-    if (userExist)  return null;
-    else            return newEmail; 
+    //console.log("userExist", userExist, !userExist);
+    //console.log(userExist);
+    if (!userExist)  return null;
+    return newEmail; 
 }; 
 
 const checkUser = async(emailAddress, password)=>{
