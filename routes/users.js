@@ -19,8 +19,8 @@ router.route('/register').post(async (req, res) => {
     if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
     if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
         
-    const newUser = await usersFuncs.getByUserEmail(email);  
-    if(newUser === null)     return res.status(200).render('registerError', {error: email}); 
+    const newUser = await usersFuncs.getByUserEmail(emailAddress);  
+    if(newUser === null)     return res.status(200).render('registerError', {error: emailAddress}); 
     try {   
         // Error handling 
         let firstName = registrationForm.newUserFistName;
