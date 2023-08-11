@@ -18,88 +18,91 @@ router.route('/register').post(async (req, res) => {
     if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
     if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
     if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-        
-    const newUser = await usersFuncs.getByUserEmail(email);  
-    if(newUser === null)     return res.status(200).render('registerError', {error: email}); 
+    //console.log("Register: ", emailAddress);   
+    const newUser = await usersFuncs.getByUserEmail(emailAddress);  
+    //console.log("newUser: ", newUser, newUser!==null); 
+    if(newUser!==null)     return res.render('registerError', {error: emailAddress}); 
+    console.log("newUser: ", newUser, newUser!==null); 
+ 
     try {   
-        // Error handling 
-        let firstName = registrationForm.newUserFistName;
-        let lastName = registrationForm.newUserLastName;
-        let emailAddress = registrationForm.newUserEmail;
-        let userName = registrationForm.newUserName;
-        let password = registrationForm.newUserPassword;
-        let confirmPasswordInput = registrationForm.confirmPasswordInput;
-        let city = registrationForm.newUserCity;
-        let state = registrationForm.newUserState;
+        console.log('registrationForm', registrationForm);
+        // Error handling  
+        if(!registrationForm.newUserFistName) throw "fistName field error"; 
+        if(!registrationForm.newUserLastName) throw "lastName field error";
+        if(!registrationForm.newUserName) throw "emailAddress field error";
+        if(!registrationForm.newUserName) throw "userName field error";
+        if(!registrationForm.newUserPassword) throw "newUserPassword field error";
+        if(registrationForm.newUserPassword!==registrationForm.confirmPasswordInput) throw "confirmPasswordInput field error";
+        if(!registrationForm.newUserCity) throw "newUserCity field error";  
+        if(!registrationForm.newUserState) throw "newUserState field error";  
 
-        if(!firstName) throw "fistName field error"; 
-        if(!lastName) throw "lastName field error";
-        if(!emailAddress) throw "emailAddress field error";
-        if(!userName) throw "userName field error";
-        if(!newUserPassword) throw "newUserPassword field error";
-        if(!confirmPasswordInput) throw "confirmPasswordInput field error";
-        if(!city) throw "newUserCity field error";  
-        if(!state) throw "newUserState field error";  
+        let firstName = registrationForm.newUserFistName.trim();
+            if(firstName.includes(" "))           throw "firstName field error";
+            if(firstName.length < 2)              throw "firstName field error";
+            if(firstName.length > 25)             throw "firstName field error";
+            if (/\d/.test(firstName))             throw "firstName field error";   
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
+            //console.log("firstName", firstName);
 
-        firstName = firstName.trim();
-        if(firstName.includes(" "))           throw "firstName field error";
-        if(firstName.length < 2)              throw "firstName field error";
-        if(firstName.length > 25)             throw "firstName field error";
-        if (/\d/.test(firstName))             throw "firstName field error";
+        let lastName = registrationForm.newUserLastName.trim();
+            if(lastName.includes(" "))           throw "lastName field error";
+            if(lastName.length < 2)              throw "lastName field error";
+            if(lastName.length > 25)             throw "lastName field error";
+            if (/\d/.test(lastName))             throw "lastName field error"; 
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
+            //console.log("lastName", lastName);
 
-        lastName = lastName.trim();
-        if(lastName.includes(" "))           throw "lastName field error";
-        if(lastName.length < 2)              throw "lastName field error";
-        if(lastName.length > 25)             throw "lastName field error";
-        if (/\d/.test(lastName))             throw "lastName field error"; 
-        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
-
-        emailAddress = emailAddress.trim().toLowerCase();
-        if(emailAddress.length===0)              throw "email address field error";
-        if(emailAddress.includes(" "))           throw "email address field error";
-        if(!emailAddress.includes("@"))           throw "email address field error";
-        if(!emailAddress.includes("."))           throw "email address field error";
-        if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
-        if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
-        if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";   
-        const userCollection = await users(); 
-        const userGo = await userCollection.findOne({emailAddress: emailAddress});  
-        if (userGo)     throw "There is already a user with that email address"; 
-        
-        userName = userName.trim();
-        if(userName.includes(" "))           throw "lastName field error";
-        if(userName.length < 2)              throw "lastName field error";
-        if(userName.length > 25)             throw "lastName field error"; 
-
-        password = password.trim().toLowerCase();
-        if(password.includes(" "))           throw "password field error"; 
-        if(password.length < 8)              throw "password field error"; 
-        if (!/[A-Z]/.test(password))         throw "password field error";
-        if (!/\d/.test(password))            throw "password field error"; 
-        if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error";
-
-        if(confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
-
-        city = newUserCity.trim();    
-        if(city.length === 0)            throw "city field error";  
-        if(city.length < 2)              throw "city field error";
-        if(city.length > 25)             throw "city field error";
-        if(/\d/.test(city))              throw "city field error";
-        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(city))  throw "city field error";
+        let emailAddress = registrationForm.newUserEmail.trim().toLowerCase();
+            if(emailAddress.length===0)              throw "email address field error";
+            if(emailAddress.includes(" "))           throw "email address field error";
+            if(!emailAddress.includes("@"))           throw "email address field error";
+            if(!emailAddress.includes("."))           throw "email address field error";
+            if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
+            if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
+            if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
+            //console.log("emailAddress", emailAddress);
             
-        state = state.trim();    
-        if(state.length === 0)            throw "state field error";  
-        if(state.length !== 2)            throw "state field error"; 
-        if(/\d/.test(state))              throw "state field error";
-        if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";
-    } catch (e) {
-        return res.status(200).render('registerError', {error: "Registration error"});
-    }        
-    //console.log("Register the user:\n", registrationForm); 
-    const userEmail = await usersFuncs.addUser(registrationForm); 
-    console.log("router user email:", userEmail);
-    res.status(200).render('register', {email: userEmail}); 
-}); //END: router.route('/').post(async (req, res)
+        let userName = registrationForm.newUserName.trim();
+            if(userName.includes(" "))           throw "lastName field error";
+            if(userName.length < 2)              throw "lastName field error";
+            if(userName.length > 25)             throw "lastName field error"; 
+            //console.log("userName", userName);
+
+        let password = registrationForm.newUserPassword.trim();
+            if(password.includes(" "))           throw "password field error"; 
+            if(password.length < 8)              throw "password field error"; 
+            if (!/[A-Z]/.test(password))         throw "password field error";
+            if (!/\d/.test(password))            throw "password field error"; 
+            if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error";
+            //console.log("password", password);
+            //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+
+            if(registrationForm.confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
+            //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+
+        let city = registrationForm.newUserCity.trim();    
+            if(city.length === 0)            throw "city field error";  
+            if(city.length < 2)              throw "city field error";
+            if(city.length > 25)             throw "city field error";
+            if(/\d/.test(city))              throw "city field error";
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(city))  throw "city field error";
+            //console.log("city", city);
+            
+        let state = registrationForm.newUserState.trim();    
+            if(state.length === 0)            throw "state field error";  
+            if(state.length !== 2)            throw "state field error"; 
+            if(/\d/.test(state))              throw "state field error";
+            if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error"; 
+            //console.log("lastName", lastName);
+        console.log('state', state);
+        } catch (e) {
+            return res.status(200).render('registerError', {error: "Registration error"});
+        }        
+        //console.log("Register the user:\n", registrationForm); 
+        const user = await usersFuncs.addUser(registrationForm); 
+        console.log("Add user success! :", user);
+        res.status(200).render('register', {email: user.email}); 
+    }); //END: router.route('/').post(async (req, res)
 
 router.route('/login').get(async (req, res) => {
     res.sendFile(path.resolve('static/login.html'));   
