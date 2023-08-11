@@ -103,5 +103,25 @@ const getAllTransactions = async () => {
   return allTransactions;
 };
 
+const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
+  if (!userId) {
+    throw 'You must provide a user ID to search for transactions';
+  }
 
-export { createTransaction, getTransactionById, getAllTransactions };
+  if (typeof userId !== 'string') {
+    throw 'Invalid user ID';
+  }
+
+  const transactionCollection = await transaction();
+  const userTransactions = await transactionCollection
+    .find({ userId: userId })
+    .sort({ dateOfTransaction: -1 }) // Sort by date in descending order
+    .limit(limit)
+    .toArray();
+
+  return userTransactions;
+};
+
+
+
+export { createTransaction, getTransactionById, getTransactionsByUserId, getAllTransactions, getMostRecentTransactionsByUserId};

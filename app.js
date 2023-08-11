@@ -8,6 +8,7 @@ import {dirname} from 'path';
 import exphbs from 'express-handlebars';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const { getMostRecentTransactionsByUserId } = require('./data/transactions.js');
 
 const staticDir = express.static(__dirname + '/public');
 
@@ -77,6 +78,17 @@ app.use('/logout', (req, res, next) => {
   if(!req.session.user)                  return res.redirect('/login');   
   next();
 }); 
+
+app.get('/api/getRecentTransactions', async (req, res) => {
+  const userId = req.query.userId;
+
+  try {
+    const transactions = await getMostRecentTransactionsByUserId(userId);
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching transactions.' });
+  }
+});
 
 app.use(express.urlencoded({extended: true}));
 app.use(rewriteUnsupportedBrowserMethods);
