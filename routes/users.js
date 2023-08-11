@@ -25,7 +25,7 @@ router.route('/register').post(async (req, res) => {
     console.log("newUser: ", newUser, newUser!==null); 
  
     try {   
-        //console.log('registrationForm', registrationForm);
+        console.log('registrationForm', registrationForm);
         // Error handling  
         if(!registrationForm.newUserFistName) throw "fistName field error"; 
         if(!registrationForm.newUserLastName) throw "lastName field error";
