@@ -74,8 +74,8 @@ router.route('/register').post(async (req, res) => {
             if (!/[A-Z]/.test(password))         throw "password field error";
             if (!/\d/.test(password))            throw "password field error"; 
             if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error";
-            console.log("password", password);
-            console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+            //console.log("password", password);
+            //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
 
             if(registrationForm.confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
             console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
