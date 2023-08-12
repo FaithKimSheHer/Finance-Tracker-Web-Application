@@ -1,5 +1,5 @@
 // import transactionFuncs from './transactions.js';
-import landingRoutes from './home.js';
+import landingRoutes from './dashboard.js';
 import usersRoutes from './users.js'; 
 
 const constructorMethod = (app) => { 

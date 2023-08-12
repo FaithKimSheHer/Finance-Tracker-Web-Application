@@ -1,7 +1,7 @@
 // login.handlebars.loginForm
 let loginForm = document.getElementById('log-inForm');
 if(loginForm){
-    function btnClick(){  
+    function btnClick(e){  
         try{ 
             let registeredEmail = document.getElementById('registeredEmail').value;
             let registeredPassword = document.getElementById('registeredPassword').value;  
@@ -22,9 +22,10 @@ if(loginForm){
             if (!/\d/.test(password))            throw "password field error"; 
             if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error"; 
  
-        } catch (e) { 
-            console.log(e); 
-            error.innerHTML = e;
+        } catch (err) { 
+            e.preventDefault();
+            console.log(err); 
+            // error.innerHTML = err;
             // The form should reset itself every time after an input has been processed
             loginForm.reset();  
         }  

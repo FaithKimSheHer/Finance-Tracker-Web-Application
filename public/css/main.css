@@ -1,5 +1,5 @@
 /* temporary styling for layout above. remove when proper css is added. */
-section {
+main > div {
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -28,15 +28,15 @@ main {
     grid-template-columns: [summary] 1fr [dash] 4fr [update] 1fr;
     grid-template-rows: [main] 1fr;
 }
-section#dashboard {
+div#dashboard {
     grid-column: dash;
     grid-row: main;
 }
-section#summary {
+div#summary {
     grid-column: summary;
     grid-row: main;
 }
-section#update {
+div#update {
     grid-column: update;
     grid-row: main;
 }

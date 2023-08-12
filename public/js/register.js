@@ -2,7 +2,7 @@
 let newUserForm = document.getElementById('newUserForm'); 
 
 if(newUserForm){
-    function btnClick(){  
+    function btnClick(e){  
         try{
             let newUserFistName = document.getElementById('newUserFistName').value;
             let newUserLastName = document.getElementById('newUserLastName').value;
@@ -72,8 +72,9 @@ if(newUserForm){
             if(/\d/.test(state))              throw "state field error";
             if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";
 
-        } catch (e) { 
-            console.log(e);  
+        } catch (err) { 
+            e.preventDefault();
+            console.log(err);  
             // The form should reset itself every time after an input has been processed
             newUserForm.reset();  
         }  
