@@ -1,4 +1,4 @@
-import * as usersDataFunctions from './users.js';
+import * as usersDataFunctions from './user.js';
 import * as homeDataFunctions from './home.js';
 import * as transactionFunctions from './transactions.js'
 

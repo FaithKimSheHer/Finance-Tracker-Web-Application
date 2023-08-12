@@ -1,12 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import path from 'path';
-import {
-  transactFuns
-} from '../data/index.js';
-import {
-  users
-} from '../config/mongoCollections.js';
+import { transactFuns } from '../data/index.js';
 
 router.route('/summary').get(async (req, res) => {
   try {

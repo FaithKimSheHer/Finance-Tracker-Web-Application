@@ -1,8 +1,6 @@
 import express from 'express';
 const router = express.Router();  
-import path from 'path';
 import { usersFuncs } from '../data/index.js';
-import {users} from '../config/mongoCollections.js'; 
 
 router
     .route('/')
@@ -13,7 +11,7 @@ router
 router
     .route('/register')
     .get(async (req, res) => {
-        res.status(200).render('register', {layout: 'users', title: 'Register'});
+        res.status(200).render('register', {layout: 'user', title: 'Register'});
     })
     .post(async (req, res) => {  
         const registrationForm = req.body;  
@@ -116,7 +114,7 @@ router
     .route('/login')
     .get(async (req, res) => {
         // res.sendFile(path.resolve('static/login.html'));   
-        res.status(200).render('login', {layout: 'users', title: 'Log In'});
+        res.status(200).render('login', {layout: 'user', title: 'Log In'});
     })
     .post(async (req, res) => {  
         const logInForm = req.body;  
@@ -134,7 +132,7 @@ router
 
         const registeredUser = await usersFuncs.checkUser(email, password);   
         
-        if(registeredUser === undefined)  return res.status(403).render('error', {layout: 'users', error: email});   
+        if(registeredUser === undefined)  return res.status(403).render('error', {layout: 'user', error: email});   
 
         console.log("Registered User Found Success!");  
         

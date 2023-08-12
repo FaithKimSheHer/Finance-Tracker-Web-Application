@@ -41,23 +41,39 @@ app.use(session({
     cookie: {maxAge: 30000}
 }));
 
+const testsesh = false;
+
+// TODO: infinite loop non-auth user
+
 app.use('/', async(req, res, next) => {
+    console.log(`/: ${req.path}`);
     if(req.path === '/error' || req.path === '/logout') return next();
-    if(req.session.user) {
+    // if(req.session.user) {
+    if(testsesh) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
-        // return res.redirect('/dashboard');
-        next();
-        //would handle and render a 500 here but errorpage was made only for unauthorized admin route...
+        return next();
     }
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
-    if (req.path === '/users/login' || req.path === '/users/register') return next();
-    return res.redirect('/users/login');
+    return res.redirect('/user/login');
 });
 
-app.use('/logout', async (req, res, next) => {
-    if(!req.session.user) {
+app.use('/user', async (req, res, next) => {
+    console.log(`/user: ${req.path}`);
+    // if(!req.session.user) {
+    if(!testsesh) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
-        return res.status(200).redirect('/login');
+        return next();
+    }
+    console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
+    return res.redirect('/');
+});
+    
+app.use('/logout', async (req, res, next) => {
+    console.log(`/logout: ${req.path}`);
+    // if(!req.session.user) {
+    if(!testsesh) {
+        console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
+        return res.status(200).redirect('/users/login');
     }
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     next();
