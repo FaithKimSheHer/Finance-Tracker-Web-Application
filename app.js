@@ -41,26 +41,19 @@ app.use(session({
     cookie: {maxAge: 30000}
 }));
 
-const testsesh = false;
-
-// TODO: infinite loop non-auth user
-
 app.use('/', async(req, res, next) => {
-    console.log(`/: ${req.path}`);
     if(req.path === '/error' || req.path === '/logout') return next();
-    // if(req.session.user) {
-    if(testsesh) {
+    if(req.session.user) { //set req.session.user to a const value above to test
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
         return next();
     }
+    if(req.path === '/user/login' || req.path == '/user/register') return next();
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
     return res.redirect('/user/login');
 });
 
 app.use('/user', async (req, res, next) => {
-    console.log(`/user: ${req.path}`);
-    // if(!req.session.user) {
-    if(!testsesh) {
+    if(!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return next();
     }
@@ -69,9 +62,7 @@ app.use('/user', async (req, res, next) => {
 });
     
 app.use('/logout', async (req, res, next) => {
-    console.log(`/logout: ${req.path}`);
-    // if(!req.session.user) {
-    if(!testsesh) {
+    if(!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return res.status(200).redirect('/users/login');
     }
