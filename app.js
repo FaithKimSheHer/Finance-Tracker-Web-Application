@@ -1,22 +1,22 @@
 import express from 'express';
 const app = express();
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import path from 'path';
-import configRoutes from './routes/index.js';
-import {
-    fileURLToPath
-} from 'url';
-import {
-    dirname
-} from 'path';
-import exphbs from 'express-handlebars';
-const __filename = fileURLToPath(
-    import.meta.url);
-const __dirname = dirname(__filename);
-// const { getMostRecentTransactionsByUserId } = require('./data/transactions.js');
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import exphbs from 'express-handlebars';
+
+import session from 'express-session';
+
+import configRoutes from './routes/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + '/public');
+app.use('/public', staticDir);
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     // If the user posts to the server with a property called _method, rewrite the request's method 
@@ -30,87 +30,46 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
     // let the next middleware run:
     next();
 };
-
-app.use('/public', staticDir);
-app.use(express.json());
-
-app.use(session({
-    name: 'AuthCookie',
-    secret: "This is a secret.. shhh don't tell anyone",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-        maxAge: 60000
-    }
-}));
-app.use(express.urlencoded({
-    extended: true
-}));
 app.use(rewriteUnsupportedBrowserMethods);
 
-app.engine('handlebars', exphbs.engine({
-    defaultLayout: 'main'
+// middleware -------------------------------------- v
+app.use(session({
+    name: "AuthCookie",
+    secret: "Patrick Hill",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 30000}
 }));
-app.set('view engine', 'handlebars');
-app.use(cookieParser());
 
-let requests = 0;
-app.use(async (req, res, next) => {
-    let currentTime = new Date().toUTCString();
-    let method = req.method;
-    let route = req.originalUrl;
-    let authenticated = undefined;
-
-    if (req.session.user) authenticated = true;
-    else authenticated = false;
-    console.log(`Time: ${currentTime}, Method: ${method}, Route: ${route}, 
-    userAuth Status: ${authenticated}`);
-    next();
-})
-
-app.use(async (req, res, next) => {
-    requests++;
-    next();
-})
-
-const pathsAccessed = {};
-
-app.use(async (req, res, next) => {
-    if (!pathsAccessed[req.path]) pathsAccessed[req.path] = 0;
-    pathsAccessed[req.path]++;
-    next();
-})
-
-app.use(async (req, res, next) => {
-    if (requests % 2 == 0) {
-        req.isEven = true;
-    } else {
-        req.odd = true;
+app.use('/', async(req, res, next) => {
+    if(req.path === '/error' || req.path === '/logout') return next();
+    if(req.session.user) { //set req.session.user to a const value above to test
+        console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
+        return next();
     }
-    next();
-})
+    if(req.path === '/user/login' || req.path == '/user/register') return next();
+    console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
+    return res.redirect('/user/login');
+});
 
-app.get('/register', (req, res, next) => {
-    //TODO
+app.use('/user', async (req, res, next) => {
+    if(!req.session.user) {
+        console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
+        return next();
+    }
+    console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
+    return res.redirect('/');
+});
+    
+app.use('/logout', async (req, res, next) => {
+    if(!req.session.user) {
+        console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
+        return res.status(200).redirect('/users/login');
+    }
+    console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     next();
 });
-app.get('/login', (req, res, next) => {
-    //TODO
-    next();
-})
-
-app.get('/logInError', (req, res, next) => {
-    //TODO
-    next();
-})
-
-app.get('/logInError', (req, res, next) => {
-    //TODO
-})
-
-app.get('/logout', (req, res, next) => {
-    //TODO
-})
+// middleware -------------------------------------- ^
 
 configRoutes(app);
 

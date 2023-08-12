@@ -1,10 +1,10 @@
 // import transactionFuncs from './transactions.js';
-import landingRoutes from './home.js';
-import usersRoutes from './users.js'; 
+import landingRoutes from './dashboard.js';
+import userRoutes from './user.js'; 
 
 const constructorMethod = (app) => { 
   app.use("/", landingRoutes);
-  app.use('/users', usersRoutes);
+  app.use('/user', userRoutes);
   // app.use('/transactions', transactionFuncs);
   app.use('*', (req, res) => {res.redirect('/');}); 
 };
