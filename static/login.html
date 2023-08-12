@@ -12,27 +12,34 @@
 
 <body>
     <main>
-        <article> 
-            <h1>User log-in</h1> 
+        <article>
+            <h1>User log-in</h1>
             <header>
                 <p>Header: Final Project: Expense Tracker</p>
             </header>
-            <p class="description"> This website will allow a registered user to log-in for <a href="/hashboard.html">expense tracker web application</a>.  
-               Please, enter email address and password! </p>     
-                 
-            <form action="/users/login" id="loginForm" method="POST" class="registeredUser">  
-                <label for="registeredEmail">Email:
-                    <input type="email" id="registeredEmail" name="registeredEmail" placeholder="fkim@steves.edu" class="form-list"> 
-                </label><br> 
-                 <label for="registeredPassword">Password:
-                    <input type="password" id="registeredPassword" name="registeredPassword" placeholder="********" class="form-list">
-                </label><br>    
+            <p class="description"> This website will allow a registered user to log-in for <a
+                    href="/hashboard.html">expense tracker web application</a>.
+                Please, enter email address and password! </p>
 
-               <button onclick="btnClick()" id="log-inBtn" name="log-inBtn">click me to log-in</button>
-           </form> 
-           <div id="result" class="result"></div>
-           <div id="error" class="error" hidden></div>
-        </article> 
+            <form action="/users/login" id="loginForm" method="POST" class="registeredUser">
+                <label for="registeredEmail">Email:
+                    <input type="email" id="registeredEmail" name="registeredEmail" placeholder="fkim@steves.edu"
+                        class="form-list">
+                </label><br>
+                <label for="registeredPassword">Password:
+                    <input type="password" id="registeredPassword" name="registeredPassword" placeholder="********"
+                        class="form-list">
+                </label><br>
+
+                <button onclick="btnClick()" id="log-inBtn" name="log-inBtn">click me to log-in</button>
+            </form>
+            <div id="result" class="result"></div>
+            <div id="error" class="error" hidden></div>
+        </article>
+        <div id="register_link">
+            <p>No Account?</p>
+            <a href="./registration.html">Register Here</a>
+        </div>
     </main>
     <script src="public/js/login.js"></script>
 </body>
