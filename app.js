@@ -14,6 +14,7 @@ import exphbs from 'express-handlebars';
 const __filename = fileURLToPath(
     import.meta.url);
 const __dirname = dirname(__filename);
+// const { getMostRecentTransactionsByUserId } = require('./data/transactions.js');
 
 const staticDir = express.static(__dirname + '/public');
 

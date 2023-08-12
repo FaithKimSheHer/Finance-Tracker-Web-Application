@@ -2,24 +2,41 @@
 <html lang="en"> 
     <head>
         <meta charset="utf-8">
-        <title>Home</title> 
+        <title>Expense Tracker</title>
         <meta http-equiv="x-ua-compatible" content="ie=edge"> 
+        
+        <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
 
-        <link rel="stylesheet" href="/public/css/registration.css">
+        <link rel="stylesheet" href="/public/css/main.css">
     </head>
 
     <body> 
         <header> 
-            <p class="home-link"><a href="/">Expense Tracker Homepage</a></p> 
+            <div id="logo">
+                <img src="/public/images/logo.png" href="/" alt="logo" width="100" height="100">
+                <h1 class="home-link"><a href="/">Expense Tracker</a></h1> 
+            </div>
+            <div id="links">
+                <a id="login-link" href="/users/login">Login</a>
+            </div>
         </header>
-            {{> transaction_summary}} <!-- syntax for rendering partial -->
-            <main>
-                <p> 
-                    {{{body}}}
-                </p>
-            </main>
+        <main>
+            {{> summary}} <!-- syntax for rendering partial -->
+            {{{ body }}}
+            {{> update}}
+        </main>
         <footer>
-            <p>Footer: CS 546_WS Summer 2023: Final Project</p>
+            <div>
+                <p>&copy; 2023, Expense Tracker &#183; Web Programming Final Project </p>
+                <span id="credits">
+                    <a href="https://www.linkedin.com/in/issacz/" target="_black">Issac Zheng</a>,
+                    <a>Faith Kim</a>,
+                    <a>Josh Cubero</a>,
+                    <a>Ryah Hu</a>,
+                    <a>Yangbo Liu</a>,
+                    <a>Gautam A S</a> <!-- Please add your full name, I can't find it on Slack. -->
+                </span>
+            </div>
         </footer>
     </body>    
  </html>

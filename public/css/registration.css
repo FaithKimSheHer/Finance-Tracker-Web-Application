@@ -1,0 +1,125 @@
+body {
+  background: #f9f1f1e2;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 15pt;
+} 
+main {
+  max-width: 100%;
+  margin: auto;
+}  
+h1{
+  font-size: 4rem;
+  color: #483ab6;
+  margin-bottom: 2px;
+}
+h2{
+  font-size: 3rem;
+  color: #020105;
+  margin-bottom: 1.75px;
+}
+h3{
+  font-size: 2rem;
+  color: #f419e9;
+  margin-bottom: 1.5px;
+}
+h4{
+  font-size: 1.75rem;
+  color: #815fdf;
+  margin-bottom: 1.25px;
+}
+h5{
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: #02645d;
+  margin-bottom: 1.5px;
+  margin-bottom: 5px;
+}
+h6 {
+  font-size: 1.25rem;
+  color: #1e0d0d;
+  margin-bottom: 5px;
+} 
+p {
+  font-size: 1rem;
+  line-height: 2;
+} 
+header,
+footer { 
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1rem;
+  color: #337504; 
+  border-bottom: 1px solid #afafaf;
+  border-top: 1px solid #afafaf;
+}
+.registerError{
+  font-weight: bold;
+  color: red;
+} 
+.description {
+  width: 75%;
+  font-family: "Goudy Bookletter 1911", sans-serif, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  color: #433b3b; 
+} 
+.name-list,
+.name-list:link{
+  width: 75%;
+  font-family: 'Times New Roman', Times, serif, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1.2rem;
+  font-style: normal;
+  color: #0d2ae6;  
+}
+.name-list:visited{  
+  color: #2c1d1d;  
+}
+.name-list:hover{ 
+  font-style: italic;
+  color: #f8d808;  
+}
+.peoplefinder:link{ 
+  font-family: monospace, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-style: normal;
+  font-size: 1rem;
+  color: #424ef5;  
+}
+.peoplefinder:visited{  
+  color: #030ead;  
+} 
+.peoplefinder:hover{ 
+  font-style: italic;
+  color: #4af706;  
+} 
+.personal-info{
+  width: 100%;
+  font-size: 1.2rem;
+  font-family:  Helvetica, 'Arial Narrow Bold', Impact, Haettenschweiler, sans-serif, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #000005;  
+}
+.not-found,
+.error{
+  width: 100%;
+  font-size: 2rem;
+  font-family:  'Arial', Impact, Haettenschweiler, sans-serif, ui-sans-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #397507;  
+}
+#searchName{
+  width: 100%;
+  font-size: 2rem; 
+  font-style: normal;
+  color: #f80a0a;  
+}
+.home-link:link{
+  width: 100%;
+  font-size: 1rem;
+  font-family:  sans-serif, "Times New Roman", ui-sans-serif, Georgia, Cambria, Times, serif;
+  font-style: normal;
+  color: #06f73a;  
+} 
+.home-link:visited{  
+  color: #7a0202;  
+} 
+.home-link:hover{  
+  font-style: italic;
+  color: #0726ee;  
+}

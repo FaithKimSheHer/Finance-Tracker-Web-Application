@@ -16,9 +16,7 @@ router
         //put a register button in middle or smt
 
         //if logged in, load the data accordingly
-        res.render('home', {
-            title: 'Transaction Summary'
-        });
+        res.render('home', { title: 'Summary' });
     });
 
 export default router;
