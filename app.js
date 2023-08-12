@@ -61,10 +61,11 @@ app.use('/user', async (req, res, next) => {
     return res.redirect('/');
 });
     
+// TODO: logout is unfinished
 app.use('/logout', async (req, res, next) => {
     if(!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
-        return res.status(200).redirect('/users/login');
+        return res.status(200).redirect('/user/login');
     }
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     next();
