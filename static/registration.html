@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Registration Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/public/css/registration.css">
+</head>
+
+<body>
+    <main>
+        <article> 
+            <h1>Registration Form</h1> 
+            <header>
+                <p>Header: Final Project: Expense Tracker</p>
+            </header>
+            <p class="description"> This website will allow a new user to register for <a href="/hashboard.html">expense tracker web application</a>.</p>  
+            <p class="description"> Please, fill out the form below! </p>      
+
+            <form action="/user/register" id="newUserForm" method="POST" class="newUser-list"> 
+                <label for="newUserFistName">Fist Name:
+                   <input type="text" id="newUserFistName" name="newUserFistName" placeholder="Faith" class="form-list"> <br>
+                   <div id="firstNameError" class="regisFieldError" hidden></div>
+                </label>
+                <label for="newUserLastName">Last Name:
+                   <input type="text" id="newUserLastName" name="newUserLastName" placeholder="Kim" class="form-list"><br> 
+                </label> 
+                <label for="newUserEmail">Email:
+                    <input type="email" id="newUserEmail" name="newUserEmail" placeholder="fkim@steves.edu" class="form-list"><br> 
+                </label>
+                <label for="newUserName">User Name:
+                    <input type="text" id="newUserName" name="newUserName" placeholder="fkim" class="form-list"><br> 
+                </label>
+                <label for="newUserPassword">Password:
+                    <input type="password" id="newUserPassword" name="newUserPassword" placeholder="********" class="form-list">
+                    <span id="pwContrains">must contain at least one uppercase character, one number and one special character in 8 characters long minimum</span><br> 
+                </label>
+                <label for="confirmPasswordInput">Confirm Password:
+                    <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" placeholder="******** " class="form-list"> 
+                </label><br>
+                <label for="newUserCity">City:
+                    <input type="text" id="newUserCity" name="newUserCity" placeholder="Fort Lee" class="form-list"><br> 
+                </label>
+                <label for="newUserState">State:
+                    <input type="text" id="newUserState" name="newUserState" placeholder="Select" list="stateList" class="form-list"><br> 
+                    <datalist id="stateList">
+                        <option value="CT">
+                        <option value="NJ">
+                        <option value="NY">
+                        <option value="PA">
+                    </datalist>
+                </label>
+                <label for="newUserAge">Age:
+                    <input type="number" id="newUserAge" name="newUserAge" placeholder="52"><br> 
+                </label>
+
+               <button onclick="btnClick()" id="inputSubBtn" name="inputSubBtn">click me for registration!</button>
+           </form> 
+           <div id="result" class="result"></div>
+           <div id="error" class="error" hidden></div>
+        </article> 
+    </main>
+    <script src="public/js/registration.js"></script>
+</body>
+
+</html>
