@@ -21,16 +21,17 @@ router.route('/register')
         if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
         if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
         if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-        //console.log("Register: ", emailAddress);   
+        console.log("Register: ", emailAddress);   
         const newUser = await usersFuncs.getByUserEmail(emailAddress);  
-        //console.log("newUser: ", newUser, newUser!==null); 
-        if(newUser!==null)     return res.render('registerError', {error: emailAddress}); 
-        console.log("newUser: ", newUser, newUser!==null); 
+        //console.log("existing user?", newUser!==null); 
+        if(newUser){
+            console.log(`User with email ${emailAddress} `, "already exist"); 
+            return res.status(200).render('registerError', {layout: 'user', error: emailAddress});
+        }
     
         try {   
-            console.log('registrationForm', registrationForm);
             // Error handling  
-            if(!registrationForm.newUserFistName) throw "fistName field error"; 
+            if(!registrationForm.newUserFirstName) throw "fistName field error"; 
             if(!registrationForm.newUserLastName) throw "lastName field error";
             if(!registrationForm.newUserName) throw "emailAddress field error";
             if(!registrationForm.newUserName) throw "userName field error";
@@ -38,14 +39,15 @@ router.route('/register')
             if(registrationForm.newUserPassword!==registrationForm.confirmPasswordInput) throw "confirmPasswordInput field error";
             if(!registrationForm.newUserCity) throw "newUserCity field error";  
             if(!registrationForm.newUserState) throw "newUserState field error";  
+            //console.log('registrationForm_1', registrationForm);
 
-            let firstName = registrationForm.newUserFistName.trim();
+            let firstName = registrationForm.newUserFirstName; 
                 if(firstName.includes(" "))           throw "firstName field error";
                 if(firstName.length < 2)              throw "firstName field error";
                 if(firstName.length > 25)             throw "firstName field error";
                 if (/\d/.test(firstName))             throw "firstName field error";   
                 if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
-                //console.log("firstName", firstName);
+                //console.log("firstName", registrationForm.newUserFirstName);
 
             let lastName = registrationForm.newUserLastName.trim();
                 if(lastName.includes(" "))           throw "lastName field error";
@@ -97,8 +99,10 @@ router.route('/register')
                 if(/\d/.test(state))              throw "state field error";
                 if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";  
                 //console.log('state', state);
+                //console.log('registrationForm_2', registrationForm);
         } catch (e) {
-            res.status(200).render('registerError', {layout: 'user', title: 'RegisterError'}); 
+            console.log('registrationForm_3', registrationForm);
+            res.status(200).render('RegisterError', {layout: 'user', title: 'RegisterError'}); 
         }        
         //console.log("Register the user:\n", registrationForm); 
         const user = await usersFuncs.addUser(registrationForm); 
