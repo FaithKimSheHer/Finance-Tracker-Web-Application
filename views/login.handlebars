@@ -1,0 +1,18 @@
+<div id="login">
+    <h2>Login</h2> 
+    <div id="notice"></div>
+    <form action="/user/login" id="loginForm" method="POST" class="registeredUser">  
+        <label for="registeredEmail">Email</label> <br/>
+        <input type="email" id="registeredEmail" name="registeredEmail" placeholder="user@example.com" class="form-list"> 
+        <br> 
+        <label for="registeredPassword">Password</label> <br/>
+        <input type="password" id="registeredPassword" name="registeredPassword" placeholder="********" class="form-list">
+        <br>    
+
+        <button onclick="btnClick()" id="log-inBtn" name="log-inBtn">Log-in</button>
+    </form> 
+
+    <span id="register">Don&#39;t have an account? <a href="/user/register">Register</a></span>
+
+    <script src="public/js/login.js"></script> <!-- required html content (above) is loaded before this is run -->
+</div>

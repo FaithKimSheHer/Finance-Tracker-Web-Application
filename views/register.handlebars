@@ -1,0 +1,46 @@
+<div id="login">
+    <h2>Register</h2> 
+    <div id="notice"></div>
+    <form action="/user/register" id="newUserForm" method="POST"> 
+        <label for="newUserFirstName">First Name</label>
+        <input type="text" id="newUserFirstName" name="newUserFirstName" placeholder="John"> <br>
+        {{!-- <div id="firstNameError"></div> --}}
+
+        <label for="newUserLastName">Last Name</label> 
+        <input type="text" id="newUserLastName" name="newUserLastName" placeholder="Doe"><br> 
+
+        <label for="newUserEmail">Email</label>
+        <input type="email" id="newUserEmail" name="newUserEmail" placeholder="user@example.com"><br> 
+
+        <label for="newUserName">Username</label>
+        <input type="text" id="newUserName" name="newUserName" placeholder="fkim"><br> 
+
+        <label for="newUserPassword">Password</label>
+        <input type="password" id="newUserPassword" name="newUserPassword" placeholder="********">
+        <span id="pwConstraints">must contain at least one uppercase character, one number and one special character in 8 characters long minimum</span><br> 
+        
+        <label for="confirmPasswordInput">Confirm Password</label><br>
+        <input type="password" id="confirmPasswordInput" name="confirmPasswordInput" placeholder="********"> 
+
+        <label for="newUserCity">City
+            <input type="text" id="newUserCity" name="newUserCity" placeholder="Hoboken">
+        </label> <br/>
+
+        <label for="newUserState">State</label>
+        <select name="newUserState" id="newUserState">
+            <option value="CT">CT</option>
+            <option value="NJ">NJ</option>
+            <option value="NY">NY</option>
+            <option value="PA">PA</option>
+        </select> <br/>
+        
+        <label for="newUserAge">Age
+            <input type="number" id="newUserAge" name="newUserAge" placeholder="52"><br> 
+        </label>
+
+        <button onclick="btnClick()" id="inputSubBtn" name="inputSubBtn">Register</button>
+    </form> 
+    <span id="login">Already have an account? <a href="/user/login">Login</a></span>
+
+    <script src="public/js/registration.js"></script> <!-- required html content (above) is loaded before this is run -->
+</div>
