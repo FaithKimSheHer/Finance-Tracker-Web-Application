@@ -268,7 +268,7 @@ const getByUserEmail = async(newEmail)=>{
 }; 
 
 const checkUser = async(emailAddress, password)=>{
-    // RETURN: user object by input emailAddress, password
+    // RETURN: user object by input emailAddress, password 
 
     // Error Handlings
     if(!emailAddress)                      throw 'You must provide an userEmail to search for';
@@ -280,9 +280,8 @@ const checkUser = async(emailAddress, password)=>{
     const hashedPassword = await bcrypt.hash(password, saltRounds);  
 
     const userCollection = await users();
-    const user = await userCollection.findOne({email: emailAddress, hashedPassword: hashedPassword});  
-
-    //console.log(user);
+    const user = await userCollection.findOne({email: emailAddress, hashedPassword: password});  
+ 
     return user; 
 }; 
 
