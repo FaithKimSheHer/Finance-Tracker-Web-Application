@@ -118,18 +118,18 @@ const addUser = async(registrationForm) => {
   // Add a user by input registrationForm from static/html 
   // => RETURN: user object
     
-    let firstName = registrationForm.newUserFistName;
+    let firstName = registrationForm.newUserFirstName;
     let lastName = registrationForm.newUserLastName;
     let email = registrationForm.newUserEmail.toLowerCase();
     let userName = registrationForm.newUserName.toLowerCase();
     let password = registrationForm.newUserPassword;
     let city = registrationForm.newUserCity;
     let state = registrationForm.newUserState;
-    let age = registrationForm.newUserAge; 
+    let age = parseInt(registrationForm.newUserAge); 
     let type = "user";
     let accountCreationDate = new Date().toLocaleDateString(); 
 
-    //console.log("addUser() input: ", firstName, lastName, email, userName, hashedPassword, city, state, age, type, accountCreationDate);*/
+    //console.log("addUser() input: ", firstName, lastName, email, userName, password, city, state, age, type, accountCreationDate);
 
     try{
         // Error handlings
@@ -261,8 +261,8 @@ const getByUserEmail = async(newEmail)=>{
     //console.log("getByUserEmail()", newEmail);
     const userCollection = await users();
     const userExist = await userCollection.findOne({email: newEmail}); 
-    //console.log("userExist", userExist, !userExist);
-    //console.log(userExist);
+    console.log("userExist", userExist, typeof(userExist));
+    console.log(userExist);
     if (!userExist)  return null;
     return newEmail; 
 }; 
