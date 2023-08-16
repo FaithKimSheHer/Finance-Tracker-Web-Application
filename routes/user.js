@@ -113,8 +113,7 @@ router.route('/register')
 router.route('/login')
     .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
-        console.log("AuthCookie: ", req.session);
-        console.log("login/req.session.user:", req.session.user, " => redirecting to login page")  
+        console.log("AuthCookie: ", req.session); 
         if(req.session.user)        return res.redirect('/'); 
         else res.status(200).render('login', {layout: 'user', title: 'Login'});
     })
