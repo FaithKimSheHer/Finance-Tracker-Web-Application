@@ -4,7 +4,7 @@ let newUserForm = document.getElementById('newUserForm');
 if(newUserForm){
     function btnClick(e){  
         try{
-            let newUserFistName = document.getElementById('newUserFistName').value;
+            let newUserFistName = document.getElementById('newUserFirstName').value;
             let newUserLastName = document.getElementById('newUserLastName').value;
             let newUserEmail = document.getElementById('newUserEmail').value;
             let newUserName = document.getElementById('newUserName').value;
@@ -13,7 +13,7 @@ if(newUserForm){
             let newUserCity = document.getElementById('newUserCity').value;
             let newUserState = document.getElementById('newUserState').value;
 
-            if(!newUserFistName) throw "newUserFistName field error"; 
+            if(!newUserFirstName) throw "newUserFirstName field error"; 
             if(!newUserLastName) throw "newUserLastName field error";
             if(!newUserEmail) throw "newUserEmail field error";
             if(!newUserName) throw "newUserName field error";
@@ -22,7 +22,7 @@ if(newUserForm){
             if(!newUserCity) throw "newUserCity field error";  
             if(!newUserState) throw "newUserState field error";  
 
-            let firstName = newUserFistName.trim();
+            let firstName = newUserFirstName.trim();
             if(firstName.includes(" "))           throw "firstName field error";
             if(firstName.length < 2)              throw "firstName field error";
             if(firstName.length > 25)             throw "firstName field error";
