@@ -98,7 +98,7 @@ router.route('/register')
                 if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";  
                 //console.log('state', state);
         } catch (e) {
-            res.status(200).render('RegisterError', {layout: 'user', title: 'RegisterError'}); 
+            res.status(200).render('registerError', {layout: 'user', title: 'RegisterError'}); 
         }        
         //console.log("Register the user:\n", registrationForm); 
         const user = await usersFuncs.addUser(registrationForm); 
