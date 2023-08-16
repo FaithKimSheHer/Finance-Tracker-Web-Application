@@ -1,16 +1,15 @@
 import express from 'express';
 const router = express.Router();  
-import path from 'path';
-import { usersFuncs } from '../data/index.js'; 
+import { usersFuncs } from '../data/index.js';
 
 router.route('/register')
     .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session);
         console.log("register/req.session.user:", req.session.user, " => redirecting to dashboard")
-        if(req.session.user)        return res.redirect('/'); 
-        else return res.sendFile(path.resolve('static/registration.html')); 
-    }) 
+        if(req.session.user)        return res.redirect('/');
+        else res.status(200).render('register', {layout: 'user', title: 'Register'});
+    })
     .post(async (req, res) => {  
         const registrationForm = req.body;  
         
@@ -23,12 +22,11 @@ router.route('/register')
         if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
         if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
         //console.log("Register: ", emailAddress);   
-
         const newUser = await usersFuncs.getByUserEmail(emailAddress);  
         //console.log("newUser: ", newUser, newUser!==null); 
         if(newUser!==null)     return res.render('registerError', {error: emailAddress}); 
         console.log("newUser: ", newUser, newUser!==null); 
- 
+    
         try {   
             console.log('registrationForm', registrationForm);
             // Error handling  
@@ -99,53 +97,57 @@ router.route('/register')
                 if(/\d/.test(state))              throw "state field error";
                 if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";  
                 //console.log('state', state);
-            } catch (e) {
-                return res.sendFile(path.resolve('static/registrationError.html')); 
-            }        
-            //console.log("Register the user:\n", registrationForm); 
+        } catch (e) {
+            res.status(200).render('RegisterError', {layout: 'user', title: 'RegisterError'}); 
+        }        
+        //console.log("Register the user:\n", registrationForm); 
         const user = await usersFuncs.addUser(registrationForm); 
-        console.log("Add user success:", user.email);
-        return res.sendFile(path.resolve('static/login.html'));
+        console.log("Add user success! :", user);
+        res.status(200).render('login', {layout: 'user', email: user.email}); 
     }); //END: router.route('/register') 
 
 router.route('/login')
-    .get(async (req, res, next) => {  
+    .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session);
-        console.log("login/req.session.user:", req.session.user, " => redirecting to login page")
+        console.log("login/req.session.user:", req.session.user, " => redirecting to login page")  
         if(req.session.user)        return res.redirect('/'); 
-        else return res.sendFile(path.resolve('static/login.html'));
-    }) 
+        else res.status(200).render('login', {layout: 'user', title: 'Login'});
+    })
     .post(async (req, res) => {  
-        const logInForm = req.body;   
-
+        const logInForm = req.body;  
+        
         let email = logInForm.registeredEmail;  
         let password = logInForm.registeredPassword;
-        
         // To find if email is valid => if it exists in mongodb
         if(email === undefined)                                   throw 'You must provide your email address'; 
         if(typeof email !== 'string')                             throw 'Email address must be a string';  
         else                                                      email = email.trim().toLowerCase();
         if(email.length === 0)                                    throw 'Email address cannot be an empty string or just spaces';   
         if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
-        if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error';  
+        if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
+        console.log("RegisteredUser:",email);    
 
-        const registeredUser = await usersFuncs.checkUser(email, password);       
-        if(!registeredUser)  return res.sendFile(path.resolve('static/loginError.html'));     
-        console.log("Registered User Found Success: ", registeredUser.email);
-        //console.log("RegisteredUser:",registeredUser);    
+        const registeredUser = await usersFuncs.checkUser(email, password);   
+        
+        if(!registeredUser)  return res.status(403).render('loginError', {layout: 'user', error: email});   
+ 
+        console.log("RegisteredUser:",registeredUser);    
+        console.log("Registered User Found Success: ", registeredUser.email); 
         
         const currentTime = new Date().toString();  
         req.session.user = { currentTime: currentTime, 
-                            email: registeredUser.email};
+                             email: registeredUser.email};
         console.log("req.session.user", req.session.user)
-        res.status(200).render('dashboard', { userName: registeredUser.userName }); 
-    }); //END: router.route('/logIn')
+        res.status(200).redirect("/"); 
+    }); //END: router.route('/logIn') 
 
 router.route('/logout').get(async (req, res) => {
     //code here for GET 
     res.cookie('AuthCookie', null); 
     req.session.destroy();
-    return res.sendFile(path.resolve('static/logout.html'));
-}); 
+    res.status(200).render('logout', {layout: 'user', logout: "LogoutSuccess"});
+});
+ 
+
 export default router; 
