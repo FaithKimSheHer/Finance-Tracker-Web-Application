@@ -134,14 +134,14 @@ router.route('/login')
 
         const registeredUser = await usersFuncs.checkUser(email, password);   
         
-        if(!registeredUser)  return res.status(403).render('loginError', {layout: 'user', error: email});   
+        if(!registeredUser)  res.status(200).render('loginError', {layout: 'user', error: email});   
  
         console.log("RegisteredUser:",registeredUser);    
-        console.log("Registered User Found Success: ", registeredUser.email); 
+        console.log("Registered User Found Success: ", email); 
         
         const currentTime = new Date().toString();  
         req.session.user = { currentTime: currentTime, 
-                             email: registeredUser.email};
+                             email: email};
         console.log("req.session.user", req.session.user)
         res.status(200).redirect("/"); 
     }); //END: router.route('/logIn') 
