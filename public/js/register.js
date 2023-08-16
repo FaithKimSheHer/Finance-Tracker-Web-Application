@@ -4,7 +4,7 @@ let newUserForm = document.getElementById('newUserForm');
 if(newUserForm){
     function btnClick(e){  
         try{
-            let newUserFistName = document.getElementById('newUserFirstName').value;
+            let newUserFirstName = document.getElementById('newUserFirstName').value;
             let newUserLastName = document.getElementById('newUserLastName').value;
             let newUserEmail = document.getElementById('newUserEmail').value;
             let newUserName = document.getElementById('newUserName').value;
