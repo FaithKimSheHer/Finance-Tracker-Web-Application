@@ -1,5 +1,6 @@
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import {users} from '../config/mongoCollections.js'; 
+import bcrypt from 'bcryptjs';
 import { usersFuncs } from '../data/index.js';
 
 let userOne = undefined;  
@@ -15,10 +16,10 @@ async function main() {
 
     let newPerson_1 = {
       firstName:        "Faith",
-      lastName:         " Kim",
+      lastName:         "Kim",
       email:            "fkim@stevens.edu",
       userName:         "fkim",
-      hashedPassword:   "helloFinalProject",
+      hashedPassword:   bcrypt.hash("Abc123!", 10),
       city:             "Fort Lee",
       state:            "NJ",
       age:              52
@@ -29,10 +30,10 @@ async function main() {
     
     let newPerson_2 = {
         firstName:        "Bobby",
-        lastName:         " Kim",
+        lastName:         "Kim",
         email:            "ttizen@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   "(201)7412604",
+        hashedPassword:   bcrypt.hash("Abc123!", 10),
         city:             "Fort Lee",
         state:            "NJ",
         age:              55
@@ -43,10 +44,10 @@ async function main() {
 
       let newPerson_3 = {
         firstName:        "Bethesta",
-        lastName:         " Kim",
+        lastName:         "Kim",
         email:            "bt@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   "(201)7412716",
+        hashedPassword:   bcrypt.hash("Abc123!", 10),
         city:             "Fort Lee",
         state:            "NJ",
         age:              24
