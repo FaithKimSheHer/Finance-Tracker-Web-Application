@@ -2,16 +2,13 @@ import express from 'express';
 const router = express.Router();  
 import { usersFuncs } from '../data/index.js';
 
-router
-    .route('/')
+router.route('/register')
     .get(async (req, res) => {
-        // res.sendFile(path.resolve('static/registration.html'));   
-        res.json({error: 'YOU SHOULD NOT BE HERE!'}); //let middleware handle this
-    });
-router
-    .route('/register')
-    .get(async (req, res) => {
-        res.status(200).render('register', {layout: 'user', title: 'Register'});
+        res.cookie('AuthCookie', req.session);
+        console.log("AuthCookie: ", req.session);
+        console.log("register/req.session.user:", req.session.user, " => redirecting to dashboard")
+        if(req.session.user)        return res.redirect('/');
+        else res.status(200).render('register', {layout: 'user', title: 'Register'});
     })
     .post(async (req, res) => {  
         const registrationForm = req.body;  
@@ -24,16 +21,17 @@ router
         if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
         if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
         if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-        //console.log("Register: ", emailAddress);   
+        console.log("Register: ", emailAddress);   
         const newUser = await usersFuncs.getByUserEmail(emailAddress);  
-        //console.log("newUser: ", newUser, newUser!==null); 
-        if(newUser!==null)     return res.render('registerError', {error: emailAddress}); 
-        console.log("newUser: ", newUser, newUser!==null); 
+        //console.log("existing user?", newUser!==null); 
+        if(newUser){
+            console.log(`User with email ${emailAddress} `, "already exist"); 
+            return res.status(200).render('registerError', {layout: 'user', error: emailAddress});
+        }
     
         try {   
-            console.log('registrationForm', registrationForm);
             // Error handling  
-            if(!registrationForm.newUserFistName) throw "fistName field error"; 
+            if(!registrationForm.newUserFirstName) throw "fistName field error"; 
             if(!registrationForm.newUserLastName) throw "lastName field error";
             if(!registrationForm.newUserName) throw "emailAddress field error";
             if(!registrationForm.newUserName) throw "userName field error";
@@ -41,14 +39,15 @@ router
             if(registrationForm.newUserPassword!==registrationForm.confirmPasswordInput) throw "confirmPasswordInput field error";
             if(!registrationForm.newUserCity) throw "newUserCity field error";  
             if(!registrationForm.newUserState) throw "newUserState field error";  
+            //console.log('registrationForm_1', registrationForm);
 
-            let firstName = registrationForm.newUserFistName.trim();
+            let firstName = registrationForm.newUserFirstName; 
                 if(firstName.includes(" "))           throw "firstName field error";
                 if(firstName.length < 2)              throw "firstName field error";
                 if(firstName.length > 25)             throw "firstName field error";
                 if (/\d/.test(firstName))             throw "firstName field error";   
                 if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
-                //console.log("firstName", firstName);
+                //console.log("firstName", registrationForm.newUserFirstName);
 
             let lastName = registrationForm.newUserLastName.trim();
                 if(lastName.includes(" "))           throw "lastName field error";
@@ -98,23 +97,26 @@ router
                 if(state.length === 0)            throw "state field error";  
                 if(state.length !== 2)            throw "state field error"; 
                 if(/\d/.test(state))              throw "state field error";
-                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error"; 
-                //console.log("lastName", lastName);
-            console.log('state', state);
+                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";  
+                //console.log('state', state);
+                //console.log('registrationForm_2', registrationForm);
         } catch (e) {
-            return res.status(200).render('registerError', {error: "Registration error"});
+            console.log('registrationForm_3', registrationForm);
+            res.status(200).render('RegisterError', {layout: 'user', title: 'RegisterError'}); 
         }        
         //console.log("Register the user:\n", registrationForm); 
         const user = await usersFuncs.addUser(registrationForm); 
         console.log("Add user success! :", user);
-        res.status(200).render('register', {email: user.email}); 
-    }); //END: router.route('/').post(async (req, res)
+        res.status(200).render('login', {layout: 'user', email: user.email}); 
+    }); //END: router.route('/register') 
 
-router
-    .route('/login')
+router.route('/login')
     .get(async (req, res) => {
-        // res.sendFile(path.resolve('static/login.html'));   
-        res.status(200).render('login', {layout: 'user', title: 'Log In'});
+        res.cookie('AuthCookie', req.session);
+        console.log("AuthCookie: ", req.session);
+        console.log("login/req.session.user:", req.session.user, " => redirecting to login page")  
+        if(req.session.user)        return res.redirect('/'); 
+        else res.status(200).render('login', {layout: 'user', title: 'Login'});
     })
     .post(async (req, res) => {  
         const logInForm = req.body;  
@@ -132,37 +134,24 @@ router
 
         const registeredUser = await usersFuncs.checkUser(email, password);   
         
-        if(registeredUser === undefined)  return res.status(403).render('error', {layout: 'user', error: email});   
-
-        console.log("Registered User Found Success!");  
+        if(!registeredUser)  return res.status(403).render('loginError', {layout: 'user', error: email});   
+ 
+        console.log("RegisteredUser:",registeredUser);    
+        console.log("Registered User Found Success: ", registeredUser.email); 
         
-        return res.status(200).redirect("/");
-        // res.status(200).render('dash', {user: registeredUser}); 
-    }); //END: router.route('/logIn').post(async (req, res)
+        const currentTime = new Date().toString();  
+        req.session.user = { currentTime: currentTime, 
+                             email: registeredUser.email};
+        console.log("req.session.user", req.session.user)
+        res.status(200).redirect("/"); 
+    }); //END: router.route('/logIn') 
 
 router.route('/logout').get(async (req, res) => {
     //code here for GET 
     res.cookie('AuthCookie', null); 
     req.session.destroy();
-    res.status(200).render('logout', {logout: "AuthCooki deleted successfully!"});
+    res.status(200).render('logout', {layout: 'user', logout: "LogoutSuccess"});
 });
-
-router.route('/:userName').get(async (req, res) => {  
-    
-    try {  
-        if (!req.params.userName)                     return res.status(400).json({error: "UserId does not exist"});
-        if (typeof req.params.userName !== 'string')  return res.status(400).json({error: "UserId Must be a string"});
-        req.params.userName = req.params.userName.trim();
-        if (req.params.userName.length === 0)         return res.status(400).json({error: "UserId can't be empty string"})    
-    } catch (e) {
-      return res.status(404).json({error: e});
-    }
-    try {
-        const userInfo = await usersFuncs.get(req.params.userName); 
-        res.status(200).json(userInfo);
-    } catch (e) {
-        res.status(404).json({error: e});
-    }
-});// END:router.route('/:userName').get(async (req, res)
+ 
 
 export default router; 
