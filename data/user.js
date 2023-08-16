@@ -282,9 +282,8 @@ const checkUser = async(emailAddress, password)=>{
     const userCollection = await users();
     const user = await userCollection.findOne({email: emailAddress, hashedPassword: hashedPassword});  
 
-    console.log(user);
-    if (user)  return null;
-    else       return user; 
+    //console.log(user);
+    return user; 
 }; 
 
 const getByUserId = async(userId)=>{
