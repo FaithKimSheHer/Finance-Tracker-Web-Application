@@ -3,13 +3,13 @@
 //also has these optional fields: {transactionInfo, receiptFilename, pathOfFilename, userComments}
 
 //todo: check for duplicate transactionId
-const updateTransactionForm = document.getElementById("updateTransactionForm"); // For now, assumed form ID to be 'updateTransactionForm'
+const updateForm = document.getElementById("updateForm"); // For now, assumed form ID to be 'updateTransactionForm'
 //const createTransactionForm = document.getElementById("createTransactionForm");
 
 
 
 // Event listeners for update.handlebars form:
-updateTransactionForm.addEventListener("submit", async (event) => {
+updateForm.addEventListener("submit", async (event) => {
     if (!validateUpdateForm()) {  // If form validation fails, prevent form submission
         event.preventDefault();
     }
@@ -19,10 +19,10 @@ updateTransactionForm.addEventListener("submit", async (event) => {
 function validateUpdateForm() {
 
     // Get values from the update form
-    const amount = document.getElementById("amount").value;
-    const date = document.getElementById("dateOfTransaction").value;
-    const category = document.getElementById("category").value;
-    const userId = document.getElementById("userId").value;
+    const amount = document.getElementById("transactionAmount").value;
+    const date = document.getElementById("transactionDate").value;
+    const category = document.getElementById("updateSelector").value;
+    // const userId = document.getElementById("userId").value;
 
     // Check type of values
     if (!Number.isInteger(amount) || amount <= 0) {   // Validate amount is a number
@@ -40,10 +40,10 @@ function validateUpdateForm() {
         return false;
     }
 
-    if (!typeof userId === 'string') {
-        alert("Please enter a valid userId");  // Validate userId is a string
-        return false;
-    }
+    // if (!typeof userId === 'string') {
+    //     alert("Please enter a valid userId");  // Validate userId is a string
+    //     return false;
+    // }
 
 
     // Optional fields from the update form
