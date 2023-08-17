@@ -74,15 +74,12 @@ app.use('/user', async (req, res, next) => {
 
 app.get('/transactions', async (req, res, next) => {
     if (!req.session.user) {
-        // console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
-        console.log("Fired from /transaction");
+        console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return res.redirect('/user/login');
-
     }
-    console.log("Fired from inside /transaction-------!!!!!!!");
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     return next();
-});
+}); 
 
 // TODO: logout is unfinished
 app.use('/logout', async (req, res, next) => {

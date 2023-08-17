@@ -4,7 +4,7 @@ import {
   transactFuns
 } from '../data/index.js';
 
-router.route('/transactions').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   console.log("This is inside of the route");
   if (!req.session.user)
     return res.redirect('/');
