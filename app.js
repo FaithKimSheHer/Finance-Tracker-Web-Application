@@ -57,11 +57,11 @@ app.use('/user', async (req, res, next) => {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return next();
     }
+    if(req.path === '/logout') return next(); //no /user bc /user is already in the path
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     return res.redirect('/');
 });
     
-// TODO: logout is unfinished
 app.use('/logout', async (req, res, next) => {
     if(!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
