@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  {{!-- <link rel="stylesheet" href="../public/css/transaction.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="/public/css/user.css"> --}}
+</head>
+<body>
+  <div id="formDiv">
+    <form id="updateForm" method="POST" action="/transactions">
+      <label for="updateSelector">Category</label><br>
+      <select name="updateSelector"id="updateSelector">
+        <option value="" disabled selected>Select</option>
+        <option value="income">Income</option>
+        <option value="savings">Savings</option>
+        <option value="expenditure">Expenditure</option>
+        <option value="retirement">Retirement</option>
+        <option value="investment">Investment</option>
+      </select><br>
+
+      <label for="transactionInfo">Transaction Info</label><br>
+      <textarea name="transactionInfo"id="transactionInfo"cols=“30” rows="4"></textarea><br>
+
+      <label for="transactionAmount">Amount</label>
+      <input type="number" name="transactionAmount"id="transactionAmount"><br>
+
+      <label for="transactionDate">Transaction Date</label>
+      <input type="date" id="transactionDate"name="transactionDate"><br>
+      <button type="submit" id="transactionBtn">Submit</button>
+    </form>
+  </div>
+  <script src="/public/js/transactions.js"></script>
+</body>
+</html>

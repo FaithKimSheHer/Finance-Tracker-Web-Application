@@ -1,4 +1,4 @@
-div#login {
+div#login,#formDiv {
     font-size: 1.5rem;
     grid-column: dash;
     display: flex;
@@ -10,9 +10,19 @@ div#notice {
     height: 2rem;
 }
 
+form#updateForm{
+    margin-top: 80px;
+}
+
 form {
     width: 300px;
 }
+
+#formDiv input, #formDiv label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 input {
     width: 100%;
     margin-bottom: 1rem;

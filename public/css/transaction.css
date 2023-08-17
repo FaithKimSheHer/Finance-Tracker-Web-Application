@@ -1,0 +1,19 @@
+form{
+  margin-top: 90px;
+}
+#updateForm {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 10px;
+}
+
+#updateForm label {
+  text-align: left;
+}
+
+#updateForm select,
+#updateForm textarea,
+#updateForm input {
+  width: 100%;
+  box-sizing: border-box;
+}
