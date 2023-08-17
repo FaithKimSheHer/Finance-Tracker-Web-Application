@@ -1,21 +1,30 @@
 import express from 'express';
 const app = express();
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import {
+    fileURLToPath
+} from 'url';
+import {
+    dirname
+} from 'path';
 import exphbs from 'express-handlebars';
 
 import session from 'express-session';
 
 import configRoutes from './routes/index.js';
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(
+    import.meta.url);
 const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + '/public');
 app.use('/public', staticDir);
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+app.use(express.urlencoded({
+    extended: true
+}));
+app.engine('handlebars', exphbs.engine({
+    defaultLayout: 'main'
+}));
 app.set('view engine', 'handlebars');
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
@@ -38,32 +47,46 @@ app.use(session({
     secret: "Patrick Hill",
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: 30000}
+    cookie: {
+        maxAge: 30000
+    }
 }));
 
-app.use('/', async(req, res, next) => {
-    if(req.path === '/error' || req.path === '/logout') return next();
-    if(req.session.user) { //set req.session.user to a const value above to test
+app.use('/', async (req, res, next) => {
+    if (req.path === '/error' || req.path === '/logout') return next();
+    if (req.session.user) { //set req.session.user to a const value above to test
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
         return next();
     }
-    if(req.path === '/user/login' || req.path == '/user/register') return next();
+    if (req.path === '/user/login' || req.path == '/user/register' || req.path == '/transactions') return next();
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
     return res.redirect('/user/login');
 });
 
 app.use('/user', async (req, res, next) => {
-    if(!req.session.user) {
+    if (!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return next();
     }
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     return res.redirect('/');
 });
-    
+
+app.get('/transactions', async (req, res, next) => {
+    if (!req.session.user) {
+        // console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
+        console.log("Fired from /transaction");
+        return res.redirect('/user/login');
+
+    }
+    console.log("Fired from inside /transaction-------!!!!!!!");
+    console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
+    return next();
+});
+
 // TODO: logout is unfinished
 app.use('/logout', async (req, res, next) => {
-    if(!req.session.user) {
+    if (!req.session.user) {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return res.status(200).redirect('/user/login');
     }
