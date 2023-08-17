@@ -14,6 +14,10 @@ router.route('/').get(async (req, res) => {
     layout: 'user',
     title: 'Transaction'
   });
+}).post(async (req, res) => {
+
+  //TODO complete post routes
+  let data = req.body;
 })
 
 router.route('/summary').get(async (req, res) => {
