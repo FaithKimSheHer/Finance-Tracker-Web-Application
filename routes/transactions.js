@@ -32,28 +32,29 @@ router.route("/summary").get(async (req, res) => {
 });
 
 router.route("/transaction_summary/:id").get(async (req, res) => {
-        const id = req.body.id;
-        const transaction = await transactFuns(id);
-        try {
-          return res.render('summary', {
-            transaction: transaction
-          })
-        } catch (error) {
+  const id = req.body.id;
+  const transaction = await transactFuns(id);
+  try {
+    return res.render('summary', {
+      transaction: transaction
+    })
+  } catch (error) {
 
-        }
+  }
+});
 
-        router.route("/add_transaction").post(async (req, res) => {
-          try {
-            const newTransaction = req.body;
-            await transactFuns.addTransaction(newTransaction);
-            return res.redirect("/summary");
-          } catch (error) {
-            return res
-              .status(500)
-              .render("error", {
-                errorMessage: "Error adding transaction."
-              });
-          }
-        });
+router.route("/add_transaction").post(async (req, res) => {
+  try {
+    const newTransaction = req.body;
+    await transactFuns.addTransaction(newTransaction);
+    return res.redirect("/summary");
+  } catch (error) {
+    return res
+      .status(500)
+      .render("error", {
+        errorMessage: "Error adding transaction."
+      });
+  }
+});
 
-        export default router;
+export default router;
