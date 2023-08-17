@@ -149,7 +149,7 @@ router.route('/logout').get(async (req, res) => {
     //code here for GET 
     res.cookie('AuthCookie', null); 
     req.session.destroy();
-    res.status(200).render('logout', {layout: 'user', logout: "LogoutSuccess"});
+    return res.status(200).render('logout', {layout: 'user', logout: "LogoutSuccess"});
 });
  
 
