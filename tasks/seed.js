@@ -1,6 +1,6 @@
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
-import {users} from '../config/mongoCollections.js'; 
-import bcrypt from 'bcrypt';
+import {users} from '../config/mongoCollections.js';
+import {transaction} from '../config/mongoCollections.js'; 
 import { usersFuncs } from '../data/index.js';
 
 let userOne = undefined;  
@@ -16,10 +16,10 @@ async function main() {
 
     let newPerson_1 = {
       firstName:        "Faith",
-      lastName:         "Kim",
+      lastName:         " Kim",
       email:            "fkim@stevens.edu",
       userName:         "fkim",
-      hashedPassword:   await bcrypt.hash("Abc123!!", 10),
+      hashedPassword:   "helloFinalProject",
       city:             "Fort Lee",
       state:            "NJ",
       age:              52
@@ -30,10 +30,10 @@ async function main() {
     
     let newPerson_2 = {
         firstName:        "Bobby",
-        lastName:         "Kim",
+        lastName:         " Kim",
         email:            "ttizen@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   await bcrypt.hash("Abc123!!", 10),
+        hashedPassword:   "(201)7412604",
         city:             "Fort Lee",
         state:            "NJ",
         age:              55
@@ -44,10 +44,10 @@ async function main() {
 
       let newPerson_3 = {
         firstName:        "Bethesta",
-        lastName:         "Kim",
+        lastName:         " Kim",
         email:            "bt@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   await bcrypt.hash("Abc123!!", 10),
+        hashedPassword:   "(201)7412716",
         city:             "Fort Lee",
         state:            "NJ",
         age:              24
@@ -59,6 +59,114 @@ async function main() {
     console.log(e);
   } 
 
+
+  try{
+    const transactionCollection = await transaction();
+
+    let transaction_1 = {
+      category:          "Income",
+      transactionInfo:   "Monthly Remuneration",
+      amount:            50000,
+      dateOfTransaction: "06/30/2023 14:30:00",
+      receiptFilename:   "salary.png",
+      pathOfFilename:    "c:/users/project/data/salary.png",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "My first Salary of the year"
+    } 
+    const transactionInfo_1 = await transactionCollection.insertOne(transaction_1);
+    if (!transactionInfo_1.acknowledged || !transactionInfo_1.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_1);
+
+    let transaction_2 = {
+      category:          "Income",
+      transactionInfo:   "Monthly Remuneration 2",
+      amount:            60000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "salary2.png",
+      pathOfFilename:    "c:/users/project/data/salary2.png",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "My trading Income"
+    } 
+    const transactionInfo_2 = await transactionCollection.insertOne(transaction_2);
+    if (!transactionInfo_2.acknowledged || !transactionInfo_2.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_2);
+
+    let transaction_3 = {
+      category:          "Savings",
+      transactionInfo:   "Saving for Car",
+      amount:            6000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "None",
+      pathOfFilename:    "None",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "Savings Car"
+    } 
+    const transactionInfo_3 = await transactionCollection.insertOne(transaction_3);
+    if (!transactionInfo_3.acknowledged || !transactionInfo_3.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_3);
+
+    let transaction_4 = {
+      category:          "Expenditure",
+      transactionInfo:   "Rent",
+      amount:            2000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "None",
+      pathOfFilename:    "None",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "Rent Expenses"
+    } 
+    const transactionInfo_4 = await transactionCollection.insertOne(transaction_4);
+    if (!transactionInfo_4.acknowledged || !transactionInfo_4.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_4);
+
+
+    let transaction_5 = {
+      category:          "Retirement",
+      transactionInfo:   "Contribution to 401k",
+      amount:            10000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "None",
+      pathOfFilename:    "None",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "Retirement Contribution"
+    } 
+    const transactionInfo_5 = await transactionCollection.insertOne(transaction_5);
+    if (!transactionInfo_5.acknowledged || !transactionInfo_5.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_5);
+
+    let transaction_6 = {
+      category:          "Investment",
+      transactionInfo:   "Purchasing Stocks",
+      amount:            10000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "None",
+      pathOfFilename:    "None",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "Retirement Contribution"
+    } 
+    const transactionInfo_6 = await transactionCollection.insertOne(transaction_6);
+    if (!transactionInfo_6.acknowledged || !transactionInfo_6.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_6);
+
+    
+    let transaction_7 = {
+      category:          "Investment 2",
+      transactionInfo:   "Purchasing Bonds",
+      amount:            10000,
+      dateOfTransaction: "06/25/2023 14:30:00",
+      receiptFilename:   "None",
+      pathOfFilename:    "None",
+      userEmail:         "fkim@stevens.edu",
+      userComments:      "Retirement Contribution"
+    } 
+    const transactionInfo_7 = await transactionCollection.insertOne(transaction_7);
+    if (!transactionInfo_7.acknowledged || !transactionInfo_7.insertedId)     throw 'Could not add transaction'; 
+    else console.log(transactionInfo_7);
+
+  }
+  catch (e) {
+    console.log(e);
+  } 
   
 console.log("------------------------");
 console.log('Done seeding database');
