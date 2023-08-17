@@ -58,7 +58,7 @@ app.use('/', async (req, res, next) => {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
         return next();
     }
-    if (req.path === '/user/login' || req.path == '/user/register' || req.path == '/transactions') return next();
+    if (req.path === '/user/login' || req.path == '/user/register') return next();
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
     return res.redirect('/user/login');
 });
@@ -79,7 +79,7 @@ app.get('/transactions', async (req, res, next) => {
     }
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     return next();
-}); 
+});
 
 // TODO: logout is unfinished
 app.use('/logout', async (req, res, next) => {
