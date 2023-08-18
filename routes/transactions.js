@@ -1,20 +1,57 @@
 import express from "express";
 const router = express.Router();
-import { transactFuns } from "../data/index.js";
+import {
+  transactFuns
+} from "../data/index.js";
+import {
+  dbConnection,
+  closeConnection
+} from '../config/mongoConnection.js';
+import {
+  transaction
+} from '../config/mongoCollections.js';
 
 router.route("/").get(async (req, res) => {
-  console.log("This is inside of the route");
   if (!req.session.user) return res.redirect("/");
-  else console.log("This is in the route");
   res.status(200).render("transactions", {
     layout: "user",
     title: "Transaction",
   });
+}).post(async (req, res) => {
+  const data = req.body;
+
+  try {
+    const transactionCollection = await transaction()
+    console.log(data.transactionDate);
+    console.log(data.transactionAmount);
+    console.log(data.updateSelector);
+    let transactionData = {
+      category: data.updateSelector,
+      transactionInfo: data.transactionInfo,
+      amount: data.transactionAmount,
+      dateOfTransaction: data.transactionDate,
+      receiptFilename: "None",
+      pathOfFilename: "None",
+      userEmail: req.session.user.email,
+      userComments: data.transactionInfo
+    }
+    const newTransaction = await transactionCollection.insertOne(transactionData);
+    if (!newTransaction.acknowledged || !newTransaction.insertedId)
+      throw 'Could not add transaction';
+    else console.log(transactionData);
+    res.status(200).render("transactions", {
+      layout: "user",
+      title: "Transaction",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/");
+  }
 });
 
 router.route("/summary").get(async (req, res) => {
   try {
-    const data = await transactFuns.getAllTransactions();
+    const data = await transactFuns.getTransactionsByUserId(req.session.user.email);
     return res.render("partials/update", {
       layout: "main",
       title: "Update",
@@ -50,6 +87,7 @@ router.route("/transaction_summary/:id").get(async (req, res) => {
 
 router.route("/add_transaction").post(async (req, res) => {
   try {
+
     const { category, transactionInfo, transactionDate } = req.body;
     const amount = Number(req.body.amount);
     const userId = req.session.user;
@@ -66,7 +104,6 @@ router.route("/add_transaction").post(async (req, res) => {
       userId,
       ""
     );
-
     if (newTransaction) {
       return res.redirect("/summary");
     } else {
@@ -88,6 +125,7 @@ router.route("/savings").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory("Savings"); 
   console.log("/savings, user", [req.session.user]);
   return res.render("categories/savings", { transactions: transactions, user: req.session.user});
+
 });
 
 router.route("/expenditures").get(async (req, res) => {
