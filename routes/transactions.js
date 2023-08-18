@@ -78,6 +78,7 @@ router.route("/add_transaction").post(async (req, res) => {
   }
 });
 
+
 router.route("/income").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory("Income");
   return res.render("categories/income", { transactions: transactions });
