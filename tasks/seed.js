@@ -16,7 +16,7 @@ async function main() {
   try{  
     const userCollection = await users(); 
     
-    let hashedPassword = await bcrypt.hash("fkim@stevens.edu", saltRounds); 
+    let hashedPassword = await bcrypt.hash("fkim@stevens.edu1T", saltRounds); 
     let accountCreationDate = new Date().toLocaleDateString();
     let newPerson_1 = {
         firstName:        "Faith",
@@ -35,7 +35,7 @@ async function main() {
     if (!insertInfo_1.acknowledged || !insertInfo_1.insertedId)     throw 'Could not add user'; 
     else console.log(newPerson_1);
     
-    hashedPassword = await bcrypt.hash("ttizen@gmail.com", saltRounds);
+    hashedPassword = await bcrypt.hash("ttizen@gmail.com2T", saltRounds);
     let newPerson_2 = {
         firstName:        "Bobby",
         lastName:         " Kim",
@@ -52,7 +52,7 @@ async function main() {
       if (!insertInfo_2.acknowledged || !insertInfo_2.insertedId)     throw 'Could not add user'; 
       else console.log(newPerson_2);
 
-      hashedPassword = await bcrypt.hash("bt@gmail.com", saltRounds);
+      hashedPassword = await bcrypt.hash("bt@gmail.com3T", saltRounds);
       let newPerson_3 = {
         firstName:        "Bethesta",
         lastName:         " Kim",
