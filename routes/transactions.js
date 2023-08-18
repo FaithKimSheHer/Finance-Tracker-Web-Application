@@ -57,4 +57,25 @@ router.route("/add_transaction").post(async (req, res) => {
   }
 });
 
+router.route("/income").get(async (req, res) => {
+  //do stuff to get income info
+  return res.render('categories/income');
+});
+router.route("/savings").get(async (req, res) => {
+  //do stuff to get income info
+  return res.render('categories/savings');
+});
+router.route("/expenditures").get(async (req, res) => {
+  //do stuff to get income info
+  return res.render('categories/expenditures');
+});
+router.route("/investments").get(async (req, res) => {
+  //do stuff to get income info
+  return res.render('categories/investments');
+});
+router.route("/retirement").get(async (req, res) => {
+  //do stuff to get income info
+  return res.render('categories/retirement');
+});
+
 export default router;
