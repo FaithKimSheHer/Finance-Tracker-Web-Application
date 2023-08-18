@@ -122,6 +122,15 @@ const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
   return userTransactions;
 };
 
+const getTransactionsByCategory = async (category) => {
+  const transactionCollection = await transaction();
+  const transactionsByCategory = await transactionCollection
+    .find({ category: category })
+    .toArray();
+  return transactionsByCategory;
+};
 
 
-export { createTransaction, getTransactionById, getTransactionsByUserId, getAllTransactions, getMostRecentTransactionsByUserId};
+
+
+export { createTransaction, getTransactionById, getTransactionsByUserId, getAllTransactions, getMostRecentTransactionsByUserId, getTransactionsByCategory};
