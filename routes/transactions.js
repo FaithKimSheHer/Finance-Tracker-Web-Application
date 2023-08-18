@@ -50,7 +50,8 @@ router.route("/transaction_summary/:id").get(async (req, res) => {
 
 router.route("/add_transaction").post(async (req, res) => {
   try {
-    const { category, transactionInfo, transactionDate } = req.body;
+    const { updateSelector: category, transactionInfo, transactionDate } =
+      req.body;
     const amount = Number(req.body.amount);
     const userId = req.session.user;
     const dateOfTransaction = new Date(transactionDate);

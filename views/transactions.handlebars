@@ -13,7 +13,7 @@
     
   </header>
   <div id="formDiv">
-    <form id="updateForm" method="POST" action="/transactions">
+    <form id="updateForm" method="POST" action="/add_transactions">
       <label for="updateSelector">Category</label><br>
       <select name="updateSelector"id="updateSelector">
         <option value="" disabled selected>Select</option>
@@ -27,8 +27,8 @@
       <label for="transactionInfo">Transaction Info</label><br>
       <textarea name="transactionInfo"id="transactionInfo"cols=“30” rows="4"></textarea><br>
 
-      <label for="transactionAmount">Amount</label>
-      <input type="number" name="transactionAmount"id="transactionAmount"><br>
+      <label for="amount">Amount</label>
+      <input type="number" name="amount" id="amount"><br>
 
       <label for="transactionDate">Transaction Date</label>
       <input type="date" id="transactionDate"name="transactionDate"><br>
