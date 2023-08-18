@@ -18,54 +18,58 @@ const create = async(
     if(!lastName || !email || !userName || !password || !city || !state || !age) throw "Input error";  
 
     // Error handlings
-    const firstName = validation.checkFN(firstName_input); 
-    //console.log("firstName: ", [firstName]);
+    try{
+        const firstName = validation.checkFN(firstName_input); 
+        //console.log("firstName: ", [firstName]);
 
-    const lastName = validation.checkLN(lastName_input);  
-    //console.log("lastName: ", [lastName]);
+        const lastName = validation.checkLN(lastName_input);  
+        //console.log("lastName: ", [lastName]);
 
-    const email = validation.checkEM(email_input); 
-    //console.log("email: ", [email]);
+        const email = validation.checkEM(email_input); 
+        //console.log("email: ", [email]);
 
-    //check if email exists in db
-    const userCollection = await users(); 
-    const userGo = await userCollection.findOne({email: email});  
-    if (userGo)     throw "There is already a user with that email";  
-     
-    const userName = validation.checkUN(userName_input);
-    //console.log("userName:", [userName]);
+        //check if email exists in db
+        const userCollection = await users(); 
+        const userGo = await userCollection.findOne({email: email});  
+        if (userGo)     throw "There is already a user with that email";  
+        
+        const userName = validation.checkUN(userName_input);
+        //console.log("userName:", [userName]);
 
-    const age = validation.checkAG(age_input);
-    //console.log("age: ", age); 
- 
-    const password = validation.checkPW(password_input) 
-    //console.log("password: ", password);
+        const age = validation.checkAG(age_input);
+        //console.log("age: ", age); 
+    
+        const password = validation.checkPW(password_input) 
+        //console.log("password: ", password);
 
-    const city = validation.checkCT(city_input);  
-    //console.log("city: ", city);
- 
-    const state = validation.checkST(state_input);
-    //console.log("state: ", state);
+        const city = validation.checkCT(city_input);  
+        //console.log("city: ", city);
+    
+        const state = validation.checkST(state_input);
+        //console.log("state: ", state);
 
-    let accountCreationDate = new Date().toLocaleDateString(); 
-    const hashedPassword = await bcrypt.hash(password, saltRounds); 
+        let accountCreationDate = new Date().toLocaleDateString(); 
+        const hashedPassword = await bcrypt.hash(password, saltRounds); 
 
-    let newUser = {
-        firstName:                  firstName,
-        lastName:                   lastName,
-        email:                      email, 
-        userName:                   userName,
-        hashedPassword:             hashedPassword,
-        city:                       city,
-        state:                      state,
-        age:                        age,
-        type:                       "user", 
-        accountCreationDate:        accountCreationDate
-    } 
-    const insertInfo = await userCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)     throw 'Could not add user'; 
+        let newUser = {
+            firstName:                  firstName,
+            lastName:                   lastName,
+            email:                      email, 
+            userName:                   userName,
+            hashedPassword:             hashedPassword,
+            city:                       city,
+            state:                      state,
+            age:                        age,
+            type:                       "user", 
+            accountCreationDate:        accountCreationDate
+        } 
+        const insertInfo = await userCollection.insertOne(newUser);
+        if (!insertInfo.acknowledged || !insertInfo.insertedId)     throw 'Could not add user'; 
 
-    return newUser;
+        return newUser;
+    }catch(e){
+          console(e);
+    }
 };
 
 const addUser = async(registrationForm) => { 
