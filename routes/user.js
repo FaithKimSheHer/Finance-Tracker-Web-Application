@@ -11,8 +11,16 @@ router.route('/register')
         else return res.render('register', {layout: 'user', title: 'Register'});
     })
     .post(async (req, res) => {  
-        const registrationForm = req.body;    
-        try {      
+        const registrationForm = req.body;
+        if( !registrationForm ||
+            !registrationForm.newUserEmail ||
+            !registrationForm.newUserFirstName ||
+            !registrationForm.newUserLastName ||
+            !registrationForm.newUserPassword ||
+            !registrationForm.confirmPasswordInput ||
+            !registrationForm.newUserCity ||
+            !registrationForm.newUserState)       return res.render('register', {layout: 'user', title: 'Register'});   
+        try {       
             const email = validation.checkEM(registrationForm.newUserEmail); 
             const newUser = await usersFuncs.getByUserEmail(email);  
             if(!newUser===null){
@@ -54,19 +62,25 @@ router.route('/login')
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session); 
         if(req.session.user)        return res.redirect('/'); 
-        else return res.render('login', {layout: 'user', title: 'Login'});
+        else                        return res.render('login', {layout: 'user', title: 'Login'});
     })
     .post(async (req, res) => {  
         const logInForm = req.body;  
-        
-        const email = validation.checkEM(logInForm.registeredEmail);  
-        const password = validation.checkPW(logInForm.registeredPassword); 
-        //console.log("user/login:", [email]);     
+        if( !logInForm || 
+            !logInForm.registeredEmail || 
+            !logInForm.registeredPassword)      return res.render('login', {layout: 'user', title: 'Login'});   
 
-        const registeredUser = await usersFuncs.checkUser(email, password); 
-        //console.log("router/login, registeredUser", [registeredUser]);   
-        if(!registeredUser)  return res.render('login', {layout: 'user', title: 'Login Again'});   
- 
+            const email = validation.checkEM(logInForm.registeredEmail);  
+            const password = validation.checkPW(logInForm.registeredPassword);  
+            //console.log("user/login:", [email]);     
+        try {        
+            const registeredUser = await usersFuncs.checkUser(email, password); 
+            //console.log("router/login, registeredUser", [registeredUser]);   
+            if(!registeredUser)         return res.render('login', {layout: 'user', title: 'Login Again'});   
+        } catch (e) {
+            console.log('login_error', logInForm);
+            return res.render('login', {layout: 'user', title: 'Login Error'}); 
+        }          
         console.log("User login Success: ", [email]); 
         
         const currentTime = new Date().toString();  
