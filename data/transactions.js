@@ -1,16 +1,20 @@
-import { transaction } from '../config/mongoCollections.js';
-import { ObjectId } from 'mongodb';
+import {
+  transaction
+} from '../config/mongoCollections.js';
+import {
+  ObjectId
+} from 'mongodb';
 
 const createTransaction = async (category, transactionInfo, amount, dateOfTransaction, receiptFilename, pathOfFilename, userId, userComments) => {
   //Validation and error handling logic for transaction inputs
-    if (!category || typeof category !== 'string') {
+  if (!category || typeof category !== 'string') {
     throw 'Invalid category input';
   }
   if (!['Income', 'Savings', 'Expenditure', 'Retirement', 'Investment'].includes(category)) {
     throw 'Invalid category value';
   }
-    
-    if (!transactionInfo || typeof transactionInfo !== 'string') {
+
+  if (!transactionInfo || typeof transactionInfo !== 'string') {
     throw 'Invalid transactionInfo input';
   }
 
@@ -39,31 +43,31 @@ const createTransaction = async (category, transactionInfo, amount, dateOfTransa
   };
 
   // Only add certain fields if they are provided
-    if (userComments) {
+  if (userComments) {
     newTransaction.userComments = userComments;
-    }
-    
-    if (transactionInfo) {
+  }
+
+  if (transactionInfo) {
     newTransaction.transactionInfo = transactionInfo;
+  }
+
+  if (receiptFilename || pathOfFilename) {
+    if (
+      typeof receiptFilename !== "string" ||
+      typeof pathOfFilename !== "string"
+    ) {
+      throw "Invalid receiptFilename or pathOfFilename input";
     }
-    
-if (receiptFilename || pathOfFilename) {
-  if (
-    typeof receiptFilename !== "string" ||
-    typeof pathOfFilename !== "string"
-  ) {
-    throw "Invalid receiptFilename or pathOfFilename input";
+
+    const fileExtension = receiptFilename.split(".").pop().toLowerCase();
+    if (!["jpg", "jpeg", "png"].includes(fileExtension)) {
+      throw "Invalid file type, only jpg, jpeg, or png allowed";
+    }
+
+    newTransaction.receiptFilename = receiptFilename;
+    newTransaction.pathOfFilename = pathOfFilename;
   }
 
-  const fileExtension = receiptFilename.split(".").pop().toLowerCase();
-  if (!["jpg", "jpeg", "png"].includes(fileExtension)) {
-    throw "Invalid file type, only jpg, jpeg, or png allowed";
-  }
-
-  newTransaction.receiptFilename = receiptFilename;
-  newTransaction.pathOfFilename = pathOfFilename;
-}
-    
 
 
   const insertInfo = await transactionCollection.insertOne(newTransaction);
@@ -83,7 +87,9 @@ const getTransactionById = async (transactionId) => {
   }
 
   const transactionCollection = await transactions();
-  const transaction = await transactionCollection.findOne({ _id: new ObjectId(transactionId) });
+  const transaction = await transactionCollection.findOne({
+    _id: new ObjectId(transactionId)
+  });
 
   if (!transaction) {
     throw 'Transaction not found';
@@ -102,7 +108,9 @@ const getTransactionsByUserId = async (userId) => {
   }
 
   const transactionCollection = await transaction();
-  const userTransactions = await transactionCollection.find({ userId: userId }).toArray();
+  const userTransactions = await transactionCollection.find({
+    userEmail: userId
+  }).toArray();
 
   return userTransactions;
 };
@@ -126,8 +134,12 @@ const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
 
   const transactionCollection = await transaction();
   const userTransactions = await transactionCollection
-    .find({ userId: userId })
-    .sort({ dateOfTransaction: -1 }) // Sort by date in descending order
+    .find({
+      userId: userId
+    })
+    .sort({
+      dateOfTransaction: -1
+    }) // Sort by date in descending order
     .limit(limit)
     .toArray();
 
@@ -137,7 +149,9 @@ const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
 const getTransactionsByCategory = async (category) => {
   const transactionCollection = await transaction();
   const transactionsByCategory = await transactionCollection
-    .find({ category: category })
+    .find({
+      category: category
+    })
     .toArray();
   return transactionsByCategory;
 };
@@ -145,4 +159,11 @@ const getTransactionsByCategory = async (category) => {
 
 
 
-export { createTransaction, getTransactionById, getTransactionsByUserId, getAllTransactions, getMostRecentTransactionsByUserId, getTransactionsByCategory};
+export {
+  createTransaction,
+  getTransactionById,
+  getTransactionsByUserId,
+  getAllTransactions,
+  getMostRecentTransactionsByUserId,
+  getTransactionsByCategory
+};
