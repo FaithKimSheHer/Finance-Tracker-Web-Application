@@ -15,12 +15,8 @@ const createTransaction = async (
   if (!category || typeof category !== "string") {
     throw "Invalid category input";
   }
-  if (
-    !["Income", "Savings", "Expenditure", "Retirement", "Investment"].includes(
-      category
-    )
-  ) {
-    throw "Invalid category value";
+  if (!['Income', 'Savings', 'Expenditures', 'Retirement', 'Investments'].includes(category)) {
+    throw 'Invalid category value';
   }
 
   if (!transactionInfo || typeof transactionInfo !== "string") {
