@@ -20,11 +20,10 @@
                 <a id="logout-link" href="/user/logout">Logout</a>
                 <a id="login-link" href="/user/login">Login</a>
                 <a id="register-link" href="/user/register">Register</a>
-                <a href="/transactions">Transactions</a>
             </div>
         </header>
         <main>
-            {{> summary}} <!-- syntax for rendering partial -->
+            {{> categories}} <!-- syntax for rendering partial -->
             {{{ body }}}
             {{> update}}
         </main>

@@ -1,3 +1,26 @@
 <div id="update">
-    add/remove transactions 
+    <h2>Transactions</h2>
+    <div class="partial-body">
+        <table id="transactionTable">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Transaction Date</th>
+                </tr>
+            </thead>
+            <tbody id="recentTrans">
+                {{#each summary}}
+                <tr>
+                    <td>{{category}}</td>
+                    <td>{{amount}}</td>
+                    <td>{{dateOfTransaction}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <a href="/transactions">Transactions</a>
+    </div>
+
+    <script src="../public/js/summary.js"></script>
 </div>
