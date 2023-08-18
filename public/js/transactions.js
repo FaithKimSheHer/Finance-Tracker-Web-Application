@@ -20,9 +20,8 @@ function validateUpdateForm() {
 
     // Get values from the update form
     const amount = document.getElementById("transactionAmount").value;
-    const date = document.getElementById("transactionDate").value;
-    const category = document.getElementById("updateSelector").value;
-    // const userId = document.getElementById("userId").value;
+    const date = document.getElementById("transactionDate").value.trim();
+    const category = document.getElementById("updateSelector").value.trim();
 
     // Check type of values
     if (!Number.isInteger(amount) || amount <= 0) {   // Validate amount is a number
@@ -40,17 +39,11 @@ function validateUpdateForm() {
         return false;
     }
 
-    // if (!typeof userId === 'string') {
-    //     alert("Please enter a valid userId");  // Validate userId is a string
-    //     return false;
-    // }
-
-
     // Optional fields from the update form
-    const transactionInfo = document.getElementById("transactionInfo").value;
-    const receiptFilename = document.getElementById("receiptFilename").value;
-    const pathOfFilename = document.getElementById("pathOfFilename").value;
-    const userComments = document.getElementById("userComments").value;
+    const transactionInfo = document.getElementById("transactionInfo").value.trim();
+    const receiptFilename = document.getElementById("receiptFilename").value.trim();
+    const pathOfFilename = document.getElementById("pathOfFilename").value.trim();
+    const userComments = document.getElementById("userComments").value.trim();
 
     // Check types of optional field values
     if (transactionInfo || receiptFilename || pathOfFilename || userComments) {
@@ -76,19 +69,8 @@ function validateUpdateForm() {
     }
 
 
-    // Trim all values
-    date.trim();
-    category.trim();
-    userId.trim();
-    if (transactionInfo) transactionInfo.trim();
-    if (receiptFilename) receiptFilename.trim();
-    if (pathOfFilename) pathOfFilename.trim();
-    if (userComments) userComments.trim();
-
-
-
     // Check if any (of the required) values are empty, if so alert user
-    if (!amount || !date || !category || !userId) {
+    if (!amount || !date || !category) {
         alert("Please fill out all fields");
         return false;
     }
