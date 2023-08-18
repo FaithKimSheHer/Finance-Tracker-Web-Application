@@ -1,11 +1,11 @@
-<div id="expenditures" class="category">
+<div id="retirements" class="category">
     <form action="/" method="GET">
         <input type="submit" value="<" />
     </form>    
     <div class="cat-body">
         <p>As of {{user.currentTime}}</p>
         {{#each transactions}}
-            <article class="expenditures">
+            <article class="retirements">
                 <ul>
                     <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li> 
                 </ul> 
@@ -16,13 +16,13 @@
                 <div id="myPlot" style="width:100%;max-width:700px"></div> 
                 <script>
                     const xArray = ["Jan", "Feb", "March", "April", "May", "Jun", "July", "Aug"];
-                    const yArray = [0, 0, 0, 0, 0, 2000, 0, 0, 0]; 
+                    const yArray = [0, 0, 0, 0, 0, 10000, 0, 0, 0]; 
                     const data = [{
                         x:xArray,
                         y:yArray,
                         type:"bar"
                     }]; 
-                    const layout = {title:"Expenditure Transctions"}; 
+                    const layout = {title:"Retirement Transctions"}; 
                     Plotly.newPlot("myPlot", data, layout);
                 </script> 
             </body>
