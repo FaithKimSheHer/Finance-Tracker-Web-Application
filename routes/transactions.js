@@ -78,6 +78,11 @@ router.route("/add_transaction").post(async (req, res) => {
   }
 });
  
+router.route("/income").get(async (req, res) => {
+  const transactions = await transactFuns.getTransactionsByCategory("Income"); 
+  console.log("/income, user", [req.session.user]);
+  return res.render("categories/income", { transactions: transactions, user: req.session.user});
+});
 router.route("/savings").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory("Savings"); 
   console.log("/savings, user", [req.session.user]);
@@ -93,9 +98,9 @@ router.route("/investments").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory("Investments");
   return res.render("categories/investments", { transactions: transactions, user: req.session.user});
 });
-router.route("/retirements").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Retirements");
-  return res.render("categories/retirements", { transactions: transactions, user: req.session.user});
+router.route("/retirement").get(async (req, res) => {
+  const transactions = await transactFuns.getTransactionsByCategory("Retirement");
+  return res.render("categories/retirement", { transactions: transactions, user: req.session.user});
 });
 
 export default router;
