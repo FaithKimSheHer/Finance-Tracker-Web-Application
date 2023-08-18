@@ -81,28 +81,67 @@ router.route("/add_transaction").post(async (req, res) => {
 });
  
 router.route("/income").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Income"); 
+  const userId = req.session.user;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userId,
+    "Income"
+  );
   console.log("/income, user", [req.session.user]);
-  return res.render("categories/income", { transactions: transactions, user: req.session.user});
+  return res.render("categories/income", {
+    transactions: transactions,
+    user: req.session.user,
+  });
 });
+
 router.route("/savings").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Savings"); 
+  const userId = req.session.user;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userId,
+    "Savings"
+  );
   console.log("/savings, user", [req.session.user]);
-  return res.render("categories/savings", { transactions: transactions, user: req.session.user});
+  return res.render("categories/savings", {
+    transactions: transactions,
+    user: req.session.user,
+  });
 });
 
 router.route("/expenditures").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Expenditures");
+  const userId = req.session.user;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userId,
+    "Expenditures"
+  );
   console.log("/expenditures, user", [req.session.user]);
-  return res.render("categories/expenditures", { transactions: transactions, user: req.session.user});
+  return res.render("categories/expenditures", {
+    transactions: transactions,
+    user: req.session.user,
+  });
 });
+
 router.route("/investments").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Investments");
-  return res.render("categories/investments", { transactions: transactions, user: req.session.user});
+  const userId = req.session.user;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userId,
+    "Investments"
+  );
+  return res.render("categories/investments", {
+    transactions: transactions,
+    user: req.session.user,
+  });
 });
+
 router.route("/retirement").get(async (req, res) => {
-  const transactions = await transactFuns.getTransactionsByCategory("Retirement");
-  return res.render("categories/retirement", { transactions: transactions, user: req.session.user});
+  const userId = req.session.user;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userId,
+    "Retirement"
+  );
+  return res.render("categories/retirement", {
+    transactions: transactions,
+    user: req.session.user,
+  });
 });
+
 
 export default router;
