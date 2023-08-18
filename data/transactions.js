@@ -1,3 +1,4 @@
+
 import {
   transaction
 } from '../config/mongoCollections.js';
@@ -9,29 +10,46 @@ const createTransaction = async (category, transactionInfo, amount, dateOfTransa
   //Validation and error handling logic for transaction inputs
   if (!category || typeof category !== 'string') {
     throw 'Invalid category input';
+
+import { transaction } from "../config/mongoCollections.js";
+import { ObjectId } from "mongodb";
+
+const createTransaction = async (
+  category,
+  transactionInfo,
+  amount,
+  dateOfTransaction,
+  receiptFilename,
+  pathOfFilename,
+  userId,
+  userComments
+) => {
+  //Validation and error handling logic for transaction inputs
+  if (!category || typeof category !== "string") {
+    throw "Invalid category input";
   }
-  if (!['Income', 'Savings', 'Expenditure', 'Retirement', 'Investment'].includes(category)) {
+  if (!['Income', 'Savings', 'Expenditures', 'Retirement', 'Investments'].includes(category)) {
     throw 'Invalid category value';
   }
 
-  if (!transactionInfo || typeof transactionInfo !== 'string') {
-    throw 'Invalid transactionInfo input';
+  if (!transactionInfo || typeof transactionInfo !== "string") {
+    throw "Invalid transactionInfo input";
   }
 
-  if (!Number.isInteger(amount) || amount <= 0 || (amount * 100) % 1 !== 0) {
+  if (!Number.isInteger(amount) || amount <= 0) {
     throw "Invalid amount input";
   }
 
   if (!(dateOfTransaction instanceof Date)) {
-    throw 'Invalid dateOfTransaction input';
+    throw "Invalid dateOfTransaction input";
   }
 
-  if (!userId || typeof userId !== 'string') {
-    throw 'Invalid userId input';
+  if (!userId || typeof userId !== "string") {
+    throw "Invalid userId input";
   }
 
-  if (!userComments || typeof userComments !== 'string') {
-    throw 'Invalid userComments input';
+  if (!userComments || typeof userComments !== "string") {
+    throw "Invalid userComments input";
   }
 
   const transactionCollection = await transaction();
@@ -69,30 +87,52 @@ const createTransaction = async (category, transactionInfo, amount, dateOfTransa
   }
 
 
+  }
+
+  if (transactionInfo) {
+    newTransaction.transactionInfo = transactionInfo;
+  }
+
+  if (receiptFilename || pathOfFilename) {
+    if (
+      typeof receiptFilename !== "string" ||
+      typeof pathOfFilename !== "string"
+    ) {
+      throw "Invalid receiptFilename or pathOfFilename input";
+    }
+
+    const fileExtension = receiptFilename.split(".").pop().toLowerCase();
+    if (!["jpg", "jpeg", "png"].includes(fileExtension)) {
+      throw "Invalid file type, only jpg, jpeg, or png allowed";
+    }
+
+    newTransaction.receiptFilename = receiptFilename;
+    newTransaction.pathOfFilename = pathOfFilename;
+  }
 
   const insertInfo = await transactionCollection.insertOne(newTransaction);
-  if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add transaction';
+  if (!insertInfo.acknowledged || !insertInfo.insertedId)
+    throw "Could not add transaction";
 
   return insertInfo.ops[0];
 };
 
-
 const getTransactionById = async (transactionId) => {
   if (!transactionId) {
-    throw 'You must provide a transaction ID to search for';
+    throw "You must provide a transaction ID to search for";
   }
 
-  if (typeof transactionId !== 'string' || !ObjectId.isValid(transactionId)) {
-    throw 'Invalid transaction ID';
+  if (typeof transactionId !== "string" || !ObjectId.isValid(transactionId)) {
+    throw "Invalid transaction ID";
   }
 
   const transactionCollection = await transactions();
   const transaction = await transactionCollection.findOne({
-    _id: new ObjectId(transactionId)
+    _id: new ObjectId(transactionId),
   });
 
   if (!transaction) {
-    throw 'Transaction not found';
+    throw "Transaction not found";
   }
 
   return transaction;
@@ -100,21 +140,21 @@ const getTransactionById = async (transactionId) => {
 
 const getTransactionsByUserId = async (userId) => {
   if (!userId) {
-    throw 'You must provide a user ID to search for transactions';
+    throw "You must provide a user ID to search for transactions";
   }
 
-  if (typeof userId !== 'string') {
-    throw 'Invalid user ID';
+  if (typeof userId !== "string") {
+    throw "Invalid user ID";
   }
 
   const transactionCollection = await transaction();
-  const userTransactions = await transactionCollection.find({
-    userEmail: userId
-  }).toArray();
+
+  const userTransactions = await transactionCollection
+    .find({ userId: userId })
+    .toArray();
 
   return userTransactions;
 };
-
 
 const getAllTransactions = async () => {
   const transactionCollection = await transaction();
@@ -125,11 +165,11 @@ const getAllTransactions = async () => {
 
 const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
   if (!userId) {
-    throw 'You must provide a user ID to search for transactions';
+    throw "You must provide a user ID to search for transactions";
   }
 
-  if (typeof userId !== 'string') {
-    throw 'Invalid user ID';
+  if (typeof userId !== "string") {
+    throw "Invalid user ID";
   }
 
   const transactionCollection = await transaction();
@@ -156,14 +196,11 @@ const getTransactionsByCategory = async (category) => {
   return transactionsByCategory;
 };
 
-
-
-
 export {
   createTransaction,
   getTransactionById,
   getTransactionsByUserId,
   getAllTransactions,
   getMostRecentTransactionsByUserId,
-  getTransactionsByCategory
+  getTransactionsByCategory,
 };

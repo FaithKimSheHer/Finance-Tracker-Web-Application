@@ -1,8 +1,30 @@
-<div id="income" class="category">
+<div id="incomes" class="category">
     <form action="/" method="GET">
         <input type="submit" value="<" />
     </form>    
-    <div class="cat-body">
-        INCOME SUMMARY
+    <div class="cat-body"> 
+        <p>As of {{user.currentTime}}</p>
+        {{#each transactions}}
+            <article class="incomes">
+                <ul>
+                    <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li> 
+                </ul> 
+            </article>
+        {{/each}}
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <body> 
+                <div id="myPlot" style="width:100%;max-width:700px"></div> 
+                <script>
+                    const xArray = ["Jan", "Feb", "March", "April", "May", "Jun", "July", "Aug"];
+                    const yArray = [0, 0, 0, 0, 0, 5000, 6000, 0, 0]; 
+                    const data = [{
+                        x:xArray,
+                        y:yArray,
+                        type:"bar"
+                    }]; 
+                    const layout = {title:"Income Transactions"}; 
+                    Plotly.newPlot("myPlot", data, layout);
+                </script> 
+            </body>
     </div>
 </div>
