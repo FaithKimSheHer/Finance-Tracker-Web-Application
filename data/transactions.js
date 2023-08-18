@@ -14,8 +14,8 @@ const createTransaction = async (category, transactionInfo, amount, dateOfTransa
     throw 'Invalid transactionInfo input';
   }
 
-  if (!Number.isInteger(amount) || amount <= 0) {
-    throw 'Invalid amount input';
+  if (!Number.isInteger(amount) || amount <= 0 || (amount * 100) % 1 !== 0) {
+    throw "Invalid amount input";
   }
 
   if (!(dateOfTransaction instanceof Date)) {
@@ -47,10 +47,22 @@ const createTransaction = async (category, transactionInfo, amount, dateOfTransa
     newTransaction.transactionInfo = transactionInfo;
     }
     
-  if (receiptFilename && pathOfFilename) {
-    newTransaction.receiptFilename = receiptFilename;
-    newTransaction.pathOfFilename = pathOfFilename;
+if (receiptFilename || pathOfFilename) {
+  if (
+    typeof receiptFilename !== "string" ||
+    typeof pathOfFilename !== "string"
+  ) {
+    throw "Invalid receiptFilename or pathOfFilename input";
   }
+
+  const fileExtension = receiptFilename.split(".").pop().toLowerCase();
+  if (!["jpg", "jpeg", "png"].includes(fileExtension)) {
+    throw "Invalid file type, only jpg, jpeg, or png allowed";
+  }
+
+  newTransaction.receiptFilename = receiptFilename;
+  newTransaction.pathOfFilename = pathOfFilename;
+}
     
 
 
