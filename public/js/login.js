@@ -1,11 +1,11 @@
 // login.handlebars.loginForm
-let loginForm = document.getElementById('log-inForm');
+let loginForm = document.getElementById('log-inForm'); 
+let registeredEmail = document.getElementById('registeredEmail').value;
+let registeredPassword = document.getElementById('registeredPassword').value;  
+
 if(loginForm){
     function btnClick(){  
-        try{ 
-            let registeredEmail = document.getElementById('registeredEmail').value;
-            let registeredPassword = document.getElementById('registeredPassword').value;  
-
+        try{  
             let email = registeredEmail.trim().toLowerCase();
             if(email.length===0)              throw "email can't be an empty string";
             if(email.includes(" "))           throw "email can't include an empty space";
@@ -23,9 +23,7 @@ if(loginForm){
             if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) throw "password must include at least one special charactor"; 
  
         } catch (e) { 
-            console.log(e); 
-            error.innerHTML = e;
-            // The form should reset itself every time after an input has been processed
+            console.log(e);  
             loginForm.reset();  
         }  
     }//END: funtion btnClick()      
