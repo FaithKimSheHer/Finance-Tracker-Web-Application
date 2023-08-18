@@ -30,7 +30,7 @@ router.route("/summary").get(async (req, res) => {
 router.route("/transaction_summary/:id").get(async (req, res) => {
   const id = req.params.id;
   try {
-    const transaction = await getTransactionById(id);
+    const transaction = await transactFuns.getTransactionById(id);
     if (transaction) {
       return res.render("partials/update", {
         transaction: transaction,
@@ -84,25 +84,25 @@ router.route("/income").get(async (req, res) => {
 });
 router.route("/savings").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory("Savings");
-  return res.render("categories/savings");
+  return res.render("categories/savings", { transactions: transactions });
 });
 router.route("/expenditures").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(
     "Expenditures"
   );
-  return res.render("categories/expenditures");
+  return res.render("categories/expenditures", { transactions: transactions });
 });
 router.route("/investments").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(
     "Investments"
   );
-  return res.render("categories/investments");
+  return res.render("categories/investments", { transactions: transactions });
 });
 router.route("/retirement").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(
     "Retirement"
   );
-  return res.render("categories/retirement");
+  return res.render("categories/retirement", { transactions: transactions });
 });
 
 export default router;
