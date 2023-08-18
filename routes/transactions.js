@@ -14,20 +14,20 @@ router.route('/').get(async (req, res) => {
     layout: 'user',
     title: 'Transaction'
   });
-}).post(async (req, res) => {
-
-  //TODO complete post routes
-  let data = req.body;
 })
 
 router.route("/summary").get(async (req, res) => {
   try {
     const data = await transactFuns.getAllTransactions();
-    return res.render("summary", { summary: data });
+    return res.render('partials/summary', {
+      layout: 'main',
+      title: 'Summary',
+      summary: data
+    })
   } catch (error) {
-    return res
-      .status(404)
-      .render("error", { errorMessage: "Summary page not found." });
+    return res.status(404).render('transactions', {
+      errorMessage: "Summary page not found."
+    })
   }
 });
 
@@ -41,6 +41,7 @@ router.route("/transaction_summary/:id").get(async (req, res) => {
   } catch (error) {
 
   }
+});
 
 router.route("/add_transaction").post(async (req, res) => {
   try {
@@ -50,7 +51,9 @@ router.route("/add_transaction").post(async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .render("error", { errorMessage: "Error adding transaction." });
+      .render("error", {
+        errorMessage: "Error adding transaction."
+      });
   }
 });
 

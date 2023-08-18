@@ -5,11 +5,17 @@
             <tr>
                 <th>Category</th>
                 <th>Amount</th>
-                <th>Date</th>
+                <th>Transaction Date</th>
             </tr>
         </thead>
         <tbody id="recentTrans">
-            
+            {{#each summary}}
+            <tr>
+                <td>{{category}}</td>
+                <td>{{amount}}</td>
+                <td>{{dateOfTransaction}}</td>
+            </tr>
+            {{/each}}
         </tbody>
     </table>
     <script src="../public/js/summary.js"></script>
