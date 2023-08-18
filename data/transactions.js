@@ -1,3 +1,4 @@
+
 import { transaction } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
@@ -112,7 +113,9 @@ const getTransactionsByUserId = async (userId) => {
 
   const transactionCollection = await transaction();
   const userTransactions = await transactionCollection
-    .find({ userId: userId })
+    .find({
+      userEmail: userId
+    })
     .toArray();
 
   return userTransactions;
