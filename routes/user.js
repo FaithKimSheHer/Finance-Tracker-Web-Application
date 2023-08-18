@@ -1,113 +1,52 @@
 import express from 'express';
 const router = express.Router();  
 import { usersFuncs } from '../data/index.js';
+import validation from '../data/validation.js';
 
 router.route('/register')
     .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
-        console.log("AuthCookie: ", req.session);
-        console.log("register/req.session.user:", req.session.user, " => redirecting to dashboard")
+        console.log("AuthCookie: ", req.session); 
         if(req.session.user)        return res.redirect('/');
-        else res.status(200).render('register', {layout: 'user', title: 'Register'});
+        else return res.render('register', {layout: 'user', title: 'Register'});
     })
     .post(async (req, res) => {  
-        const registrationForm = req.body;  
-        
-        let emailAddress = registrationForm.newUserEmail.trim().toLowerCase();
-        if(emailAddress.length===0)              throw "email address field error";
-        if(emailAddress.includes(" "))           throw "email address field error";
-        if(!emailAddress.includes("@"))           throw "email address field error";
-        if(!emailAddress.includes("."))           throw "email address field error";
-        if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
-        if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
-        if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-        console.log("Register: ", emailAddress);   
-        const newUser = await usersFuncs.getByUserEmail(emailAddress);  
-        //console.log("existing user?", newUser!==null); 
-        if(newUser){
-            console.log(`User with email ${emailAddress} `, "already exist"); 
-            return res.status(200).render('registerError', {layout: 'user', error: emailAddress});
-        }
-    
-        try {   
-            // Error handling  
-            if(!registrationForm.newUserFirstName) throw "fistName field error"; 
-            if(!registrationForm.newUserLastName) throw "lastName field error";
-            if(!registrationForm.newUserName) throw "emailAddress field error";
-            if(!registrationForm.newUserName) throw "userName field error";
-            if(!registrationForm.newUserPassword) throw "newUserPassword field error";
-            if(registrationForm.newUserPassword!==registrationForm.confirmPasswordInput) throw "confirmPasswordInput field error";
-            if(!registrationForm.newUserCity) throw "newUserCity field error";  
-            if(!registrationForm.newUserState) throw "newUserState field error";  
-            //console.log('registrationForm_1', registrationForm);
+        const registrationForm = req.body;    
+        try {      
+            const email = validation.checkEM(registrationForm.newUserEmail); 
+            const newUser = await usersFuncs.getByUserEmail(email);  
+            if(!newUser===null){
+                console.log(`User with email ${email} `, "already exist"); 
+                return res.render('login', {layout: 'user', email: user.email});
+            } 
 
-            let firstName = registrationForm.newUserFirstName; 
-                if(firstName.includes(" "))           throw "firstName field error";
-                if(firstName.length < 2)              throw "firstName field error";
-                if(firstName.length > 25)             throw "firstName field error";
-                if (/\d/.test(firstName))             throw "firstName field error";   
-                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(firstName))  throw "firstName field error";
-                //console.log("firstName", registrationForm.newUserFirstName);
+            const firstName = validation.checkFN(registrationForm.newUserFirstName);  
+            //console.log("firstName", [registrationForm.newUserFirstName]);
 
-            let lastName = registrationForm.newUserLastName.trim();
-                if(lastName.includes(" "))           throw "lastName field error";
-                if(lastName.length < 2)              throw "lastName field error";
-                if(lastName.length > 25)             throw "lastName field error";
-                if (/\d/.test(lastName))             throw "lastName field error"; 
-                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(lastName))  throw "lastName field error";
-                //console.log("lastName", lastName);
-
-            let emailAddress = registrationForm.newUserEmail.trim().toLowerCase();
-                if(emailAddress.length===0)              throw "email address field error";
-                if(emailAddress.includes(" "))           throw "email address field error";
-                if(!emailAddress.includes("@"))           throw "email address field error";
-                if(!emailAddress.includes("."))           throw "email address field error";
-                if(emailAddress.substring(0, emailAddress.indexOf('@')).length === 0)                           throw "email address field error";  
-                if(emailAddress.substring(emailAddress.indexOf('@')), emailAddress.indexOf('.').length === 0)   throw "email address field error";
-                if(emailAddress.substring(emailAddress.indexOf('.'), -1).length === 0) throw "email address field error";
-                //console.log("emailAddress", emailAddress);
+            const lastName = validation.checkLN(registrationForm.newUserLastName); 
+            //console.log("lastName", [lastName]); 
                 
-            let userName = registrationForm.newUserName.trim();
-                if(userName.includes(" "))           throw "lastName field error";
-                if(userName.length < 2)              throw "lastName field error";
-                if(userName.length > 25)             throw "lastName field error"; 
-                //console.log("userName", userName);
+            const userName = validation.checkUN(registrationForm.newUserName);
+            //console.log("userName", [userName]);
+  
+            const password = validation.checkPW(registrationForm.newUserPassword); 
+            //console.log("password", [password]); 
 
-            let password = registrationForm.newUserPassword.trim();
-                if(password.includes(" "))           throw "password field error"; 
-                if(password.length < 8)              throw "password field error"; 
-                if (!/[A-Z]/.test(password))         throw "password field error";
-                if (!/\d/.test(password))            throw "password field error"; 
-                if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password))  throw "password field error";
-                //console.log("password", password);
-                //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+            if(registrationForm.confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
+            //console.log("confirmPassword", [registrationForm.confirmPasswordInput === password]);
 
-                if(registrationForm.confirmPasswordInput !== password) throw "confirmPasswordInput field error"; 
-                //console.log("confirmPasswordInput", registrationForm.confirmPasswordInput);
+            const city = validation.checkCT(registrationForm.newUserCity);     
+            //console.log("city", [city]); 
 
-            let city = registrationForm.newUserCity.trim();    
-                if(city.length === 0)            throw "city field error";  
-                if(city.length < 2)              throw "city field error";
-                if(city.length > 25)             throw "city field error";
-                if(/\d/.test(city))              throw "city field error";
-                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(city))  throw "city field error";
-                //console.log("city", city);
-                
-            let state = registrationForm.newUserState.trim();    
-                if(state.length === 0)            throw "state field error";  
-                if(state.length !== 2)            throw "state field error"; 
-                if(/\d/.test(state))              throw "state field error";
-                if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(state))  throw "state field error";  
-                //console.log('state', state);
-                //console.log('registrationForm_2', registrationForm);
+            const state = validation.checkST(registrationForm.newUserState);     
+            //console.log('state', [state]); 
         } catch (e) {
-            console.log('registrationForm_3', registrationForm);
-            res.status(200).render('RegisterError', {layout: 'user', title: 'RegisterError'}); 
-        }        
-        //console.log("Register the user:\n", registrationForm); 
-        const user = await usersFuncs.addUser(registrationForm); 
-        console.log("Add user success! :", user);
-        res.status(200).render('login', {layout: 'user', email: user.email}); 
+            console.log('registrationForm_error', registrationForm);
+            return res.render('Register', {layout: 'user', title: 'Register Error'}); 
+        }         
+        const registeredEmail = await usersFuncs.addUser(registrationForm); 
+        console.log("User registration success! :", [registeredEmail]);
+        return res.render('login', {layout: 'user', email: registeredEmail}); 
     }); //END: router.route('/register') 
 
 router.route('/login')
@@ -115,42 +54,32 @@ router.route('/login')
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session); 
         if(req.session.user)        return res.redirect('/'); 
-        else res.status(200).render('login', {layout: 'user', title: 'Login'});
+        else return res.render('login', {layout: 'user', title: 'Login'});
     })
     .post(async (req, res) => {  
         const logInForm = req.body;  
         
-        let email = logInForm.registeredEmail;  
-        let password = logInForm.registeredPassword;
-        // To find if email is valid => if it exists in mongodb
-        if(email === undefined)                                   throw 'You must provide your email address'; 
-        if(typeof email !== 'string')                             throw 'Email address must be a string';  
-        else                                                      email = email.trim().toLowerCase();
-        if(email.length === 0)                                    throw 'Email address cannot be an empty string or just spaces';   
-        if(email.substring(0, email.indexOf('@')).length === 0)   throw 'Email address address error';  
-        if(email.substring(email.indexOf('@')), email.indexOf('.').length === 0)   throw 'Email address address error'; 
-        console.log("RegisteredUser:",email);    
+        const email = validation.checkEM(logInForm.registeredEmail);  
+        const password = validation.checkPW(logInForm.registeredPassword); 
+        //console.log("user/login:", [email]);     
 
-        const registeredUser = await usersFuncs.checkUser(email, password);   
-        
-        if(!registeredUser)  res.status(200).render('loginError', {layout: 'user', error: email});   
+        const registeredUser = await usersFuncs.checkUser(email, password); 
+        //console.log("router/login, registeredUser", [registeredUser]);   
+        if(!registeredUser)  return res.render('login', {layout: 'user', title: 'Login Again'});   
  
-        console.log("RegisteredUser:",registeredUser);    
-        console.log("Registered User Found Success: ", email); 
+        console.log("User login Success: ", [email]); 
         
         const currentTime = new Date().toString();  
         req.session.user = { currentTime: currentTime, 
                              email: email};
-        console.log("req.session.user", req.session.user)
-        res.status(200).redirect("/"); 
+        console.log("req.session.user", [req.session.user])
+        return res.redirect("/"); 
     }); //END: router.route('/logIn') 
 
 router.route('/logout').get(async (req, res) => {
     //code here for GET 
     res.cookie('AuthCookie', null); 
     req.session.destroy();
-    res.status(200).render('logout', {layout: 'user', logout: "LogoutSuccess"});
-});
- 
-
+    return res.render('logout', {layout: 'user', logout: "Logout Success"});
+}); 
 export default router; 
