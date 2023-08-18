@@ -58,21 +58,20 @@ const create = async(
         hashedPassword:             hashedPassword,
         city:                       city,
         state:                      state,
+        age:                        age,
         type:                       "user", 
         accountCreationDate:        accountCreationDate
     } 
     const insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)     throw 'Could not add user'; 
 
-    return insertInfo.value;
+    return newUser;
 };
 
 const addUser = async(registrationForm) => { 
     // Add a user by input registrationForm from static/html 
-    // => RETURN: user object 
-    const type = "user";
-    let accountCreationDate = new Date().toLocaleDateString();  
-
+    // => RETURN: user object  
+      
     try{
         // Error handlings
         const firstName = validation.checkFN(registrationForm.newUserFirstName);  
@@ -104,6 +103,7 @@ const addUser = async(registrationForm) => {
         const state = validation.checkST(registrationForm.newUserState);  
         //console.log("state: ", [state]);   
 
+        let accountCreationDate = new Date().toLocaleDateString(); 
         const hashedPassword = await bcrypt.hash(password, saltRounds); 
         let newUser = {
             firstName:                  firstName,
@@ -113,7 +113,8 @@ const addUser = async(registrationForm) => {
             hashedPassword:             hashedPassword,
             city:                       city,
             state:                      state,
-            type:                       type, 
+            age:                        age,
+            type:                       "user", 
             accountCreationDate:        accountCreationDate
         }    
         const insertInfo = await userCollection.insertOne(newUser);
