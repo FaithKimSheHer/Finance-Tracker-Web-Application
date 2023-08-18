@@ -1,7 +1,9 @@
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import {users} from '../config/mongoCollections.js';
 import {transaction} from '../config/mongoCollections.js'; 
-import { usersFuncs } from '../data/index.js';
+//import { usersFuncs } from '../data/index.js';
+import bcrypt from 'bcrypt'; 
+const saltRounds = 10; 
 
 let userOne = undefined;  
 async function main() {
@@ -11,46 +13,57 @@ async function main() {
   }catch (e) {
     console.log(e);
   } 
-  try{ 
-    const userCollection = await users();
-
+  try{  
+    const userCollection = await users(); 
+    
+    let hashedPassword = await bcrypt.hash("fkim@stevens.edu1T", saltRounds); 
+    let accountCreationDate = new Date().toLocaleDateString();
     let newPerson_1 = {
-      firstName:        "Faith",
-      lastName:         " Kim",
-      email:            "fkim@stevens.edu",
-      userName:         "fkim",
-      hashedPassword:   "helloFinalProject",
-      city:             "Fort Lee",
-      state:            "NJ",
-      age:              52
-    } 
+        firstName:        "Faith",
+        lastName:         "Kim",
+        email:            "fkim@stevens.edu",
+        userName:         "fkim",
+        hashedPassword:   hashedPassword,
+        city:             "Fort Lee",
+        state:            "NJ", 
+        age:              52,
+        type:             "user", 
+        accountCreationDate:        accountCreationDate
+    }
+
     const insertInfo_1 = await userCollection.insertOne(newPerson_1);
     if (!insertInfo_1.acknowledged || !insertInfo_1.insertedId)     throw 'Could not add user'; 
     else console.log(newPerson_1);
     
+    hashedPassword = await bcrypt.hash("ttizen@gmail.com2T", saltRounds);
     let newPerson_2 = {
         firstName:        "Bobby",
         lastName:         " Kim",
         email:            "ttizen@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   "(201)7412604",
+        hashedPassword:   hashedPassword,
         city:             "Fort Lee",
         state:            "NJ",
-        age:              55
+        age:              55,
+        type:             "user", 
+        accountCreationDate:        accountCreationDate
       } 
       const insertInfo_2 = await userCollection.insertOne(newPerson_2);
       if (!insertInfo_2.acknowledged || !insertInfo_2.insertedId)     throw 'Could not add user'; 
       else console.log(newPerson_2);
 
+      hashedPassword = await bcrypt.hash("bt@gmail.com3T", saltRounds);
       let newPerson_3 = {
         firstName:        "Bethesta",
         lastName:         " Kim",
         email:            "bt@gmail.com",
         userName:         "BBkim",
-        hashedPassword:   "(201)7412716",
+        hashedPassword:   hashedPassword,
         city:             "Fort Lee",
         state:            "NJ",
-        age:              24
+        age:              24,
+        type:             "user", 
+        accountCreationDate:        accountCreationDate
       } 
       const insertInfo_3 = await userCollection.insertOne(newPerson_3);
       if (!insertInfo_3.acknowledged || !insertInfo_3.insertedId)     throw 'Could not add user'; 
@@ -58,8 +71,7 @@ async function main() {
   }catch (e) {
     console.log(e);
   } 
-
-
+ 
   try{
     const transactionCollection = await transaction();
 
@@ -106,7 +118,7 @@ async function main() {
     else console.log(transactionInfo_3);
 
     let transaction_4 = {
-      category:          "Expenditure",
+      category:          "Expenditures",
       transactionInfo:   "Rent",
       amount:            2000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -135,7 +147,7 @@ async function main() {
     else console.log(transactionInfo_5);
 
     let transaction_6 = {
-      category:          "Investment",
+      category:          "Investments",
       transactionInfo:   "Purchasing Stocks",
       amount:            10000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -150,7 +162,7 @@ async function main() {
 
     
     let transaction_7 = {
-      category:          "Investment 2",
+      category:          "Investments",
       transactionInfo:   "Purchasing Bonds",
       amount:            10000,
       dateOfTransaction: "06/25/2023 14:30:00",

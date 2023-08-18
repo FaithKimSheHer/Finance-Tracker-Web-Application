@@ -48,7 +48,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 30000
+        maxAge: 300000
     }
 }));
 
@@ -68,7 +68,7 @@ app.use('/user', async (req, res, next) => {
         console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Non-Authenticated User)`);
         return next();
     }
-    if(req.path === '/logout') return next(); //no /user bc /user is already in the path
+    if (req.path === '/logout') return next(); //no /user bc /user is already in the path
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (Authenticated User)`);
     return res.redirect('/');
 });
