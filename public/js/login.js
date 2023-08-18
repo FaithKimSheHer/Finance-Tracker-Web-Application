@@ -5,7 +5,10 @@ let registeredPassword = document.getElementById('registeredPassword').value;
 
 if( !loginForm ||
     !loginForm.registeredEmail ||
-    !loginForm.registeredPassword)   loginForm.reset();  
+    !loginForm.registeredPassword){
+        console.log("loginForm field error");
+        loginForm.reset();  
+}
 else{
     function btnClick(){  
         try{  
