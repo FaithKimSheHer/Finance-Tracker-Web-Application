@@ -1,3 +1,6 @@
+div.notice {
+    height: 3rem;
+}
 div.status {
     grid-column: dash;
     display: flex;
@@ -14,9 +17,6 @@ div#login,#formDiv {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-}
-div#notice {
-    height: 2rem;
 }
 
 form#updateForm{
