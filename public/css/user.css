@@ -54,3 +54,7 @@ span#pwConstraints {
     /* color: red; */
     line-height: 10px;
 }
+
+a#homeLink {
+    margin-top: 25px;
+}
