@@ -1,5 +1,9 @@
-import { transaction } from "../config/mongoCollections.js";
-import { ObjectId } from "mongodb";
+import {
+  transaction
+} from "../config/mongoCollections.js";
+import {
+  ObjectId
+} from "mongodb";
 
 const createTransaction = async (
   category,
@@ -162,6 +166,7 @@ const getMostRecentTransactionsByUserEmail = async (userEmail, limit = 5) => {
       throw "Invalid user ID";
     }
 
+
     const transactionCollection = await transaction();
     const userTransactions = await transactionCollection
       .find({ userEmail: userEmail })
@@ -172,7 +177,6 @@ const getMostRecentTransactionsByUserEmail = async (userEmail, limit = 5) => {
     return userTransactions;
   } catch (error) {
     console.error("Error:", error);
-
     return [];
   }
 };
@@ -212,6 +216,7 @@ const getTransactionsByCategory = async (userEmail, category) => {
     console.error("Error:", error);
     return [];
   }
+
 };
 
 export {

@@ -9,18 +9,21 @@ let confirmPasswordInput = document.getElementById('confirmPasswordInput').value
 let newUserCity = document.getElementById('newUserCity').value;
 let newUserState = document.getElementById('newUserState').value;
 
-if(newUserForm){
+if( !newUserForm ||
+    !newUserFirstName ||
+    !newUserLastName || 
+    !newUserEmail ||
+    !newUserName ||
+    !newUserPassword||
+    !confirmPasswordInput||
+    !newUserCity ||
+    !newUserState){
+        console.log("newUserForm field error");
+        newUserForm.reset(); 
+}  
+else{
     function btnClick(){  
-        try{ 
-            if(!newUserFirstName) throw "newUserFirstName field error"; 
-            if(!newUserLastName) throw "newUserLastName field error";
-            if(!newUserEmail) throw "newUserEmail field error";
-            if(!newUserName) throw "newUserName field error";
-            if(!newUserPassword) throw "newUserPassword field error";
-            if(!confirmPasswordInput) throw "confirmPasswordInput field error";
-            if(!newUserCity) throw "newUserCity field error";  
-            if(!newUserState) throw "newUserState field error";  
-
+        try{  
             let firstName = newUserFirstName.trim().toLowerCase();
             if(firstName.includes(" "))           throw "firstName can't include an empty space";
             if(firstName.length < 2)              throw "firstName can't be < 2"; 

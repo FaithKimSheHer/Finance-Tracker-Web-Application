@@ -76,7 +76,7 @@ async function main() {
     const transactionCollection = await transaction();
 
     let transaction_1 = {
-      category:          "Income",
+      category:          "income",
       transactionInfo:   "Monthly Remuneration",
       amount:            50000,
       dateOfTransaction: "06/30/2023 14:30:00",
@@ -90,7 +90,7 @@ async function main() {
     else console.log(transactionInfo_1);
 
     let transaction_2 = {
-      category:          "Income",
+      category:          "income",
       transactionInfo:   "Monthly Remuneration 2",
       amount:            60000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -104,7 +104,7 @@ async function main() {
     else console.log(transactionInfo_2);
 
     let transaction_3 = {
-      category:          "Savings",
+      category:          "savings",
       transactionInfo:   "Saving for Car",
       amount:            6000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -118,7 +118,7 @@ async function main() {
     else console.log(transactionInfo_3);
 
     let transaction_4 = {
-      category:          "Expenditures",
+      category:          "expenditure",
       transactionInfo:   "Rent",
       amount:            2000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -133,7 +133,7 @@ async function main() {
 
 
     let transaction_5 = {
-      category:          "Retirement",
+      category:          "retirement",
       transactionInfo:   "Contribution to 401k",
       amount:            10000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -147,7 +147,7 @@ async function main() {
     else console.log(transactionInfo_5);
 
     let transaction_6 = {
-      category:          "Investments",
+      category:          "investment",
       transactionInfo:   "Purchasing Stocks",
       amount:            10000,
       dateOfTransaction: "06/25/2023 14:30:00",
@@ -162,7 +162,7 @@ async function main() {
 
     
     let transaction_7 = {
-      category:          "Investments",
+      category:          "investment",
       transactionInfo:   "Purchasing Bonds",
       amount:            10000,
       dateOfTransaction: "06/25/2023 14:30:00",

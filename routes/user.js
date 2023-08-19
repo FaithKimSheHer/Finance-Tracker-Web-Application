@@ -90,10 +90,11 @@ router.route('/login')
         return res.redirect("/"); 
     }); //END: router.route('/logIn') 
 
+/* Move to transaction route
 router.route('/logout').get(async (req, res) => {
     //code here for GET 
     res.cookie('AuthCookie', null); 
     req.session.destroy();
     return res.render('logout', {layout: 'user', logout: "Logout Success"});
-}); 
+}); */
 export default router; 

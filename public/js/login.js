@@ -3,7 +3,13 @@ let loginForm = document.getElementById('log-inForm');
 let registeredEmail = document.getElementById('registeredEmail').value;
 let registeredPassword = document.getElementById('registeredPassword').value;  
 
-if(loginForm){
+if( !loginForm ||
+    !loginForm.registeredEmail ||
+    !loginForm.registeredPassword){
+        console.log("loginForm field error");
+        loginForm.reset();  
+}
+else{
     function btnClick(){  
         try{  
             let email = registeredEmail.trim().toLowerCase();
