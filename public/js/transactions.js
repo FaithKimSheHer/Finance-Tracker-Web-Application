@@ -15,11 +15,10 @@ updateForm.addEventListener("submit", async (event) => {
 function validateUpdateForm() {
   const noticeEl = document.querySelector(".notice");
 
-  // Get values from the update form
-  const amountString = document.getElementById("transactionAmount").value;
-  const amount = parseFloat(document.getElementById("transactionAmount").value);
-  const date = document.getElementById("transactionDate").value.trim();
-  const category = document.getElementById("updateSelector").value.trim();
+    // Get values from the update form
+    const amount = parseFloat(document.getElementById("transactionAmount").value);
+    const date = document.getElementById("transactionDate").value.trim();
+    const category = document.getElementById("updateSelector").value.trim();
 
   // Check if any (of the required) values are empty, if so noticeEl.innerHTML = user
   if (!amount || !date || !category) {
