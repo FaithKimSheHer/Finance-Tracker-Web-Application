@@ -19,7 +19,7 @@
             <div id="links">
                 {{!-- login and register buttons should never be shown with middleware --}}
                 {{#if user}}
-                    <a id="logout-link" href="transactions/logout">Logout</a>
+                    <a id="logout-link" href="/user/logout">Logout</a>
                 {{else}} 
                     <a id="login-link" href="/user/login">Login</a>
                     <a id="register-link" href="/user/register">Register</a>
