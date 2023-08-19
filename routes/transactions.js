@@ -61,7 +61,7 @@ router.route("/summary").get(async (req, res) => {
     });
   } catch (error) {
     return res.status(404).render("transactions", {
-      errorMessage: "Update page not found.",
+      notice: "Update page not found.",
     });
   }
 });
@@ -117,8 +117,8 @@ router.route("/add_transaction").post(async (req, res) => {
       throw "Failed to create transaction";
     }
   } catch (error) {
-    return res.status(500).render("error", {
-      error: "Error adding transaction.",
+    return res.status(403).render("transaction", {
+      notice: "Error adding transaction.",
     });
   }
 });
