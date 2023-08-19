@@ -17,10 +17,13 @@
                 <h1 class="home-link"><a href="/">Expense Tracker</a></h1> 
             </div>
             <div id="links">
-                <a id="logout-link" href="transactions/logout">Logout</a>
-                <a id="login-link" href="/user/login">Login</a>
-                <a id="register-link" href="/user/register">Register</a>
-                <a href="/transactions">Add Transaction</a>
+                {{!-- login and register buttons should never be shown with middleware --}}
+                {{#if user}}
+                    <a id="logout-link" href="transactions/logout">Logout</a>
+                {{else}} 
+                    <a id="login-link" href="/user/login">Login</a>
+                    <a id="register-link" href="/user/register">Register</a>
+                {{/if}}
             </div>
         </header>
         <main>
