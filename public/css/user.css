@@ -19,10 +19,6 @@ div#login,#formDiv {
     align-items: center;
 }
 
-form#updateForm{
-    margin-top: 80px;
-}
-
 form {
     width: 300px;
 }
