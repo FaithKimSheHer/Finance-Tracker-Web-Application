@@ -26,7 +26,7 @@ function validateUpdateForm() {
 
     // Check if any (of the required) values are empty, if so noticeEl.innerHTML = user
     if (!amount || !date || !category) {
-        noticeEl.innerHTML = "Please fill out all fields";
+        noticeEl.innerHTML = "Please fill out all required fields";
         return false;
     }
 
