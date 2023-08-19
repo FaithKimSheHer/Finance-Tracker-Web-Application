@@ -144,7 +144,7 @@ div.category > form.back > input {
     border: none;
     font-size: 2rem;
     cursor: pointer;
-    background: linear-gradient(to right, #e0e0e0, white);
+    background: linear-gradient(to right, #f0f0f0, #f0f0f0, white);
 }
 div.category > div.cat-body {
     grid-column: content;
