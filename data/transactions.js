@@ -8,7 +8,7 @@ const createTransaction = async (
   dateOfTransaction,
   receiptFilename,
   pathOfFilename,
-  userId,
+  userEmail,
   userComments
 ) => {
   try {
@@ -40,8 +40,8 @@ const createTransaction = async (
       throw "Invalid dateOfTransaction input";
     }
 
-    if (!userId || typeof userId !== "string") {
-      throw "Invalid userId input";
+    if (!userEmail || typeof userEmail !== "string") {
+      throw "Invalid userEmail input";
     }
 
     if (!userComments || typeof userComments !== "string") {
@@ -53,7 +53,7 @@ const createTransaction = async (
       category: category,
       amount: amount,
       dateOfTransaction: dateOfTransaction,
-      userId: userId,
+      userEmail: userEmail,
     };
 
     // Only add certain fields if they are provided
@@ -121,20 +121,20 @@ const getTransactionById = async (transactionId) => {
   }
 };
 
-const getTransactionsByUserId = async (userId) => {
+const getTransactionsByUserEmail = async (userEmail) => {
   try {
-    if (!userId) {
+    if (!userEmail) {
       throw "You must provide a user ID to search for transactions";
     }
 
-    if (typeof userId !== "string") {
+    if (typeof userEmail !== "string") {
       throw "Invalid user ID";
     }
 
     const transactionCollection = await transaction();
     const userTransactions = await transactionCollection
       .find({
-        userEmail: userId,
+        userEmail: userEmail,
       })
       .toArray();
 
@@ -152,19 +152,19 @@ const getAllTransactions = async () => {
   return allTransactions;
 };
 
-const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
+const getMostRecentTransactionsByUserEmail = async (userEmail, limit = 5) => {
   try {
-    if (!userId) {
+    if (!userEmail) {
       throw "You must provide a user ID to search for transactions";
     }
 
-    if (typeof userId !== "string") {
+    if (typeof userEmail !== "string") {
       throw "Invalid user ID";
     }
 
     const transactionCollection = await transaction();
     const userTransactions = await transactionCollection
-      .find({ userId: userId })
+      .find({ userEmail: userEmail })
       .sort({ dateOfTransaction: -1 }) // Sort by date in descending order
       .limit(limit)
       .toArray();
@@ -177,9 +177,9 @@ const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
   }
 };
 
-const getTransactionsByCategory = async (userId, category) => {
+const getTransactionsByCategory = async (userEmail, category) => {
   try {
-    if (!userId || typeof userId !== "string") {
+    if (!userEmail || typeof userEmail !== "string") {
       throw "Invalid user ID";
     }
 
@@ -202,7 +202,7 @@ const getTransactionsByCategory = async (userId, category) => {
     const transactionCollection = await transaction();
     const transactionsByCategory = await transactionCollection
       .find({
-        userId: userId,
+        userEmail: userEmail,
         category: category,
       })
       .toArray();
@@ -217,8 +217,8 @@ const getTransactionsByCategory = async (userId, category) => {
 export {
   createTransaction,
   getTransactionById,
-  getTransactionsByUserId,
+  getTransactionsByUserEmail,
   getAllTransactions,
-  getMostRecentTransactionsByUserId,
+  getMostRecentTransactionsByUserEmail,
   getTransactionsByCategory,
 };
