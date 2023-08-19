@@ -118,20 +118,9 @@ router.route("/add_transaction").post(async (req, res) => {
     }
   } catch (error) {
     return res.status(500).render("error", {
-      errorMessage: "Error adding transaction.",
+      error: "Error adding transaction.",
     });
   }
-});
-
-
-router.route('/logout').get(async (req, res) => {
-  //code here for GET 
-  res.cookie('AuthCookie', null);
-  req.session.destroy();
-  return res.render('logout', {
-    layout: 'user',
-    logout: "Logout Success"
-  });
 });
 
 router.route("/income").get(async (req, res) => {
