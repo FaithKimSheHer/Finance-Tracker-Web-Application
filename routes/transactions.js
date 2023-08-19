@@ -12,8 +12,11 @@ import {
 } from '../config/mongoCollections.js';
 
 router.route("/").get(async (req, res) => {
-    if (!req.session.user) return res.redirect("./login");
-    return res.render("transactions", { layout: 'main',title: "Transaction"});
+  if (!req.session.user) return res.redirect("./login");
+  return res.render("transactions", {
+    layout: 'user',
+    title: "Transaction"
+  });
 }).post(async (req, res) => {
   const data = req.body;
 
@@ -36,7 +39,9 @@ router.route("/").get(async (req, res) => {
     if (!newTransaction.acknowledged || !newTransaction.insertedId)
       throw 'Could not add transaction';
     else console.log(transactionData);
-    return res.redirect('/summary', {transactionData});
+    return res.redirect('/summary', {
+      transactionData
+    });
   } catch (error) {
     console.log(error);
     return res.redirect("/");
@@ -84,7 +89,11 @@ router.route("/transaction_summary/:id").get(async (req, res) => {
 
 router.route("/add_transaction").post(async (req, res) => {
   try {
-    const { category, transactionInfo, transactionDate } = req.body;
+    const {
+      category,
+      transactionInfo,
+      transactionDate
+    } = req.body;
     const amount = Number(req.body.amount);
     const userEmail = req.session.user.email;
 
@@ -117,34 +126,46 @@ router.route("/add_transaction").post(async (req, res) => {
 
 router.route('/logout').get(async (req, res) => {
   //code here for GET 
-  res.cookie('AuthCookie', null); 
+  res.cookie('AuthCookie', null);
   req.session.destroy();
-  return res.render('logout', {logout: "Logout Success"});
+  return res.render('logout', {
+    layout: 'user',
+    logout: "Logout Success"
+  });
 });
 
 router.route("/income").get(async (req, res) => {
-    const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "income"); 
-    console.log("/income, user, transactions", [req.session.user.email, transactions]);
-    return res.render("categories/income", { transactions: transactions, user: req.session.user});
+  const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "income");
+  console.log("/income, user, transactions", [req.session.user.email, transactions]);
+  return res.render("categories/income", {
+    transactions: transactions,
+    user: req.session.user
+  });
 });
 
 router.route("/savings").get(async (req, res) => {
-    const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "savings"); 
-    console.log("/savings, user", [req.session.user]);
-    return res.render("categories/savings", { transactions: transactions, user: req.session.user});
+  const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "savings");
+  console.log("/savings, user", [req.session.user]);
+  return res.render("categories/savings", {
+    transactions: transactions,
+    user: req.session.user
+  });
 });
 
 router.route("/expenditures").get(async (req, res) => {
-    const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "expenditure");
-    console.log("/expenditures, user", [req.session.user]);
-    return res.render("categories/expenditures", { transactions: transactions, user: req.session.user});
+  const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "expenditure");
+  console.log("/expenditures, user", [req.session.user]);
+  return res.render("categories/expenditures", {
+    transactions: transactions,
+    user: req.session.user
+  });
 });
 
 router.route("/investments").get(async (req, res) => {
   const userEmail = req.session.user.email;
   const transactions = await transactFuns.getTransactionsByCategory(
     userEmail,
-    "Investments"
+    "investment"
   );
   return res.render("categories/investments", {
     transactions: transactions,
@@ -157,7 +178,7 @@ router.route("/retirement").get(async (req, res) => {
   const userEmail = req.session.user.email;
   const transactions = await transactFuns.getTransactionsByCategory(
     userEmail,
-    "Retirement"
+    "retirement"
   );
   return res.render("categories/retirement", {
     transactions: transactions,
