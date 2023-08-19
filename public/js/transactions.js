@@ -12,6 +12,22 @@ const updateForm = document.getElementById("updateForm"); // For now, assumed fo
 updateForm.addEventListener("submit", async (event) => {
     if (!validateUpdateForm()) {  // If form validation fails, prevent form submission
         event.preventDefault();
+    } else {
+        const formData = new FormData(updateForm);
+        try {
+            const response = await fetch('/api/add_transaction', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert("Transaction updated successfully!");
+            } else {
+                alert("Error updating transaction!");
+            }
+        } catch (error) {
+            console.error("There was an error updating the transaction:", error);
+        }
     }
 });
 
@@ -19,7 +35,7 @@ updateForm.addEventListener("submit", async (event) => {
 function validateUpdateForm() {
 
     // Get values from the update form
-    const amount = document.getElementById("transactionAmount").value;
+    const amount = parseFloat(document.getElementById("transactionAmount").value);
     const date = document.getElementById("transactionDate").value.trim();
     const category = document.getElementById("updateSelector").value.trim();
 
@@ -33,6 +49,7 @@ function validateUpdateForm() {
         alert("Please enter a valid date");  // Validate date is a string
         return false;
     }
+    
 
     if (!typeof category === 'string') {
         alert("Please enter a valid category");  // Validate category is a string
@@ -78,11 +95,18 @@ function validateUpdateForm() {
 
 
     // Validate date is in correct format
-    if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    if (!date.match(/^\d{2}-\d{2}-\d{4}$/)) {
         alert("Please enter a valid date");
         return false;
     }
 
+    // console.log("Date: " + date);
+
+    // Validate date is not mm/dd/yyyy
+    if (date.match(/mm\/dd\/yyyy/)) {
+        alert("Please choose a date");
+        return false;
+    }
 
     // Validate category is one of the 5 options
     if (!['Income', 'Savings', 'Expenditure', 'Retirement', 'Investment'].includes(category)) {
@@ -92,5 +116,7 @@ function validateUpdateForm() {
 
     // Do we need to do this? => TODO: Validate that amount doesn't exceed 3 decimal places (ex. don't accept $10.859)
 
+    alert("test");
+    alert(date);
     return true; // Validation passed and form can be submitted
 }
