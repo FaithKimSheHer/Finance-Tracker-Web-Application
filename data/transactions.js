@@ -22,11 +22,11 @@ const createTransaction = async (
     }
     if (
       ![
-        "Income",
-        "Savings",
-        "Expenditures",
-        "Retirement",
-        "Investments",
+        "income",
+        "savings",
+        "expenditure",
+        "retirement",
+        "investment",
       ].includes(category)
     ) {
       throw "Invalid category value";
@@ -169,8 +169,12 @@ const getMostRecentTransactionsByUserEmail = async (userEmail, limit = 5) => {
 
     const transactionCollection = await transaction();
     const userTransactions = await transactionCollection
-      .find({ userEmail: userEmail })
-      .sort({ dateOfTransaction: -1 }) // Sort by date in descending order
+      .find({
+        userEmail: userEmail
+      })
+      .sort({
+        dateOfTransaction: -1
+      }) // Sort by date in descending order
       .limit(limit)
       .toArray();
 
@@ -193,11 +197,11 @@ const getTransactionsByCategory = async (userEmail, category) => {
 
     if (
       ![
-        "Income",
-        "Savings",
-        "Expenditures",
-        "Retirement",
-        "Investments",
+        "income",
+        "savings",
+        "expenditure",
+        "retirement",
+        "investment",
       ].includes(category)
     ) {
       throw "Invalid category value";
