@@ -1,9 +1,7 @@
 /* temporary styling for layout above. remove when proper css is added. */
-main > div#dashboard {
+main > div#dashboard, main > div.category {
     border-left: 1px solid black;
     border-right: 1px solid black;
-    display: flex;
-    justify-content: center;
 }
 a {
     color: black;
