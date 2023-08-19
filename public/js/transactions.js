@@ -10,32 +10,33 @@ const updateForm = document.getElementById("updateForm"); // For now, assumed fo
 
 // Event listeners for update.handlebars form:
 updateForm.addEventListener("submit", async (event) => {
-    if (!validateUpdateForm()) {  // If form validation fails, prevent form submission
+    if (!validateUpdateForm()) { // If form validation fails, prevent form submission
         event.preventDefault();
     }
+    updateForm.reset();
 });
 
 // Client side validations for tranasaction update.handlebars
 function validateUpdateForm() {
-
     // Get values from the update form
-    const amount = document.getElementById("transactionAmount").value;
+    const amount = parseFloat(document.getElementById("transactionAmount").value);
     const date = document.getElementById("transactionDate").value.trim();
     const category = document.getElementById("updateSelector").value.trim();
+    console.log(typeof amount);
 
     // Check type of values
-    if (!Number.isInteger(amount) || amount <= 0) {   // Validate amount is a number
+    if (isNaN(amount) || amount <= 0) { // Validate amount is a number
         alert("Please enter a valid amount");
         return false;
     }
 
-    if (!typeof date === 'string') {
-        alert("Please enter a valid date");  // Validate date is a string
+    if (typeof date !== 'string') {
+        alert("Please enter a valid date"); // Validate date is a string
         return false;
     }
 
-    if (!typeof category === 'string') {
-        alert("Please enter a valid category");  // Validate category is a string
+    if (typeof category !== 'string') {
+        alert("Please enter a valid category"); // Validate category is a string
         return false;
     }
 
@@ -47,27 +48,26 @@ function validateUpdateForm() {
 
     // Check types of optional field values
     if (transactionInfo || receiptFilename || pathOfFilename || userComments) {
-        if (!typeof transactionInfo === 'string') {
-            alert("Please enter valid transaction info");  // Validate transactionInfo is a string
+        if (typeof transactionInfo !== 'string') {
+            alert("Please enter valid transaction info"); // Validate transactionInfo is a string
             return false;
         }
 
-        if (!typeof receiptFilename === 'string') {
-            alert("Please enter a valid receiptFilename");  // Validate receiptFilename is a string
+        if (typeof receiptFilename !== 'string') {
+            alert("Please enter a valid receiptFilename"); // Validate receiptFilename is a string
             return false;
         }
 
-        if (!typeof pathOfFilename === 'string') {
-            alert("Please enter a valid pathOfFilename");  // Validate pathOfFilename is a string
+        if (typeof pathOfFilename !== 'string') {
+            alert("Please enter a valid pathOfFilename"); // Validate pathOfFilename is a string
             return false;
         }
-        
-        if (!typeof userComments === 'string') {
-            alert("Please enter a valid comment");  // Validate userComments is a string
+
+        if (typeof userComments !== 'string') {
+            alert("Please enter a valid comment"); // Validate userComments is a string
             return false;
         }
     }
-
 
     // Check if any (of the required) values are empty, if so alert user
     if (!amount || !date || !category) {
@@ -75,14 +75,11 @@ function validateUpdateForm() {
         return false;
     }
 
-
-
     // Validate date is in correct format
     if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) {
         alert("Please enter a valid date");
         return false;
     }
-
 
     // Validate category is one of the 5 options
     if (!['Income', 'Savings', 'Expenditure', 'Retirement', 'Investment'].includes(category)) {

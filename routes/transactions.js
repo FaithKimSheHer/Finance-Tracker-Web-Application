@@ -45,7 +45,10 @@ router.route("/").get(async (req, res) => {
 
 router.route("/summary").get(async (req, res) => {
   try {
-    const data = await transactFuns.getTransactionsByUserId(req.session.user.email);
+    const data = await transactFuns.getTransactionsByUserEmail(
+      req.session.user.email
+    );
+
     return res.render("partials/update", {
       layout: "main",
       title: "Update",
@@ -81,10 +84,10 @@ router.route("/transaction_summary/:id").get(async (req, res) => {
 
 router.route("/add_transaction").post(async (req, res) => {
   try {
-
     const { category, transactionInfo, transactionDate } = req.body;
     const amount = Number(req.body.amount);
-    const userId = req.session.user;
+    const userEmail = req.session.user.email;
+
     const dateOfTransaction = new Date(transactionDate);
 
     // Need to update for input such as receiptFilename, pathOfFilename.
@@ -95,9 +98,10 @@ router.route("/add_transaction").post(async (req, res) => {
       dateOfTransaction,
       null,
       null,
-      userId,
+      userEmail,
       ""
     );
+
     if (newTransaction) {
       return res.redirect("/summary");
     } else {
@@ -109,6 +113,7 @@ router.route("/add_transaction").post(async (req, res) => {
     });
   }
 });
+
 
 router.route('/logout').get(async (req, res) => {
   //code here for GET 
@@ -134,13 +139,30 @@ router.route("/expenditures").get(async (req, res) => {
     console.log("/expenditures, user", [req.session.user]);
     return res.render("categories/expenditures", { transactions: transactions, user: req.session.user});
 });
+
 router.route("/investments").get(async (req, res) => {
-    const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "investment");
-    return res.render("categories/investments", { transactions: transactions, user: req.session.user});
+  const userEmail = req.session.user.email;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userEmail,
+    "Investments"
+  );
+  return res.render("categories/investments", {
+    transactions: transactions,
+    user: req.session.user,
+  });
+
 });
+
 router.route("/retirement").get(async (req, res) => {
-    const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "retirement");
-    return res.render("categories/retirement", { transactions: transactions, user: req.session.user});
-}); 
+  const userEmail = req.session.user.email;
+  const transactions = await transactFuns.getTransactionsByCategory(
+    userEmail,
+    "Retirement"
+  );
+  return res.render("categories/retirement", {
+    transactions: transactions,
+    user: req.session.user,
+  });
+});
 
 export default router;
