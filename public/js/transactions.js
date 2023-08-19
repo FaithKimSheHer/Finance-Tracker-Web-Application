@@ -3,9 +3,6 @@
 //also has these optional fields: {transactionInfo, receiptFilename, pathOfFilename, userComments}
 
 const updateForm = document.getElementById("updateForm"); // For now, assumed form ID to be 'updateTransactionForm'
-//const createTransactionForm = document.getElementById("createTransactionForm");
-
-console.log("hei");
 
 // Event listeners for update.handlebars form:
 updateForm.addEventListener("submit", async (event) => {
