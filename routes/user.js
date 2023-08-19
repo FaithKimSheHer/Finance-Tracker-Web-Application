@@ -7,7 +7,7 @@ router.route('/register')
     .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session); 
-        return res.status(200).render('register', {layout: 'user', title: 'Register'});
+        return res.status(200).render('register', {layout: 'user'});
     })
     .post(async (req, res) => {  
         const registrationForm = req.body;
@@ -28,7 +28,7 @@ router.route('/register')
             const age = validation.checkAG(registrationForm.newUserAge);
         } catch (e) {
             console.log(`register error: ${e}`);
-            return res.status(403).render('register', {layout: 'user', title: 'Register', notice: e}); 
+            return res.status(403).render('register', {layout: 'user', notice: e}); 
         }         
         
         let registeredEmail;
@@ -39,8 +39,8 @@ router.route('/register')
         } catch(e) {
             console.log(`register error: ${e}`);
             if(e === "problem adding user")
-                return res.status(500).render('register', {layout: 'user', title: 'Register', notice: e}); 
-            return res.status(403).render('register', {layout: 'user', title: 'Register', notice: e}); 
+                return res.status(500).render('register', {layout: 'user', notice: e}); 
+            return res.status(403).render('register', {layout: 'user', notice: e}); 
         }
 
         console.log("User registration success: ", [registeredEmail]);
@@ -51,7 +51,7 @@ router.route('/login')
     .get(async (req, res) => {
         res.cookie('AuthCookie', req.session);
         console.log("AuthCookie: ", req.session); 
-        return res.status(200).render('login', {layout: 'user', title: 'Login'});
+        return res.status(200).render('login', {layout: 'user'});
     })
     .post(async (req, res) => {  
         const logInForm = req.body;  
@@ -62,7 +62,7 @@ router.route('/login')
             password = validation.checkPW(logInForm.registeredPassword);  
         } catch(e) {
             console.log(`login error: ${e}`);
-            return res.status(403).render('login', {layout: 'user', title: 'Login', notice: e});
+            return res.status(403).render('login', {layout: 'user', notice: e});
         }
         try {        
             const registeredUser = await usersFuncs.checkUser(email, password); 
@@ -70,7 +70,7 @@ router.route('/login')
         } catch (e) {
             console.log(`login error: ${e}`)
             console.trace();
-            return res.status(403).render('login', {layout: 'user', title: 'Login', notice: e}); 
+            return res.status(403).render('login', {layout: 'user', notice: e}); 
         }          
         console.log("User login Success: ", [email]); 
         
@@ -86,7 +86,7 @@ router.route('/login')
 router.route('/logout').get(async (req, res) => {
     res.cookie('AuthCookie', null);
     req.session.destroy();
-    return res.status(200).render('logout', {layout: 'user', title: "Logout Success"});
+    return res.status(200).render('logout', {layout: 'user'});
 });
 
 export default router; 

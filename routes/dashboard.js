@@ -8,7 +8,7 @@ router
     .route('/')
     .get(async (req, res) => {
         const user = req.session.user;
-        res.status(200).render('dashboard', { title: 'Dashboard', user: user});
+        res.status(200).render('dashboard', {user: user});
     });
 
 export default router;
