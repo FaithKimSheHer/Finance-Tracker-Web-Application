@@ -50,7 +50,7 @@ router.route('/register')
             //console.log('state', [state]); 
         } catch (e) {
             console.log('registrationForm_error', registrationForm);
-            return res.render('Register', {layout: 'user', title: 'Register Error'}); 
+            return res.render('register', {layout: 'user', title: 'Register Error'}); 
         }         
         const registeredEmail = await usersFuncs.addUser(registrationForm); 
         console.log("User registration success! :", [registeredEmail]);

@@ -1,11 +1,11 @@
-<div id="retirements" class="category">
-    <form action="/" method="GET">
+<div id="retirement" class="category">
+    <form action="/" method="GET" class="back">
         <input type="submit" value="<" />
     </form>    
     <div class="cat-body">
         <p>As of {{user.currentTime}}</p>
         {{#each transactions}}
-            <article class="retirements">
+            <article class="retirement">
                 <ul>
                     <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li> 
                 </ul> 

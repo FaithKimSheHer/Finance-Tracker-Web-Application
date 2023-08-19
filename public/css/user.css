@@ -1,3 +1,12 @@
+div.status {
+    grid-column: dash;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 100px;
+}
+
 div#login,#formDiv {
     font-size: 1.5rem;
     grid-column: dash;
@@ -29,6 +38,9 @@ input {
 }
 label > input {
     width: auto;
+}
+select {
+    margin-bottom: 1rem;
 }
 button {
     margin-top: 1rem;

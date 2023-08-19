@@ -1,8 +1,12 @@
 /* temporary styling for layout above. remove when proper css is added. */
-main > div {
-    border: 1px solid black;
+main > div#dashboard {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     display: flex;
     justify-content: center;
+}
+a {
+    color: black;
 }
 
 /* We'll use gridbox to make laying our dashboard out simpler */
@@ -40,6 +44,10 @@ div#summary {
 }
 div#update {
     grid-column: update;
+    grid-row: main;
+}
+div#status {
+    grid-column: dash;
     grid-row: main;
 }
 header {
@@ -81,6 +89,7 @@ div#logo {
     align-items: center;
 }
 
+/* sidebars */
 div#categories, div#update {
     display: flex;
     flex-direction: column;
@@ -88,11 +97,31 @@ div#categories, div#update {
     justify-content: flex-start;
 }
 .partial-body {
-    height: 100%;
+    height: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    margin-top: 10%;
+}
+.sidebarButtons {
+    display: block;
+    width: 50%;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid gray;               /* Remove default borders */
+    border-radius: 5px;         /* Rounded corners */
+    cursor: pointer;            /* Hand cursor when hovered */
+    transition: background-color 0.3s;  /* Smooth transition for hover effect */
+}
+.sidebarButtons:hover {
+    background-color: #e0e0e0;
+}
+.sidebarButtons:focus {
+    outline: none;  /* Remove focus outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
 }
 
 /* categories */
@@ -100,37 +129,40 @@ div.category {
     display: grid;
     grid-template-columns: [back] 1fr [content] 19fr;
 }
-div.category > form {
+div.category > form.back {
     grid-column: back;
     height: 100%;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+div.category > form.back > input {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    background: linear-gradient(to right, #e0e0e0, white);
 }
 div.category > div.cat-body {
     grid-column: content;
     height: 100%;
+    padding-left: 20px;
 }
-
-.sidebarButtons {
-    display: block;
+.cat-links {
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px 15px;
-    background-color: #007BFF;  /* A shade of blue */
-    color: #FFFFFF;             /* White text */
-    border: none;               /* Remove default borders */
-    border-radius: 5px;         /* Rounded corners */
-    cursor: pointer;            /* Hand cursor when hovered */
-    text-align: center;         /* Center the text */
-    text-decoration: none;      /* Remove underline */
-    font-size: 16px;            /* Set font size */
-    transition: background-color 0.3s;  /* Smooth transition for hover effect */
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
 }
-
-.sidebarButtons:hover {
-    background-color: #0056b3;  /* A darker shade of blue for hover effect */
+.cat-links:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
-
-.sidebarButtons:focus {
-    outline: none;  /* Remove focus outline */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Add a soft glow around the button when it's focused */
+hr {
+    width: 10%;
 }
