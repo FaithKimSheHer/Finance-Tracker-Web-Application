@@ -1,5 +1,9 @@
-import { transaction } from "../config/mongoCollections.js";
-import { ObjectId } from "mongodb";
+import {
+  transaction
+} from "../config/mongoCollections.js";
+import {
+  ObjectId
+} from "mongodb";
 
 const createTransaction = async (
   category,
@@ -112,7 +116,9 @@ const getTransactionsByUserId = async (userId) => {
 
   const transactionCollection = await transaction();
   const userTransactions = await transactionCollection
-    .find({ userId: userId })
+    .find({
+      userEmail: userId
+    })
     .toArray();
 
   return userTransactions;
@@ -136,18 +142,22 @@ const getMostRecentTransactionsByUserId = async (userId, limit = 5) => {
 
   const transactionCollection = await transaction();
   const userTransactions = await transactionCollection
-    .find({ userId: userId })
-    .sort({ dateOfTransaction: -1 }) // Sort by date in descending order
+    .find({
+      userId: userId
+    })
+    .sort({
+      dateOfTransaction: -1
+    }) // Sort by date in descending order
     .limit(limit)
     .toArray();
 
   return userTransactions;
 };
 
-const getTransactionsByCategory = async (category) => {
-  const transactionCollection = await transaction();
+const getTransactionsByCategory = async (email, category) => {
+  const transactionCollection = await transaction(); 
   const transactionsByCategory = await transactionCollection
-    .find({ category: category })
+    .find({$and: [{userEmail: email}, {category: category.toLowerCase()}]})
     .toArray();
   return transactionsByCategory;
 };
