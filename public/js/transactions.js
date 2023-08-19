@@ -2,7 +2,6 @@
 //transaction object has the following fields: {category, amount, dateOfTransaction, userId}
 //also has these optional fields: {transactionInfo, receiptFilename, pathOfFilename, userComments}
 
-//todo: check for duplicate transactionId
 const updateForm = document.getElementById("updateForm"); // For now, assumed form ID to be 'updateTransactionForm'
 //const createTransactionForm = document.getElementById("createTransactionForm");
 
