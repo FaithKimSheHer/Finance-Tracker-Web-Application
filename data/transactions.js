@@ -7,7 +7,7 @@ const createTransaction = async (
   amount,
   dateOfTransaction,
   receiptFilename,
-  pathOfFilename,
+  pathOfFile,
   userEmail,
   userComments
 ) => {
@@ -32,8 +32,12 @@ const createTransaction = async (
       throw new Error("Invalid transactionInfo input");
     }
 
-    if (transaction.length > 200) {
+    if (transactionInfo.length > 200) {
       throw new Error("Transaction info must be less than 200 characters");
+    }
+
+    if (/<.*?>/.test(transactionInfo)) {
+      throw new Error("Transaction info cannot contain HTML tags");
     }
 
     if (
@@ -60,6 +64,10 @@ const createTransaction = async (
       throw new Error("User comments must be less than 200 characters");
     }
 
+    if (/<.*?>/.test(userComments)) {
+      throw new Error("Transaction info cannot contain HTML tags");
+    }
+
     const transactionCollection = await transaction();
     const newTransaction = {
       category: category,
@@ -80,9 +88,9 @@ const createTransaction = async (
     if (receiptFilename || pathOfFilename) {
       if (
         typeof receiptFilename !== "string" ||
-        typeof pathOfFilename !== "string"
+        typeof pathOfFile !== "string"
       ) {
-        throw new Error("Invalid receiptFilename or pathOfFilename input");
+        throw new Error("Invalid receiptFilename or pathOfFile input");
       }
 
       const fileExtension = receiptFilename.split(".").pop().toLowerCase();
@@ -91,7 +99,7 @@ const createTransaction = async (
       }
 
       newTransaction.receiptFilename = receiptFilename.trim();
-      newTransaction.pathOfFilename = pathOfFilename.trim();
+      newTransaction.pathOfFile = pathOfFile.trim();
     }
 
     const insertInfo = await transactionCollection.insertOne(newTransaction);
