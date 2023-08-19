@@ -11,12 +11,8 @@ import {
 router
     .route('/')
     .get(async (req, res) => {
-        //TODO: check if user is logged in using browser session data
-        //if not, load a diff summary bar and other stuff on page.
-        //put a register button in middle or smt
-
-        //if logged in, load the data accordingly
-        res.render('dashboard', { title: 'Dashboard' });
+        const user = req.session.user;
+        res.status(200).render('dashboard', {user: user});
     });
 =======
 // router

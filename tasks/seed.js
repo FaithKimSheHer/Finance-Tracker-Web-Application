@@ -5,6 +5,13 @@ import {transaction} from '../config/mongoCollections.js';
 import bcrypt from 'bcrypt'; 
 const saltRounds = 10; 
 
+/**
+ * The primary seeded user for this app will be:
+ * 
+ * Email: fkim@stevens.edu
+ * Password: fkim@stevens.edu1T
+ */
+
 let userOne = undefined;  
 async function main() {
   try{
@@ -38,7 +45,7 @@ async function main() {
     hashedPassword = await bcrypt.hash("ttizen@gmail.com2T", saltRounds);
     let newPerson_2 = {
         firstName:        "Bobby",
-        lastName:         " Kim",
+        lastName:         "Kim",
         email:            "ttizen@gmail.com",
         userName:         "BBkim",
         hashedPassword:   hashedPassword,
@@ -55,7 +62,7 @@ async function main() {
       hashedPassword = await bcrypt.hash("bt@gmail.com3T", saltRounds);
       let newPerson_3 = {
         firstName:        "Bethesta",
-        lastName:         " Kim",
+        lastName:         "Kim",
         email:            "bt@gmail.com",
         userName:         "BBkim",
         hashedPassword:   hashedPassword,
