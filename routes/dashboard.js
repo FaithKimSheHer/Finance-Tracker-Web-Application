@@ -73,10 +73,11 @@ router
             }
           }
 
-          let totalMonthlyStaus = income -savings -expenditure -retirement -investment;
+          let totalMonthlyStatus = income -savings -expenditure -retirement -investment;
+          // let totalMonthlyStatus = income - expenditure;
           let statusValue;
          
-          if(totalMonthlyStaus > 0)
+          if(totalMonthlyStatus > 0)
           {
             statusValue = 'Green';
           }
@@ -94,7 +95,8 @@ router
             summary: data,
             title: 'Overall Transaction Representation',
             piechartdata:resultString,
-            monthlyStatus:statusValue
+            monthlyStatus:statusValue,
+            // barchartdata:bardata
         });
 });
 
