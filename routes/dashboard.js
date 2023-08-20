@@ -132,11 +132,32 @@ router
       });
 
       return results;
-
+      
 
     };
 
+    //use the above function to get data in the format of array of objects for the past 12 months
+    const getTransactionsDataForPast12Months = async (email) => {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentYear = currentDate.getFullYear();
 
+      let results = [];
+      for (let i = 0; i < 12; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month = 12 + month;
+          year = year - 1;
+        }
+        const data = await getTransactionsDataForMonth(email, month, year);
+        results.push(data);
+      }
+
+      return results;
+    };
+
+    const bardata = await getTransactionsDataForPast12Months(obj.email);
 
     res.status(200).render("dashboard", {
       user: req.session.user,
