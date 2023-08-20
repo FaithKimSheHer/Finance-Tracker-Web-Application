@@ -1,30 +1,72 @@
 <div id="retirement" class="category">
     <form action="/" method="GET" class="back">
         <input type="submit" value="<      " />
-    </form>    
+    </form>
     <div class="cat-body">
         <p>As of {{user.currentTime}}</p>
         {{#each transactions}}
-            <article class="retirement">
-                <ul>
-                    <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li> 
-                </ul> 
-            </article>
+        <article class="retirement">
+            <ul>
+                <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li>
+            </ul>
+        </article>
         {{/each}}
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            <body> 
-                <div id="myPlot" style="width:100%;max-width:700px"></div> 
-                <script>
-                    const xArray = ["Jan", "Feb", "March", "April", "May", "Jun", "July", "Aug"];
-                    const yArray = [0, 0, 0, 0, 0, 10000, 0, 0, 0]; 
-                    const data = [{
-                        x:xArray,
-                        y:yArray,
-                        type:"bar"
-                    }]; 
-                    const layout = {title:"Retirement Transactions"}; 
-                    Plotly.newPlot("myPlot", data, layout);
-                </script> 
-            </body>
+        <canvas id="myChart" style="border: 1px solid black;"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+        <script>
+            const transactions = {{{ json transactions }}};
+
+            const transactionsByMonth = transactions.reduce((acc, transaction) => {
+                const month = transaction.dateOfTransaction.split('/')[0];
+                const amount = Number(transaction.amount);
+                if (!acc[month]) {
+                    acc[month] = 0;
+                }
+                acc[month] += amount;
+                return acc;
+            }, {});
+
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const months = Object.keys(transactionsByMonth).map(month => monthNames[month - 1]); // Convert month numbers to month names
+            const amounts = months.map(month => transactionsByMonth[monthNames.indexOf(month) + 1]);
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Retirement by Month',
+                        data: amounts,
+                        backgroundColor: 'rgba(255, 215, 0, 0.2)', //gold
+                        borderColor: 'rgba(255, 215, 0, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                return '$' + value.toFixed(2);
+                            }
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                min: 0 
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
     </div>
 </div>
