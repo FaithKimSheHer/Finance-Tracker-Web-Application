@@ -3,14 +3,6 @@
         <input type="submit" value="<      " />
     </form>
     <div class="cat-body">
-        <p>As of {{user.currentTime}}</p>
-        {{#each transactions}}
-        <article class="savings">
-            <ul>
-                <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li>
-            </ul>
-        </article>
-        {{/each}}
         <canvas id="myChart" style="border: 1px solid black;"></canvas>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -68,5 +60,13 @@
                 }
             });
         </script>
+        <p>As of {{user.currentTime}}</p>
+        {{#each transactions}}
+        <article class="savings">
+            <ul>
+                <li>Amount ${{amount}}, {{dateOfTransaction}}, {{userComments}}</li>
+            </ul>
+        </article>
+        {{/each}}
     </div>
 </div>
