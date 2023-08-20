@@ -166,6 +166,121 @@ const getTransactionsByUserEmail = async (userEmail) => {
   }
 };
 
+
+
+
+const getMonthlyAggregateByCategory = async (userEmail) => {
+  //get all transactions by userEmail by category first
+  const incomeTrx = await getTransactionsByCategory(userEmail, "income");
+  const savingsTrx = await getTransactionsByCategory(userEmail, "savings");
+  const expenditureTrx = await getTransactionsByCategory(userEmail, "expenditure");
+  const retirementTrx = await getTransactionsByCategory(userEmail, "retirement");
+  const investmentTrx = await getTransactionsByCategory(userEmail, "investment");
+
+  //The getTransactionsByCategory returns in the format of an array of objects
+
+  //These objects should have the key of monthYYYY and the value of the sum of the amount for that month
+  let incomeTrxByMonth = {};
+  let savingsTrxByMonth = {};
+  let expenditureTrxByMonth = {};
+  let retirementTrxByMonth = {};
+  let investmentTrxByMonth = {};
+
+  //Iterate through each category and populate a separate object which contains the month and year as the key and the sum of the amount as the value
+  //The date should be standardized to mm/dd/yyyy which means adding a 0 to the month and day if they are single digits or adding 0 to the day
+
+  const monthArray = ["You should not be here", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"] //dummy entry so that the index matches the month number
+  incomeTrx.forEach((trx) => {
+    let date = trx.dateOfTransaction;
+    let [month, day, year] = date.split("/");
+
+    const monthName = monthArray[parseInt(month)];
+    const value = parseFloat(trx.amount);
+
+    const key = monthName + year;  //ex: Jan2021
+
+    //insert key/value into incomeTrxByMonth, unless it already exists, in which case add the value to the existing value
+    if (incomeTrxByMonth[key] == null) {
+      incomeTrxByMonth[key] = value;
+    } else {
+      incomeTrxByMonth[key] = parseFloat(incomeTrxByMonth[key]) + value;
+    }
+  });
+
+  savingsTrx.forEach((trx) => {
+    let date = trx.dateOfTransaction;
+    let [month, day, year] = date.split("/");
+
+    const monthName = monthArray[parseInt(month)];
+    const value = parseFloat(trx.amount);
+
+    const key = monthName + year;
+
+    if (savingsTrxByMonth[key] == null) {
+      savingsTrxByMonth[key] = value;
+    } else {
+      savingsTrxByMonth[key] = parseFloat(savingsTrxByMonth[key]) + value;
+    }
+  });
+
+  expenditureTrx.forEach((trx) => {
+    let date = trx.dateOfTransaction;
+    let [month, day, year] = date.split("/");
+
+    const monthName = monthArray[parseInt(month)];
+    const value = parseFloat(trx.amount);
+
+    const key = monthName + year;
+
+    if (expenditureTrxByMonth[key] == null) {
+      expenditureTrxByMonth[key] = value;
+    } else {
+      expenditureTrxByMonth[key] = parseFloat(expenditureTrxByMonth[key]) + value;
+    }
+  });
+
+  retirementTrx.forEach((trx) => {
+    let date = trx.dateOfTransaction;
+    let [month, day, year] = date.split("/");
+
+    const monthName = monthArray[parseInt(month)];
+    const value = parseFloat(trx.amount);
+
+    const key = monthName + year;
+
+    if (retirementTrxByMonth[key] == null) {
+      retirementTrxByMonth[key] = value;
+    } else {
+      retirementTrxByMonth[key] = parseFloat(retirementTrxByMonth[key]) + value;
+    }
+  });
+
+  investmentTrx.forEach((trx) => {
+    let date = trx.dateOfTransaction;
+    let [month, day, year] = date.split("/");
+
+    const monthName = monthArray[parseInt(month)];
+    const value = parseFloat(trx.amount);
+
+    const key = monthName + year;
+
+    if (investmentTrxByMonth[key] == null) {
+      investmentTrxByMonth[key] = value;
+    } else {
+      investmentTrxByMonth[key] = parseFloat(investmentTrxByMonth[key]) + value;
+    }
+  });
+
+  return {
+    incomeTrxByMonth,
+    savingsTrxByMonth,
+    expenditureTrxByMonth,
+    retirementTrxByMonth,
+    investmentTrxByMonth
+  };
+}
+
+
 const getAllTransactions = async () => {
   const transactionCollection = await transaction();
   const allTransactions = await transactionCollection.find({}).toArray();
@@ -200,6 +315,7 @@ const getMostRecentTransactionsByUserEmail = async (userEmail, limit = 5) => {
     return [];
   }
 };
+
 
 const getTransactionsByCategory = async (userEmail, category) => {
   try {
@@ -245,4 +361,6 @@ export {
   getAllTransactions,
   getMostRecentTransactionsByUserEmail,
   getTransactionsByCategory,
+  getMonthlyAggregateByCategory,
+
 };
