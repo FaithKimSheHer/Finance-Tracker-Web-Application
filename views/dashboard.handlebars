@@ -32,7 +32,8 @@
                   datasets: [{
                      label: "online tutorial subjects",
                      data: piedata,
-                     backgroundColor: ['orange', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
+                     //backgroundColor: ['orange', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
+                     backgroundColor: ['rgba(50, 205, 50, 1)', 'rgba(54, 162, 235, 0.9)', 'rgba(220, 20, 60, 1)', 'rgba(153, 102, 255, 0.9)', 'orange'],
                      hoverOffset: 5
                   }],
                },
@@ -114,6 +115,10 @@
             for (let i = 0; i < 12; i++) {
                netWorthData.push(incomeData[i] + savingsData[i] + expenditureData[i] + retirementData[i] + investmentData[i]);
             }
+
+
+            //note: the bar graph should be the data from the whole month. total up all the transactions for each category for each month and display that
+            //note: the pie chart should be the data from the current month. total up all the transactions for each category for the current month and display that
 
             //only use the latest 12 months from this list (last 12 items)
             var barChartData = {
@@ -261,8 +266,8 @@
             </p>
 
 
-            <label>Monthly Status:</label><label id="{{monthlyStatus}}">{{{monthlyStatus}}}</label>
          </div> --}}
+            <label>Monthly Status:</label><label id="{{monthlyStatus}}"> {{{monthlyStatus}}}</label>
       </div>
 </body>
 
