@@ -24,12 +24,16 @@ router.route("/").get(async (req, res) => {
     const transactionCollection = await transaction()
     console.log(data.transactionDate);
     console.log(data.transactionAmount);
-    console.log(data.updateSelector);
+    console.log(data.updateSelector); 
+    // mm/dd/yyyy 
+    let dateArray = data.transactionDate.split('-'); 
+    const date =`${dateArray[1]}/${dateArray[2]}/${dateArray[0]}`;
+    console.log("date:", [date]);
     let transactionData = {
       category: data.updateSelector,
       transactionInfo: data.transactionInfo,
       amount: data.transactionAmount,
-      dateOfTransaction: data.transactionDate,
+      dateOfTransaction: date,
       receiptFilename: "None",
       pathOfFilename: "None",
       userEmail: req.session.user.email,
