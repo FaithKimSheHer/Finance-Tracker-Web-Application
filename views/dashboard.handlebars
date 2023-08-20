@@ -58,12 +58,12 @@
                   {
                      label: 'Income',
                      data: [20, 25, 35, 40, 45],
-                     backgroundColor: 'rgba(54, 162, 235, 0.9)' // Blue
+                     backgroundColor: 'rgba(50, 205, 50, 1)' // Green
                   },
                   {
                      label: 'Savings',
                      data: [15, 20, 30, 35, 40],
-                     backgroundColor: 'rgba(50, 205, 50, 1)' // Green
+                     backgroundColor: 'rgba(54, 162, 235, 0.9)' // Blue
                   },
                   {
                      label: 'Expenditure',
@@ -84,13 +84,15 @@
                ]
             };
 
+
+            //TODO: add numbers to the top of each bar representing the total net worth that someone has
             //var netWorth = barChartData.reduce(function (acc, barChartData) {
             //   return acc.map(function (value, index) {
             //      return value + barChartData.data[index];
             //   });
             //}, new Array(barChartData[0].data.length).fill(0));
 
-           
+
 
 
             var barChart = new Chart(barChartCtx, {
@@ -100,6 +102,23 @@
                   responsive: false,
 
                   plugins: {
+
+                     annotation: {
+                        annotations: {
+                           line1: {
+                              type: 'line',
+                              yMin: 0,
+                              yMax: 0,
+                              borderColor: 'black',
+                              borderWidth: 5,
+                              label: {
+                                 enabled: false,
+                                 content: 'y=0'
+                              }
+                           }
+                        }
+                     },
+
                      legend: {
                         display: true
                      },
@@ -107,7 +126,7 @@
                         display: true,
                         text: 'Portfolio by Month'
                      },
-                     
+
 
                   },
                   scales: {
