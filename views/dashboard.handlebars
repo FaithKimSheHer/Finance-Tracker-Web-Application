@@ -103,6 +103,86 @@
             
 
 
+               //Convert months array into a list of month names and years
+               //Each key for the object should be a month and year, and the value should be the total amount of money in that category for that month
+
+               //var incomeData = [];
+               //var savingsData = [];
+               //var expenditureData = [];
+               //var retirementData = [];
+               //var investmentData = [];
+
+
+               
+               /*
+               for (let i = 0; i < 12; i++) {
+                  const temp = barData[i];
+                  incomeData.push(temp[income]);
+                  savingsData.push(temp[savings]);
+                  expenditureData.push(temp[expenditure]);
+                  retirementData.push(temp[retirement]);
+                  investmentData.push(temp[investment]]);
+               }
+               
+               
+               //each array should have 12 items, one for each month
+               for (let i = 0; i < 12; i++) {
+                  incomeData.push(barData[i]);
+                  savingsData.push(barData[i + 12]);
+                  expenditureData.push(barData[i + 24]);
+                  retirementData.push(barData[i + 36]);
+                  investmentData.push(barData[i + 48]);
+               }
+               */
+
+               /*
+               const incomeData = [20, 25, 35, 40, 45];
+               const savingsData = [15, 20, 30, 35, 40];
+               const expenditureData = [-10, -15, -25, -30, -35];
+               const retirementData = [5, 10, 15, 20, 25];
+               const investmentData = [1, 5, 10, 15, 20];
+               */
+               /*
+               
+               */
+               //each array should have 12 items, one for each month
+
+               //TODO: turn each number of expensitureData into a negative number 
+
+               /*
+               */
+               incomeData = [20, 25, 35, 40, 45, 20, 25, 35, 40, 45, 20, 25];
+               savingsData = [15, 20, 30, 35, 40, 15, 20, 30, 35, 40, 15, 20];
+               expenditureData = [-10, -15, -25, -30, -150, -10, -15, -25, -30, -35, -100, -95];
+               retirementData = [5, 10, 15, 20, 25, 5, 10, 15, 20, 25, 5, 10];
+               investmentData = [1, 5, 10, 15, 20, 1, 5, 10, 15, 20, 1, 5];
+
+               //add each month's data to the next month's data
+               /*
+               for (let i = 1; i < 12; i++) {
+                  incomeData[i] += incomeData[i - 1];
+                  savingsData[i] += savingsData[i - 1];
+                  expenditureData[i] += expenditureData[i - 1];
+                  retirementData[i] += retirementData[i - 1];
+                  investmentData[i] += investmentData[i - 1];
+               }
+               */
+
+               /*
+               incomeData = [20, 25, 35, 40, 45];
+               savingsData = [15, 20, 30, 35, 40];
+               expenditureData = [-10, -15, -25, -30, -35];
+               retirementData = [5, 10, 15, 20, 25];
+               investmentData = [1, 5, 10, 15, 20];
+               */
+
+               //calculate net worth over each month
+               const netWorthData = [];
+               for (let i = 0; i < 12; i++) {
+                  netWorthData.push(incomeData[i] + savingsData[i] + expenditureData[i] + retirementData[i] + investmentData[i]);
+               }
+
+
                /*
                incomeData = [20, 25, 35, 40, 45];
                savingsData = [15, 20, 30, 35, 40];
@@ -132,6 +212,7 @@
                   //labels: ['January 2021', 'February 2021', 'March 2021', 'April 2021', 'May 2021'], // example months
                   //just do the 12 latest months, unless less months than 12 then just do the months that are available
 
+
                   labels: months,
                   //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
                   datasets: [
@@ -147,7 +228,9 @@
                      },
                      {
                         label: 'Expenditure',
+
                         data: negativeExpenditureData,
+
                         backgroundColor: 'rgba(220, 20, 60, 0.9)' // Red
                      },
                      {
