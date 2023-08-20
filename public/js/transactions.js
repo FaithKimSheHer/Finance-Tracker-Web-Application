@@ -2,11 +2,7 @@
 //transaction object has the following fields: {category, amount, dateOfTransaction, userId}
 //also has these optional fields: {transactionInfo, receiptFilename, pathOfFilename, userComments}
 
-//todo: check for duplicate transactionId
 const updateForm = document.getElementById("updateForm"); // For now, assumed form ID to be 'updateTransactionForm'
-//const createTransactionForm = document.getElementById("createTransactionForm");
-
-console.log("hei");
 
 // Event listeners for update.handlebars form:
 updateForm.addEventListener("submit", async (event) => {
@@ -19,11 +15,10 @@ updateForm.addEventListener("submit", async (event) => {
 function validateUpdateForm() {
   const noticeEl = document.querySelector(".notice");
 
-  // Get values from the update form
-  const amountString = document.getElementById("transactionAmount").value;
-  const amount = parseFloat(document.getElementById("transactionAmount").value);
-  const date = document.getElementById("transactionDate").value.trim();
-  const category = document.getElementById("updateSelector").value.trim();
+    // Get values from the update form
+    const amount = parseFloat(document.getElementById("transactionAmount").value);
+    const date = document.getElementById("transactionDate").value.trim();
+    const category = document.getElementById("updateSelector").value.trim();
 
   // Check if any (of the required) values are empty, if so noticeEl.innerHTML = user
   if (!amount || !date || !category) {
