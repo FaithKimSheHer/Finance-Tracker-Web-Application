@@ -43,7 +43,8 @@ const createTransaction = async (
     if (
       typeof amount !== "number" ||
       amount <= 0 ||
-      !amount.toFixed(2).match(/^\d+(\.\d{1,2})?$/) // Regex to check if amount has 2 decimal places
+      amount > 1000000000 ||
+      !/^[1-9]\d*(\.\d{1,2})?$/.test(amount.toFixed(2)) // Regex to check if amount has no leading zeros and has 2 decimal places
     ) {
       throw new Error("Invalid amount input");
     }
