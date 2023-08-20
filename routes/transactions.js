@@ -22,14 +22,18 @@ router.route("/").get(async (req, res) => {
 
   try {
     const transactionCollection = await transaction()
-    console.log(data.transactionDate);
+    console.log("Heeeere"+data.transactionDate);
     console.log(data.transactionAmount);
     console.log(data.updateSelector);
+
+    const dateObj = new Date(data.transactionDate + 'T00:00:00');
+  
+
     let transactionData = {
       category: data.updateSelector,
       transactionInfo: data.transactionInfo,
       amount: data.transactionAmount,
-      dateOfTransaction: data.transactionDate,
+      dateOfTransaction: new Intl.DateTimeFormat('en-US').format(dateObj),
       receiptFilename: "None",
       pathOfFilename: "None",
       userEmail: req.session.user.email,
