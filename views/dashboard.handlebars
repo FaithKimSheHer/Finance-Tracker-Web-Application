@@ -21,7 +21,9 @@
          <script>
             var chrt = document.getElementById("chartId").getContext("2d");
             var header = document.getElementById("headerValue").value;
+            //pie data should be a list of objects which have all 5 categories
             var piedata = document.getElementById("piedata").value.split(',').map(Number);;
+
 
             var chartId = new Chart(chrt, {
                type: 'pie',
@@ -52,8 +54,48 @@
             var barChartCtx = document.getElementById("barChartId").getContext("2d");
             var bardata = document.getElementById("bardata").value.split(',').map(Number);;
 
+
+
+            //const date = new Date(); //get current date
+            //const month = date.getMonth(); //get current month
+            //const year = date.getFullYear(); //get current year
+
+            //var labelList = [] //list of (up to) 12 labels for the bar chart
+
+            //for loop to generate the last 12 months (inclusive of the current month)
+            //for (var i=0; i<12; i++) {
+            //   var monthIndex = month - i;
+            //   var yearIndex = year;
+            //   if (monthIndex < 0) {
+            //      monthIndex = 12 + monthIndex;
+            //      yearIndex = year - 1;
+            //   }
+            //   labelList.push(monthNames[monthIndex] + " " + yearIndex);
+            //}
+            const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            let currentMonth = new Date().getMonth();  // 0 (January) through 11 (December)
+            let currentYear = new Date().getFullYear();
+
+            const months = [];
+            for (let i = 0; i < 12; i++) {
+               months.unshift(`${monthNamesShort[currentMonth]}.${currentYear}`);
+               currentMonth -= 1;
+               if (currentMonth < 0) {
+                  currentMonth = 11;  // Reset to December
+                  currentYear -= 1;  // Decrease year
+               }
+            }
+
+
+
+            //only use the latest 12 months from this list (last 12 items)
             var barChartData = {
-               labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
+               //labels for the bar chart should consist of month and year in this format: "January 2021"
+               //labels: ['January 2021', 'February 2021', 'March 2021', 'April 2021', 'May 2021'], // example months
+               //just do the 12 latest months, unless less months than 12 then just do the months that are available
+
+               labels: months,
+               //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
                datasets: [
                   {
                      label: 'Income',
@@ -124,7 +166,7 @@
                      },
                      title: {
                         display: true,
-                        text: 'Portfolio by Month'
+                        text: 'Portfolio by Month (past 12 months)'
                      },
 
 
@@ -139,7 +181,7 @@
                         beginAtZero: true,
                         title: {
                            display: true,
-                           text: 'Monthly Breakdown ($USD)',
+                           text: 'Cash Flow (+/-) & Assets Breakdown',
                            color: '#000',
                            font: {
                               size: 16
