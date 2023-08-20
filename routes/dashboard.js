@@ -73,6 +73,18 @@ router
             }
           }
 
+          let totalMonthlyStaus = income -savings -expenditure -retirement -investment;
+          let statusValue;
+         
+          if(totalMonthlyStaus > 0)
+          {
+            statusValue = 'Green';
+          }
+          else
+          {
+            statusValue = 'Red';
+          }
+
           let resultString = income.toString()+","+savings.toString()+","+expenditure.toString()+","+retirement.toString()+","+investment.toString();
     
         res.status(200).render("dashboard", {
@@ -81,7 +93,8 @@ router
             include: "partials/update",
             summary: data,
             title: 'Overall Transaction Representation',
-            piechartdata:resultString
+            piechartdata:resultString,
+            monthlyStatus:statusValue
         });
 });
 

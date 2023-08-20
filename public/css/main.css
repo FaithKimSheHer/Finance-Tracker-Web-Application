@@ -36,6 +36,15 @@ div#dashboard {
     grid-column: dash;
     grid-row: main;
 }
+
+
+div#dashboard label{
+    margin-left :125px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
 div#summary {
     grid-column: summary;
     grid-row: main;
@@ -166,6 +175,16 @@ div.category > div.cat-body {
 }
 hr {
     width: 10%;
+}
+
+div#dashboard label#Green{
+    margin-left: 0px;
+    color: green;
+}
+
+div#dashboard label#Red{
+    margin-left: 0px;
+    color: red;
 }
 
 /* transactions */
