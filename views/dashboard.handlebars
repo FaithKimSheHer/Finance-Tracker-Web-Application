@@ -9,6 +9,14 @@
       <main>
          <input type="text" value="{{title}}" hidden id="headerValue">
          <input type="text" value="{{piechartdata}}" hidden id="piedata">
+
+         {{!-- bar chart information --}}
+         <input type="text" value="{{incomeData}}" hidden id="incomeData">
+         <input type="text" value="{{savingsData}}" hidden id="savingsData">
+         <input type="text" value="{{expenditureData}}" hidden id="expenditureData">
+         <input type="text" value="{{retirementData}}" hidden id="retirementData">
+         <input type="text" value="{{investmentData}}" hidden id="investmentData">
+
          <canvas id="chartId" aria-label="chart" height="450" width="580"></canvas>
          {{!-- bar chart --}}
          {{!-- <input type="text" value="{{title}}" hidden id="headerValue"> --}}
@@ -24,7 +32,7 @@
             //pie data should be a list of objects which have all 5 categories
             var piedata = document.getElementById("piedata").value.split(',').map(Number);;
 
-
+            //!-- pie chart --
             var chartId = new Chart(chrt, {
                type: 'pie',
                data: {
@@ -50,195 +58,267 @@
                   }
                },
             });
+            ////////////////////////////////////////////////
 
             //!-- bar chart --
             var barChartCtx = document.getElementById("barChartId").getContext("2d");
-            var bardata = document.getElementById("bardata").value.split(',').map(Number);;
+
+            ///Fetch data from each 5 categories from handlebars
+            
+            //const test = document.getElementById("incomeData").value.split(',').map(Number);;
+            //
+            //var incomeData = document.getElementById("incomeData").value.split(',').map(Number);;
+            /*
+            */
+            let incomeData = document.getElementById("incomeData").value.split(',').map(Number);;
+            let savingsData = document.getElementById("savingsData").value.split(',').map(Number);;
+            let expenditureData = document.getElementById("expenditureData").value.split(',').map(Number);;
+            let retirementData = document.getElementById("retirementData").value.split(',').map(Number);;
+            let investmentData = document.getElementById("investmentData").value.split(',').map(Number);;
+
+            //var bardata = document.getElementById("bardata").value.split(',').map(Number);;
+            //var bardata = document.getElementById("bardata");;
 
             //Get list of months for the last 12 months
+            const monthNames = ["January", "Feburary", "March", "April", "May", "June", 
+                                 "July", "August", "September", "October", "November", "December"]; // Array of month names
             const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             let currentMonth = new Date().getMonth();  // 0 (January) through 11 (December)
             let currentYear = new Date().getFullYear();
 
+            //Make two lists, one with month abbreviated and year, one with month full name and year (to use to get data)
             const months = [];
+            //const monthsFull = [];
+            //const yearFull = [];
             for (let i = 0; i < 12; i++) {
                months.unshift(`${monthNamesShort[currentMonth]}.${currentYear}`);
+               //monthsFull.unshift(`${monthNames[currentMonth]}`);
+               //yearFull.unshift(`${currentYear}`);
                currentMonth -= 1;
                if (currentMonth < 0) {
                   currentMonth = 11;  // Reset to December
                   currentYear -= 1;  // Decrease year
                }
             }
+            
 
             //TODO: get data from database, passed through handlebars with {{barchartdata}}
             //unpack barchart data into 5 arrays
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
-               "October", "November", "December"];
-            const barData = bardata;
+            //const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+            //   "October", "November", "December"];
+            //const barData = bardata;
+
             /*
-            var incomeData = [];
-            var savingsData = [];
-            var expenditureData = [];
-            var retirementData = [];
-            var investmentData = [];
-            
             for (let i = 0; i < 12; i++) {
-               const temp = barData[i];
-               incomeData.push(temp[income]);
-               savingsData.push(temp[savings]);
-               expenditureData.push(temp[expenditure]);
-               retirementData.push(temp[retirement]);
-               investmentData.push(temp[investment]]);
-            }
-            
-            
-            //each array should have 12 items, one for each month
-            for (let i = 0; i < 12; i++) {
-               incomeData.push(barData[i]);
-               savingsData.push(barData[i + 12]);
-               expenditureData.push(barData[i + 24]);
-               retirementData.push(barData[i + 36]);
-               investmentData.push(barData[i + 48]);
+               const dateIteration = monthAndYear[i]; //get current month and year
+
+               //breakdown[0] = month, breakdown[1] = year
+               let breakdown = monthAndYear[i].split('.');  //seperate month and year using split
+
+               const month = breakdown[0]; //extract month array
+               const year = breakdown[1]; //extract year array
             }
             */
 
-            /*
-            */
-            const incomeData = [20, 25, 35, 40, 45];
-            const savingsData = [15, 20, 30, 35, 40];
-            const expenditureData = [-10, -15, -25, -30, -35];
-            const retirementData = [5, 10, 15, 20, 25];
-            const investmentData = [1, 5, 10, 15, 20];
+               //Convert months array into a list of month names and years
+               //Each key for the object should be a month and year, and the value should be the total amount of money in that category for that month
+
+               //var incomeData = [];
+               //var savingsData = [];
+               //var expenditureData = [];
+               //var retirementData = [];
+               //var investmentData = [];
 
 
-            const netWorthData = [];
-            for (let i = 0; i < 12; i++) {
-               netWorthData.push(incomeData[i] + savingsData[i] + expenditureData[i] + retirementData[i] + investmentData[i]);
-            }
+               
+               /*
+               for (let i = 0; i < 12; i++) {
+                  const temp = barData[i];
+                  incomeData.push(temp[income]);
+                  savingsData.push(temp[savings]);
+                  expenditureData.push(temp[expenditure]);
+                  retirementData.push(temp[retirement]);
+                  investmentData.push(temp[investment]]);
+               }
+               
+               
+               //each array should have 12 items, one for each month
+               for (let i = 0; i < 12; i++) {
+                  incomeData.push(barData[i]);
+                  savingsData.push(barData[i + 12]);
+                  expenditureData.push(barData[i + 24]);
+                  retirementData.push(barData[i + 36]);
+                  investmentData.push(barData[i + 48]);
+               }
+               */
+
+               /*
+               const incomeData = [20, 25, 35, 40, 45];
+               const savingsData = [15, 20, 30, 35, 40];
+               const expenditureData = [-10, -15, -25, -30, -35];
+               const retirementData = [5, 10, 15, 20, 25];
+               const investmentData = [1, 5, 10, 15, 20];
+               */
+               /*
+               
+               */
+               //each array should have 12 items, one for each month
+
+               //TODO: turn each number of expensitureData into a negative number 
+
+               /*
+               */
+               incomeData = [20, 25, 35, 40, 45, 20, 25, 35, 40, 45, 20, 25];
+               savingsData = [15, 20, 30, 35, 40, 15, 20, 30, 35, 40, 15, 20];
+               expenditureData = [-10, -15, -25, -30, -150, -10, -15, -25, -30, -35, -100, -95];
+               retirementData = [5, 10, 15, 20, 25, 5, 10, 15, 20, 25, 5, 10];
+               investmentData = [1, 5, 10, 15, 20, 1, 5, 10, 15, 20, 1, 5];
+
+               //add each month's data to the next month's data
+               /*
+               for (let i = 1; i < 12; i++) {
+                  incomeData[i] += incomeData[i - 1];
+                  savingsData[i] += savingsData[i - 1];
+                  expenditureData[i] += expenditureData[i - 1];
+                  retirementData[i] += retirementData[i - 1];
+                  investmentData[i] += investmentData[i - 1];
+               }
+               */
+
+               /*
+               incomeData = [20, 25, 35, 40, 45];
+               savingsData = [15, 20, 30, 35, 40];
+               expenditureData = [-10, -15, -25, -30, -35];
+               retirementData = [5, 10, 15, 20, 25];
+               investmentData = [1, 5, 10, 15, 20];
+               */
+
+               //calculate net worth over each month
+               const netWorthData = [];
+               for (let i = 0; i < 12; i++) {
+                  netWorthData.push(incomeData[i] + savingsData[i] + expenditureData[i] + retirementData[i] + investmentData[i]);
+               }
+
+               
+
+               //note: the bar graph should be the data from the whole month. total up all the transactions for each category for each month and display that
+               //note: the pie chart should be the data from the current month. total up all the transactions for each category for the current month and display that
+
+               //only use the latest 12 months from this list (last 12 items)
+               var barChartData = {
+                  //labels for the bar chart should consist of month and year in this format: "January 2021"
+                  //labels: ['January 2021', 'February 2021', 'March 2021', 'April 2021', 'May 2021'], // example months
+                  //just do the 12 latest months, unless less months than 12 then just do the months that are available
+
+                  labels: months,
+                  //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
+                  datasets: [
+                     {
+                        label: 'Income',
+                        data: incomeData,
+                        backgroundColor: 'rgba(50, 205, 50, 0.9)' // Green
+                     },
+                     {
+                        label: 'Savings',
+                        data: savingsData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.9)' // Blue
+                     },
+                     {
+                        label: 'Expenditure',
+                        data: expenditureData,
+                        backgroundColor: 'rgba(220, 20, 60, 0.9)' // Red
+                     },
+                     {
+                        label: 'Retirement',
+                        data: retirementData,
+                        backgroundColor: 'rgba(153, 102, 255, 0.9)' // Purple
+                     },
+                     {
+                        label: 'Investment',
+                        data: investmentData,
+                        //backgroundColor: 'rgba(255, 255, 0, 0.9)' // Orange
+                        backgroundColor: 'orange'
+                     },
+                     {
+                        label: 'Net Cash Flow',
+                        data: netWorthData,
+                        type: 'line',
+                        fill: false,
+                        borderColor: 'rgba(0,0,0,1)', // Black with 50% opacity
+                        borderWidth: 4,
+                        pointBackgroundColor: 'rgba(0,0,0,1)',
+                        pointBorderColor: 'rgba(0,0,0,1)',
+                        pointHoverBackgroundColor: 'rgba(0,0,0,0.75)',
+                        pointHoverBorderColor: 'rgba(0,0,0,0.75)'
+                     }
+                  ]
+               };
 
 
-            //note: the bar graph should be the data from the whole month. total up all the transactions for each category for each month and display that
-            //note: the pie chart should be the data from the current month. total up all the transactions for each category for the current month and display that
 
-            //only use the latest 12 months from this list (last 12 items)
-            var barChartData = {
-               //labels for the bar chart should consist of month and year in this format: "January 2021"
-               //labels: ['January 2021', 'February 2021', 'March 2021', 'April 2021', 'May 2021'], // example months
-               //just do the 12 latest months, unless less months than 12 then just do the months that are available
+               var barChart = new Chart(barChartCtx, {
+                  type: 'bar',
+                  data: barChartData,
+                  options: {
+                     responsive: false,
 
-               labels: months,
-               //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
-               datasets: [
-                  {
-                     label: 'Income',
-                     data: incomeData,
-                     backgroundColor: 'rgba(50, 205, 50, 1)' // Green
-                  },
-                  {
-                     label: 'Savings',
-                     data: savingsData,
-                     backgroundColor: 'rgba(54, 162, 235, 0.9)' // Blue
-                  },
-                  {
-                     label: 'Expenditure',
-                     data: expenditureData,
-                     backgroundColor: 'rgba(220, 20, 60, 1)' // Red
-                  },
-                  {
-                     label: 'Retirement',
-                     data: retirementData,
-                     backgroundColor: 'rgba(153, 102, 255, 0.9)' // Purple
-                  },
-                  {
-                     label: 'Investment',
-                     data: investmentData,
-                     //backgroundColor: 'rgba(255, 255, 0, 0.9)' // Orange
-                     backgroundColor: 'orange'
-                  },
-                  {
-                     label: 'Net Worth',
-                     data: netWorthData,
-                     type: 'line',
-                     fill: false,
-                     borderColor: 'rgba(0,0,0,0.5)', // Black with 50% opacity
-                     borderWidth: 4,
-                     pointBackgroundColor: 'rgba(0,0,0,0.5)',
-                     pointBorderColor: 'rgba(0,0,0,0.5)',
-                     pointHoverBackgroundColor: 'rgba(0,0,0,0.75)',
-                     pointHoverBorderColor: 'rgba(0,0,0,0.75)'
-                  }
-               ]
-            };
+                     plugins: {
 
-            //Overlay a 50% opacity linegraph on top of the bar chart to show the net worth over time??
-            //^ this is not necessary, but would be nice to have
-
-            //TODO: add numbers to the top of each bar representing the total net worth that someone has
-            //var netWorth = barChartData.reduce(function (acc, barChartData) {
-            //   return acc.map(function (value, index) {
-            //      return value + barChartData.data[index];
-            //   });
-            //}, new Array(barChartData[0].data.length).fill(0));
-
-
-
-
-            var barChart = new Chart(barChartCtx, {
-               type: 'bar',
-               data: barChartData,
-               options: {
-                  responsive: false,
-
-                  plugins: {
-
-                     annotation: {
-                        annotations: {
-                           line1: {
-                              type: 'line',
-                              yMin: 0,
-                              yMax: 0,
-                              borderColor: 'black',
-                              borderWidth: 5,
-                              label: {
-                                 enabled: false,
-                                 content: 'y=0'
+                        annotation: {
+                           annotations: {
+                              line1: {
+                                 type: 'line',
+                                 yMin: 0,
+                                 yMax: 0,
+                                 borderColor: 'black',
+                                 borderWidth: 5,
+                                 label: {
+                                    enabled: false,
+                                    content: 'y=0'
+                                 }
                               }
                            }
-                        }
-                     },
+                        },
 
-                     legend: {
-                        display: true
-                     },
-                     title: {
-                        display: true,
-                        text: 'Portfolio by Month (past 12 months)'
-                     },
-
-
-                  },
-                  scales: {
-                     x: {
-                        stacked: true,
-                     },
-                     y: {
-                        //{{!-- beginAtZero: true --}}
-                        stacked: true,
-                        beginAtZero: true,
+                        legend: {
+                           display: true
+                        },
                         title: {
                            display: true,
-                           text: 'Cash Flow (+/-) & Assets Breakdown',
-                           color: '#000',
-                           font: {
-                              size: 16
+                           text: 'Portfolio by Month (past 12 months)'
+                        },
+
+
+                     },
+                     scales: {
+                        x: {
+                           stacked: true,
+                        },
+                        y: {
+                           //{{!-- beginAtZero: true --}}
+                           stacked: true,
+                           beginAtZero: true,
+                           title: {
+                              display: true,
+                              text: 'Cash Flow (+/-) & Assets Breakdown',
+                              color: '#000',
+                              font: {
+                                 size: 16
+                              }
                            }
                         }
                      }
                   }
-               }
-            });
+               });
 
          </script>
+
+         {{!-- for testing purposes --}}
+         {{!-- <div id="test">
+            <h1>income string:</h1>
+            <h1>{{expenditureData}}</h1>
+         </div> --}}
+
       </main>
       <br />
       <br />
@@ -267,7 +347,16 @@
 
 
          </div> --}}
-            <label>Monthly Status:</label><label id="{{monthlyStatus}}"> {{{monthlyStatus}}}</label>
+         <label>Monthly Status:</label><label id="{{monthlyStatus}}"> {{{monthlyStatus}}}</label>
+
+         {{#if suggestions.length}}
+         <div id="suggestions">
+            <h3>Financial Suggestions:</h3>
+            {{#each suggestions}}
+            <p>{{this}}</p>
+            {{/each}}
+         </div>
+         {{/if}}
       </div>
 </body>
 
