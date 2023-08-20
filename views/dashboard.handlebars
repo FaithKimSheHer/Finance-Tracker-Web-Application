@@ -102,23 +102,6 @@
             }
             
 
-            //TODO: get data from database, passed through handlebars with {{barchartdata}}
-            //unpack barchart data into 5 arrays
-            //const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
-            //   "October", "November", "December"];
-            //const barData = bardata;
-
-            /*
-            for (let i = 0; i < 12; i++) {
-               const dateIteration = monthAndYear[i]; //get current month and year
-
-               //breakdown[0] = month, breakdown[1] = year
-               let breakdown = monthAndYear[i].split('.');  //seperate month and year using split
-
-               const month = breakdown[0]; //extract month array
-               const year = breakdown[1]; //extract year array
-            }
-            */
 
                //Convert months array into a list of month names and years
                //Each key for the object should be a month and year, and the value should be the total amount of money in that category for that month
@@ -199,7 +182,26 @@
                   netWorthData.push(incomeData[i] + savingsData[i] + expenditureData[i] + retirementData[i] + investmentData[i]);
                }
 
-               
+
+               /*
+               incomeData = [20, 25, 35, 40, 45];
+               savingsData = [15, 20, 30, 35, 40];
+               expenditureData = [-10, -15, -25, -30, -35];
+               retirementData = [5, 10, 15, 20, 25];
+               investmentData = [1, 5, 10, 15, 20];
+               */
+
+               //calculate net worth over each month
+               const netWorthData = [];
+               for (let i = 0; i < 12; i++) {
+                  netWorthData.push(incomeData[i] + savingsData[i] - expenditureData[i] + retirementData[i] + investmentData[i]);
+               }
+
+               //take expense data and make every number in the array negative
+               const negativeExpenditureData = [];
+               for (let i = 0; i < 12; i++) {
+                  negativeExpenditureData.push(-expenditureData[i]);
+               }
 
                //note: the bar graph should be the data from the whole month. total up all the transactions for each category for each month and display that
                //note: the pie chart should be the data from the current month. total up all the transactions for each category for the current month and display that
@@ -209,6 +211,7 @@
                   //labels for the bar chart should consist of month and year in this format: "January 2021"
                   //labels: ['January 2021', 'February 2021', 'March 2021', 'April 2021', 'May 2021'], // example months
                   //just do the 12 latest months, unless less months than 12 then just do the months that are available
+
 
                   labels: months,
                   //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
@@ -225,7 +228,9 @@
                      },
                      {
                         label: 'Expenditure',
-                        data: expenditureData,
+
+                        data: negativeExpenditureData,
+
                         backgroundColor: 'rgba(220, 20, 60, 0.9)' // Red
                      },
                      {

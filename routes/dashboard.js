@@ -2,7 +2,8 @@ import express from 'express';
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 import { users } from '../config/mongoCollections.js';
 import { transaction } from '../config/mongoCollections.js';
-import { getTransactionsByUserEmail } from '../data/transactions.js';
+// import { getTransactionsByUserEmail } from '../data/transactions.js';
+import { getTransactionsByUserEmail, getMonthlyAggregateByCategory, getTransactionsByCategory } from '../data/transactions.js';
 //import * as coll from "../config/mongoCollections.js";
 const router = express.Router();
 import {
@@ -169,95 +170,84 @@ router
     // console.log(getTransactionsDataForMonth(req.session.user.email, 8, 2021));
 
     //use the above function to get data in the format of array of objects for the past 12 months
-    const getTransactionsDataForPast12Months = async (email) => {
-      const currentDate = new Date();
 
-      const monthNames = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; // Array of month names
-      const monthArray = [];
-      const yearArray = [];
-
-      let currentMonth = currentDate.getMonth() + 1; //add 1 because month numbers are usually 1-12 and array indices are 0-11
-      let currentYear = currentDate.getFullYear();
-
-      for (let i = 0; i < 12; i++) {
-        monthArray.push(monthNames[currentMonth - 1]); //subtract 1 here since array indices are 0-11
-        yearArray.push(currentYear);
-
-        // monthAndYear.unshift(`${monthArray[currentMonth]}.${currentYear}`);
-        currentMonth -= 1;
-        if (currentMonth < 0) {
-          currentMonth = 11;  // Reset to December
-          currentYear -= 1;  // Decrease year
-        }
-      }
-
-      // let results = [];
-      let income = [];
-      let savings = [];
-      let expenditure = [];
-      let retirement = [];
-      let investment = [];
-
-      for (let i = 0; i < 12; i++) {
-        // const dateIteration = monthAndYear[i]; //get current month and year
-
-        //breakdown[0] = month, breakdown[1] = year
-        // let breakdown = monthAndYear[i].split('.');  //seperate month and year using split
-
-        // const month = getMonthNumber(breakdown[0]);
-        // const year = parseInt(breakdown[1], 10);
-
-        //arrays for month and year (each array should have 12 entries)
-        const month = getMonthNumber(monthArray[i]);
-        const year = parseInt(yearArray[i], 10);
-
-        //get data for the month and year
-        const data = await getTransactionsDataForMonth(email, month, year);
-
-        //add each category to each seperate array for data
-        income.push(data.income);
-        savings.push(data.savings);
-        expenditure.push(data.expenditure);
-        retirement.push(data.retirement);
-        investment.push(data.investment);
-
-        // results.push(data);
-        // console.log(data);
-        // console.log("income " + income);
-      }
-
-      return { incomeData: income, savingsData: savings, expenditureData: expenditure, retirementData: retirement, investmentData: investment };
-    };
 
     // const bardata = await getTransactionsDataForPast12Months(obj.email);
     const userEmail = req.session.user.email;
-    const past12MonthData = await getTransactionsDataForPast12Months(userEmail);
-    const incomeArray = past12MonthData.incomeData;
-    const savingsArray = past12MonthData.savingsData;
-    const expenditureArray = past12MonthData.expenditureData;
-    const retirementArray = past12MonthData.retirementData;
-    const investmentArray = past12MonthData.investmentData;
     
+    const test8 = await getTransactionsByCategory(userEmail, "income")
+    // console.log(test8);
     // console.log(expenditureArray);
     // console.log(past12MonthData)
 
     //convert each array into a string separated by commas
-    const incomeString = incomeArray.join(',');
-    const savingsString = savingsArray.join(',');
-    const expenditureString = expenditureArray.join(',');
-    const retirementString = retirementArray.join(',');
-    const investmentString = investmentArray.join(',');
+    // const incomeString = incomeArray.join(',');
+    // const savingsString = savingsArray.join(',');
+    // const expenditureString = expenditureArray.join(',');
+    // const retirementString = retirementArray.join(',');
+    // const investmentString = investmentArray.join(',');
 
-    console.log("incomeString: " + incomeString);
-    console.log("savingsString: " + savingsString);
-    console.log("expenditureString: " + expenditureString);
-    console.log("retirementsString: " + retirementString);
-    console.log("investmentString: " + investmentString);
+    // console.log("incomeString: " + incomeString);
+    // console.log("savingsString: " + savingsString);
+    // console.log("expenditureString: " + expenditureString);
+    // console.log("retirementsString: " + retirementString);
+    // console.log("investmentString: " + investmentString);
 
-    /////////// Make suggestion feature ///////////
+    //monthly values for each category
+    //const monthlyInformation = await getMonthlyAggregateByCategory(obj.email);
+    const monthlyInformation = await getMonthlyAggregateByCategory(req.session.user.email);
+    // console.log(monthlyInformation);
+
+    const monthlyIncome = monthlyInformation.incomeTrxByMonth;
+    // console.log(monthlyIncome);
+    const monthlySavings = monthlyInformation.savingsTrxByMonth;
+    const monthlyExpenditure = monthlyInformation.expenditureTrxByMonth;
+    const monthlyRetirement = monthlyInformation.retirementTrxByMonth;
+    const monthlyInvestment = monthlyInformation.investmentTrxByMonth;
+
+    const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    //Get current date
+    const currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    const keyList = [];
+    //const monthsFull = [];
+    //const yearFull = [];
+    for (let i = 0; i < 12; i++) {
+      keyList.unshift(`${monthNamesShort[currentMonth]}${currentYear}`);
+      
+      currentMonth -= 1;
+      if (currentMonth < 0) {
+        currentMonth = 11;  // Reset to December
+        currentYear -= 1;  // Decrease year
+      }
+    }
+
+    console.log(keyList);
+
+    // with the given keyList, get the values for each category
+    const monthlyIncomeValues = [];
+    const monthlySavingsValues = [];
+    const monthlyExpenditureValues = [];
+    const monthlyRetirementValues = [];
+    const monthlyInvestmentValues = [];
+
+    for (let i = 0; i < keyList.length; i++) {
+      const key = keyList[i];
+      monthlyIncomeValues.push(monthlyIncome[key] || 0);
+      monthlySavingsValues.push(monthlySavings[key] || 0);
+      monthlyExpenditureValues.push(monthlyExpenditure[key] || 0);
+      monthlyRetirementValues.push(monthlyRetirement[key] || 0);
+      monthlyInvestmentValues.push(monthlyInvestment[key] || 0);
+    }
+    
+    /////////// Suggestion feature ///////////
     const suggestionList = [];
 
     //Set some thresholds for each category percentages
+    
+    //If the savings is below this percentage, then 
     const savingsThreshold = 20;
     // const retirementThreshold = 40;
     // const investmentThreshold = 40;
@@ -284,10 +274,9 @@ router
     // const incomePercent = (totalIncome / totalDollars) * 100;
     // const expenditurePercent = (totalExpenditure / totalDollars) * 100;
 
-    if (savingsPercent > savingsThreshold) { suggestionList.push("You have too much money in savings. Consider moving cash into either an investment account or your retirement fund to hedge against inflation.") } //If savings is less than 20% of total assets
+    if (savingsPercent > savingsThreshold) { suggestionList.push("You have too much money in savings. Consider moving idle cash into either an investment account or your retirement fund.") } //If savings is less than 20% of total assets
     // if (retirementPercent < )
     // if (investmentPercent < 10) { suggestionList.push(toString("You should invest a greater portion of your financial portfolio. ")) //If investment is less than 10% of total assets
-
 
 
 
@@ -301,12 +290,18 @@ router
       monthlyStatus: statusValue,
       // barchartdata: bardata,
       suggestions: suggestionList,
-      
-      incomeData: incomeString,
-      savingsData: savingsString,
-      expenditureData: expenditureString,
-      retirementData: retirementString,
-      investmentData: investmentString
+
+      incomeData: monthlyIncomeValues,
+      savingsData: monthlySavingsValues,
+      expenditureData: monthlyExpenditureValues,
+      retirementData: monthlyRetirementValues,
+      investmentData: monthlyInvestmentValues
+
+      // incomeData: incomeString,
+      // savingsData: savingsString,
+      // expenditureData: expenditureString,
+      // retirementData: retirementString,
+      // investmentData: investmentString
     });
   });
 
