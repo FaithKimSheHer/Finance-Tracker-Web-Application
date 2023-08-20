@@ -9,30 +9,34 @@
         <script>
             const transactions = {{{ json transactions }}};
 
-            const transactionsByMonth = transactions.reduce((acc, transaction) => {
-                const month = transaction.dateOfTransaction.split('/')[0];
+            const transactionsByMonthYear = transactions.reduce((acc, transaction) => {
+                const [month, day, year] = transaction.dateOfTransaction.split('/');
+                const key = `${month}-${year}`;
                 const amount = Number(transaction.amount);
-                if (!acc[month]) {
-                    acc[month] = 0;
+                if (!acc[key]) {
+                    acc[key] = 0;
                 }
-                acc[month] += amount;
+                acc[key] += amount;
                 return acc;
             }, {});
 
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            const months = Object.keys(transactionsByMonth).map(month => monthNames[month - 1]); // Convert month numbers to month names
-            const amounts = months.map(month => transactionsByMonth[monthNames.indexOf(month) + 1]);
+            const monthYearLabels = Object.keys(transactionsByMonthYear).map(key => {
+                const [month, year] = key.split('-');
+                return `${monthNames[month - 1]} ${year}`; // Convert month numbers to month names and include the year
+            });
+            const amounts = Object.values(transactionsByMonthYear);
 
             const ctx = document.getElementById('myChart').getContext('2d');
             const myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: months,
+                    labels: monthYearLabels,
                     datasets: [{
                         label: 'Retirement by Month',
                         data: amounts,
-                        backgroundColor: 'rgba(255, 215, 0, 0.2)', //gold
-                        borderColor: 'rgba(255, 215, 0, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', //pink
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     }]
                 },
