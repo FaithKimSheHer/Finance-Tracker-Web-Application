@@ -1,3 +1,45 @@
-<div id="dashboard">
-    dashboard
-</div>
+<!DOCTYPE>
+<html>
+<head>
+</head>
+<body>
+    <div id="dashboard">
+    <main>
+    <input type="text" value="{{title}}" hidden id="headerValue">
+    <input type="text" value="{{piechartdata}}" hidden id="piedata">
+   <canvas id="chartId" aria-label="chart" height="450" width="580"></canvas>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+   <script>
+      var chrt = document.getElementById("chartId").getContext("2d");
+      var header = document.getElementById("headerValue").value;
+      var piedata = document.getElementById("piedata").value.split(',').map(Number);;
+ 
+      var chartId = new Chart(chrt, {
+         type: 'pie',
+         data: {
+            labels: ['Income', 'Savings', 'Expenditure','Retirement','Investment'],
+            datasets: [{
+               label: "online tutorial subjects",
+               data: piedata,
+               backgroundColor: ['orange', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
+               hoverOffset: 5
+            }],
+         },
+         options: {
+            responsive: false,
+            plugins:{
+                legend:{
+                    display:true
+                },
+                title:{
+                display:true,
+                text:header
+                }
+            }
+         },
+      });
+   </script>
+   </main>
+   </div>
+</body>
+</html>
