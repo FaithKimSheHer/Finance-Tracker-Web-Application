@@ -2,6 +2,7 @@ import express from 'express';
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 import { users } from '../config/mongoCollections.js';
 import { transaction } from '../config/mongoCollections.js';
+import { getTransactionsByUserEmail } from '../data/transactions.js';
 import { getTransactionsByUserEmail, getMonthlyAggregateByCategory, getTransactionsByCategory } from '../data/transactions.js';
 //import * as coll from "../config/mongoCollections.js";
 const router = express.Router();
@@ -276,7 +277,6 @@ router
     if (savingsPercent > savingsThreshold) { suggestionList.push("You have too much money in savings. Consider moving idle cash into either an investment account or your retirement fund.") } //If savings is less than 20% of total assets
     // if (retirementPercent < )
     // if (investmentPercent < 10) { suggestionList.push(toString("You should invest a greater portion of your financial portfolio. ")) //If investment is less than 10% of total assets
-
 
 
 
