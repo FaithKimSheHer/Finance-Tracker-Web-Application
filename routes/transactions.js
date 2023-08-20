@@ -39,125 +39,68 @@ router.route("/").get(async (req, res) => {
     if (!newTransaction.acknowledged || !newTransaction.insertedId)
       throw 'Could not add transaction';
     else console.log(transactionData);
-    return res.redirect('/summary', {
-      transactionData
-    });
+    return res.redirect('/');
   } catch (error) {
     console.log(error);
     return res.redirect("/");
   }
 });
 
-router.route("/summary").get(async (req, res) => {
-  try {
-    const data = await transactFuns.getTransactionsByUserEmail(
-      req.session.user.email
-    );
+// router.route("/transaction_summary/:id").get(async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const transaction = await transactFuns.getTransactionById(id);
+//     if (transaction) {
+//       return res.render("partials/update", {
+//         transaction: transaction,
+//       });
+//     } else {
+//       throw "Transaction not found";
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     return res
+//       .status(404)
+//       .send(
+//         "Transaction not found or an error occurred while fetching the transaction."
+//       );
+//   }
+// });
 
-    return res.render("partials/update", {
-      layout: "main",
-      title: "Update",
-      summary: data,
-    });
-  } catch (error) {
-    return res.status(404).render("transactions", {
-      errorMessage: "Update page not found.",
-    });
-  }
-});
-
-router.route("/transaction_summary/:id").get(async (req, res) => {
-  const id = req.params.id;
-  try {
-    const transaction = await transactFuns.getTransactionById(id);
-    if (transaction) {
-      return res.render("partials/update", {
-        transaction: transaction,
-      });
-    } else {
-      throw "Transaction not found";
-    }
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(404)
-      .send(
-        "Transaction not found or an error occurred while fetching the transaction."
-      );
-  }
-});
-
-router.route("/add_transaction").post(async (req, res) => {
-  try {
-    const {
-      category,
-      transactionInfo,
-      transactionDate
-    } = req.body;
-    const amount = Number(req.body.amount);
-    const userEmail = req.session.user.email;
-
-    const dateOfTransaction = new Date(transactionDate);
-
-    // Need to update for input such as receiptFilename, pathOfFilename.
-    const newTransaction = await transactFuns.createTransaction(
-      category,
-      transactionInfo,
-      amount,
-      dateOfTransaction,
-      null,
-      null,
-      userEmail,
-      ""
-    );
-
-    if (newTransaction) {
-      return res.redirect("/summary");
-    } else {
-      throw "Failed to create transaction";
-    }
-  } catch (error) {
-    return res.status(500).render("error", {
-      errorMessage: "Error adding transaction.",
-    });
-  }
-});
-
-
-router.route('/logout').get(async (req, res) => {
-  //code here for GET 
-  res.cookie('AuthCookie', null);
-  req.session.destroy();
-  return res.render('logout', {
-    layout: 'user',
-    logout: "Logout Success"
-  });
-});
 
 router.route("/income").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "income");
+  const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
   console.log("/income, user, transactions", [req.session.user.email, transactions]);
   return res.render("categories/income", {
     transactions: transactions,
-    user: req.session.user
+    user: req.session.user,
+    include: "partials/update",
+    summary: data
   });
 });
 
 router.route("/savings").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "savings");
+  const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
   console.log("/savings, user", [req.session.user]);
   return res.render("categories/savings", {
     transactions: transactions,
-    user: req.session.user
+    user: req.session.user,
+    include: "partials/update",
+    summary: data
   });
 });
 
 router.route("/expenditures").get(async (req, res) => {
   const transactions = await transactFuns.getTransactionsByCategory(req.session.user.email, "expenditure");
+  const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
   console.log("/expenditures, user", [req.session.user]);
   return res.render("categories/expenditures", {
     transactions: transactions,
-    user: req.session.user
+    user: req.session.user,
+    include: "partials/update",
+    summary: data
   });
 });
 
@@ -167,9 +110,12 @@ router.route("/investments").get(async (req, res) => {
     userEmail,
     "investment"
   );
+  const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
   return res.render("categories/investments", {
     transactions: transactions,
     user: req.session.user,
+    include: "partials/update",
+    summary: data
   });
 
 });
@@ -180,9 +126,12 @@ router.route("/retirement").get(async (req, res) => {
     userEmail,
     "retirement"
   );
+  const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
   return res.render("categories/retirement", {
     transactions: transactions,
     user: req.session.user,
+    include: "partials/update",
+    summary: data
   });
 });
 

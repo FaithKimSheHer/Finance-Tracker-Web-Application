@@ -4,10 +4,12 @@ import {users} from '../config/mongoCollections.js';
 import {transaction} from '../config/mongoCollections.js'; 
 //import * as coll from "../config/mongoCollections.js";
 const router = express.Router();
+import {
+    transactFuns
+} from "../data/index.js";
 
 //rendering partials: https://waelyasmina.medium.com/a-guide-into-using-handlebars-with-your-express-js-application-22b944443b65
 //we want transaction summary, calculations, dashboard to be on home (landing) page.
-
 router
     .route('/')
     .get(async (req, res) => {
@@ -25,6 +27,7 @@ router
           ));
 
           const transactionCollection = await transaction();
+          const data = await transactFuns.getMostRecentTransactionsByUserEmail(req.session.user.email);
           let income=0,savings=0,expenditure=0,retirement=0,investment=0;
           const transactionList = await transactionCollection.find({userEmail:obj.email}).project({_id:0, category: 1, amount: 1 , dateOfTransaction:1}).toArray();
 
@@ -71,8 +74,15 @@ router
           }
 
           let resultString = income.toString()+","+savings.toString()+","+expenditure.toString()+","+retirement.toString()+","+investment.toString();
-          
-        res.render('dashboard', { title: 'Overall Transaction Representation',piechartdata:resultString });
-    });
+    
+        res.status(200).render("dashboard", {
+            user: req.session.user,
+            layout: "main",
+            include: "partials/update",
+            summary: data,
+            title: 'Overall Transaction Representation',
+            piechartdata:resultString
+        });
+});
 
 export default router;

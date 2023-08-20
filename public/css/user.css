@@ -1,3 +1,6 @@
+div.notice {
+    height: 3rem;
+}
 div.status {
     grid-column: dash;
     display: flex;
@@ -14,13 +17,6 @@ div#login,#formDiv {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-}
-div#notice {
-    height: 2rem;
-}
-
-form#updateForm{
-    margin-top: 80px;
 }
 
 form {
@@ -57,4 +53,8 @@ span#pwConstraints {
     font-size: 0.8rem;
     /* color: red; */
     line-height: 10px;
+}
+
+a#homeLink {
+    margin-top: 25px;
 }

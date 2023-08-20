@@ -55,6 +55,9 @@ header {
     justify-content: space-evenly;
     background-color: #f0f0f0;
 }
+img {
+    cursor: pointer;
+}
 footer {
     grid-row: footer;
     display: flex;
@@ -163,4 +166,11 @@ div.category > div.cat-body {
 }
 hr {
     width: 10%;
+}
+
+/* transactions */
+th, td {
+    font-size: 1.25rem;
+    border: 1px solid;
+    padding: 5px;
 }
