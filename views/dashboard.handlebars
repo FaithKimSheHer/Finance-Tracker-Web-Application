@@ -1,49 +1,167 @@
 <!DOCTYPE>
 <html>
+
 <head>
 </head>
-<body>
-    <div id="dashboard">
-    <main>
-    <input type="text" value="{{title}}" hidden id="headerValue">
-    <input type="text" value="{{piechartdata}}" hidden id="piedata">
-   <canvas id="chartId" aria-label="chart" height="450" width="580"></canvas>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
-   <script>
-      var chrt = document.getElementById("chartId").getContext("2d");
-      var header = document.getElementById("headerValue").value;
-      var piedata = document.getElementById("piedata").value.split(',').map(Number);;
- 
-      var chartId = new Chart(chrt, {
-         type: 'pie',
-         data: {
-            labels: ['Income', 'Savings', 'Expenditure','Retirement','Investment'],
-            datasets: [{
-               label: "online tutorial subjects",
-               data: piedata,
-               backgroundColor: ['orange', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
-               hoverOffset: 5
-            }],
-         },
-         options: {
-            responsive: false,
-            plugins:{
-                legend:{
-                    display:true
-                },
-                title:{
-                display:true,
-                text:header
-                }
-            }
-         },
-      });
-    </script>
-   </main>
-     <br/>
-     <br/>
 
-   <label>Monthly Status:</label><label id="{{monthlyStatus}}">{{{monthlyStatus}}}</label>
-   </div>
+<body>
+   <div id="dashboard">
+      <main>
+         <input type="text" value="{{title}}" hidden id="headerValue">
+         <input type="text" value="{{piechartdata}}" hidden id="piedata">
+         <canvas id="chartId" aria-label="chart" height="450" width="580"></canvas>
+         {{!-- bar chart --}}
+         {{!-- <input type="text" value="{{title}}" hidden id="headerValue"> --}}
+         <input type="text" value="{{barchartdata}}" hidden id="bardata">
+         <canvas id="barChartId" aria-label="bar-chart" height="450" width="580"></canvas>
+
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
+
+         <script>
+            var chrt = document.getElementById("chartId").getContext("2d");
+            var header = document.getElementById("headerValue").value;
+            var piedata = document.getElementById("piedata").value.split(',').map(Number);;
+
+            var chartId = new Chart(chrt, {
+               type: 'pie',
+               data: {
+                  labels: ['Income', 'Savings', 'Expenditure', 'Retirement', 'Investment'],
+                  datasets: [{
+                     label: "online tutorial subjects",
+                     data: piedata,
+                     backgroundColor: ['orange', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
+                     hoverOffset: 5
+                  }],
+               },
+               options: {
+                  responsive: false,
+                  plugins: {
+                     legend: {
+                        display: true
+                     },
+                     title: {
+                        display: true,
+                        text: header
+                     }
+                  }
+               },
+            });
+
+            //!-- bar chart --
+            var barChartCtx = document.getElementById("barChartId").getContext("2d");
+            var bardata = document.getElementById("bardata").value.split(',').map(Number);;
+
+            var barChartData = {
+               labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'], // example months
+               datasets: [
+                  {
+                     label: 'Income',
+                     data: [20, 25, 35, 40, 45],
+                     backgroundColor: 'rgba(54, 162, 235, 0.9)' // Blue
+                  },
+                  {
+                     label: 'Savings',
+                     data: [15, 20, 30, 35, 40],
+                     backgroundColor: 'rgba(50, 205, 50, 1)' // Green
+                  },
+                  {
+                     label: 'Expenditure',
+                     data: [-10, -15, -25, -30, -35],
+                     backgroundColor: 'rgba(220, 20, 60, 1)' // Red
+                  },
+                  {
+                     label: 'Retirement',
+                     data: [5, 10, 15, 20, 25],
+                     backgroundColor: 'rgba(153, 102, 255, 0.9)' // Purple
+                  },
+                  {
+                     label: 'Investment',
+                     data: [1, 5, 10, 15, 20],
+                     //backgroundColor: 'rgba(255, 255, 0, 0.9)' // Orange
+                     backgroundColor: 'orange'
+                  }
+               ]
+            };
+
+            //var netWorth = barChartData.reduce(function (acc, barChartData) {
+            //   return acc.map(function (value, index) {
+            //      return value + barChartData.data[index];
+            //   });
+            //}, new Array(barChartData[0].data.length).fill(0));
+
+           
+
+
+            var barChart = new Chart(barChartCtx, {
+               type: 'bar',
+               data: barChartData,
+               options: {
+                  responsive: false,
+
+                  plugins: {
+                     legend: {
+                        display: true
+                     },
+                     title: {
+                        display: true,
+                        text: 'Portfolio by Month'
+                     },
+                     
+
+                  },
+                  scales: {
+                     x: {
+                        stacked: true,
+                     },
+                     y: {
+                        //{{!-- beginAtZero: true --}}
+                        stacked: true,
+                        beginAtZero: true,
+                        title: {
+                           display: true,
+                           text: 'Monthly Breakdown ($USD)',
+                           color: '#000',
+                           font: {
+                              size: 16
+                           }
+                        }
+                     }
+                  }
+               }
+            });
+
+         </script>
+      </main>
+      <br />
+      <br />
+
+      {{!-- write a note under bar graph here, that only shows up if true is passed through handlebars --}}
+      {{!-- {{#if isTrue
+      <div id="note">
+         <h3>Notes:</h3>
+         <p>It is advised that you diversify your Portfolio.
+            Percentage of {{Retirement}} is below 10% of your total portfolio. It should be at least 10%.
+            Percentage of {{category1}} is {{percentage1}}% of your total portfolio.
+            Recommendation is as follows:
+            Move {{percentage1}}% of your {{category1}} to {{category2}}.
+
+            Percentage of {{savings}} is too high. Consider moving some of your savings to {{category2}}.
+
+
+            }} --}}
+            {{!--
+         <div id="note">
+            <h3>Notes:</h3>
+            <p>1. The bar graph shows the total amount of money you have in each category for each month.</p>
+            <p>2. The pie chart shows the total amount of money you have in each category.</p>
+            <p>3. The monthly status shows the total amount of money you have in each category for the current month.
+            </p>
+
+
+            <label>Monthly Status:</label><label id="{{monthlyStatus}}">{{{monthlyStatus}}}</label>
+         </div> --}}
+      </div>
 </body>
+
 </html>
