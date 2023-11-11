@@ -63,3 +63,11 @@ Step 8: Create a new user using the website or use one we have provided in the s
 [Email:fkim@stevens.edu & Password:fkim@stevens.edu1T]
 
 From this point onwards the application can be tested and we have a recording/presentation uploaded which can be referred to as well.
+
+Technologies used:
+- bcryptjs (authentication)
+- express-session (authentication, session management)
+- expressjs (server/node framework)
+- express-handlebars/handlebarsjs (handlebars templating view engine for express)
+- chartjs (data visualization)
+- mongodb (db)
